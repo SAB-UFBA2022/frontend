@@ -12,7 +12,7 @@ export default function LoginForm() {
   } = useForm()
 
   const [successMessage, setSuccessMessage] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [visiblity, setVisiblity] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -21,19 +21,38 @@ export default function LoginForm() {
       setLoading(true)
       await axios('/login', {
         method: 'POST',
-        body: JSON.stringify(data)
-      }).then((res) => {
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      })
+      .then((res) => {
         if (res.status === 200) {
+          const accessToken = res?.data?.accessToken
+          const role = res?.data?.role
+          setAuth({ data, accessToken, role })
           reset()
           setSuccessMessage(true)
           setLoading(false)
-        } else {
-          setErrorMessage(true)
         }
       })
     } catch (error) {
-      setErrorMessage(true)
+      if(!error?.response) {
+        setErrorMessage('Sem resposta do servidor')
+      }
+      else if(error?.response?.status === 400) {
+        setErrorMessage('CPF ou senha inválidas')
+      }
+      else if (error?.response?.status === 401) {
+        setErrorMessage('Login não autorizado')
+      }
+      else {
+        setErrorMessage('Erro inesperado.Tente novamente.')
+      }
+      errorRef.current?.focus()
     }
+
     setTimeout(() => {
       setLoading(false)
     }, 3000)
@@ -81,7 +100,7 @@ export default function LoginForm() {
           </div>
         )}
         {errorMessage && (
-          <div className="flex w-full items-center justify-center gap-x-4 rounded-md bg-red-400 px-4 py-3">
+          <div ref="errorRef" className="flex w-full items-center justify-center gap-x-4 rounded-md bg-red-400 px-4 py-3">
             <p className="text-md text-gray-800">Erro inesperado.Tente novamente.</p>
             <button
               type="button"
@@ -104,6 +123,7 @@ export default function LoginForm() {
           id="cpf"
           placeholder="Insira seu CPF"
           aria-invalid={errors.nome ? 'true' : 'false'}
+          autoComplete="off"
           {...register('cpf', {
             required: {
               value: true,

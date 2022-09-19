@@ -1,16 +1,16 @@
 import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'
-import { AuthContext } from '../../contexts/Auth/AuthProvider'
+import AuthContext from '../../context/Auth/AuthProvider'
 import Button from '../Button'
 
 const LOGIN_URL = 'https://aux-bolsistas-dev.herokuapp.com/login'
 
 export default function LoginForm() {
-  const { auth, setAuth } = useContext(AuthContext)
-  const navigate = (path) => <Navigate to={path} />
+  const { setAuth } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   const {
     register,
@@ -22,6 +22,19 @@ export default function LoginForm() {
   const [visiblity, setVisiblity] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const definePath = (role) => {
+    switch (role) {
+      case 'ADMIN':
+        return '/admin/dashboard'
+      case 'STUDENT':
+        return '/discente/dashboard'
+      case 'ADVISOR':
+        return '/docente/dashboard'
+      default:
+        return '/'
+    }
+  }
+
   async function onSubmit(data) {
     try {
       setLoading(true)
@@ -29,9 +42,7 @@ export default function LoginForm() {
       const { name, tax_id, role, access_token } = response.data
       setAuth({ name, tax_id, role, access_token })
       toast.success('Login realizado com sucesso!')
-      if (auth) {
-        navigate('/user/dashboard')
-      }
+      navigate(definePath(role), { replace: true })
       reset()
     } catch (error) {
       if (!error?.response) {

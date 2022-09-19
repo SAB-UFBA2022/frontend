@@ -1,9 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import axios from 'axios'
+import AuthContext from '../../context/Auth/AuthProvider'
 import Button from '../Button'
 
+const LOGIN_URL = 'https://aux-bolsistas-dev.herokuapp.com/login'
+
 export default function LoginForm() {
+  const { setAuth } = useContext(AuthContext)
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -11,51 +19,53 @@ export default function LoginForm() {
     formState: { errors }
   } = useForm()
 
-  const [successMessage, setSuccessMessage] = useState(false)
-  const [errorMessage, setErrorMessage] = useState(false)
   const [visiblity, setVisiblity] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const definePath = (role) => {
+    switch (role) {
+      case 'ADMIN':
+        return '/admin/dashboard'
+      case 'STUDENT':
+        return '/discente/dashboard'
+      case 'ADVISOR':
+        return '/docente/dashboard'
+      default:
+        return '/'
+    }
+  }
 
   async function onSubmit(data) {
     try {
       setLoading(true)
-      await axios('/login', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      }).then((res) => {
-        if (res.status === 200) {
-          reset()
-          setSuccessMessage(true)
-          setLoading(false)
-        } else {
-          setErrorMessage(true)
-        }
-      })
+      const response = await axios.post(LOGIN_URL, data)
+      const { name, tax_id, role, access_token } = response.data
+      setAuth({ name, tax_id, role, access_token })
+      toast.success('Login realizado com sucesso!')
+      navigate(definePath(role), { replace: true })
+      reset()
     } catch (error) {
-      setErrorMessage(true)
+      if (!error?.response) {
+        toast.error('Sem resposta do servidor')
+      } else if (error?.response?.status === 400) {
+        toast.error('CPF ou senha inválidas')
+      } else if (error?.response?.status === 401) {
+        toast.error('Login não autorizado')
+      } else {
+        toast.error('Erro inesperado.Tente novamente.')
+      }
     }
+
     setTimeout(() => {
       setLoading(false)
-    }, 3000)
+    }, 1000)
   }
 
-  useEffect(() => {
-    setInterval(() => {
-      setSuccessMessage(false)
-      setErrorMessage(false)
-    }, 10000)
-  }, [])
-
-  const handleClick = () => {
-    setSuccessMessage(false)
-    setErrorMessage(false)
-  }
-
-  const handleKeyPress = (e) => {
+  /* const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSubmit(onSubmit)
     }
-  }
+  } */
 
   const handleVisiblity = () => {
     setVisiblity(!visiblity)
@@ -66,56 +76,21 @@ export default function LoginForm() {
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full max-w-[395px] flex-col gap-y-2 font-inter"
     >
-      <div className="flex flex-col items-center gap-y-3 py-2">
-        {successMessage && (
-          <div className="flex w-full items-center justify-center gap-x-4 rounded-md bg-green-400 px-4 py-3">
-            <p className="md:text-md text-gray-800">Sucesso</p>
-            <button
-              type="button"
-              className="cursor-pointer border-none"
-              onClick={handleClick}
-              onKeyPress={handleKeyPress}
-            >
-              <img src="assets/icons/close.svg" alt="Fechar" />
-            </button>
-          </div>
-        )}
-        {errorMessage && (
-          <div className="flex w-full items-center justify-center gap-x-4 rounded-md bg-red-400 px-4 py-3">
-            <p className="text-md text-gray-800">Erro inesperado.Tente novamente.</p>
-            <button
-              type="button"
-              className="cursor-pointer border-none"
-              onClick={handleClick}
-              onKeyPress={handleKeyPress}
-            >
-              <img src="assets/icons/close.svg" alt="Fechar" />
-            </button>
-          </div>
-        )}
-      </div>
       <label
-        htmlFor="cpf"
+        htmlFor="tax_id"
         className="flex h-[109px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800"
       >
         CPF
         <input
           type="number"
-          id="cpf"
+          id="tax_id"
           placeholder="Insira seu CPF"
-          aria-invalid={errors.nome ? 'true' : 'false'}
-          {...register('cpf', {
+          aria-invalid={errors.tax_id ? 'true' : 'false'}
+          autoComplete="off"
+          {...register('tax_id', {
             required: {
               value: true,
               message: 'Campo Obrigatório.'
-            },
-            minLength: {
-              value: 11,
-              message: 'Insira número de CPF válido.'
-            },
-            maxLength: {
-              value: 11,
-              message: 'Insira número de CPF válido.'
             }
           })}
           className={`${
@@ -124,7 +99,7 @@ export default function LoginForm() {
           focus:outline-none focus:ring-1 focus:ring-sky-500 `}
         />
         <span role="alert" className="font-inter text-xs text-red-500 md:text-sm">
-          {errors?.cpf?.message}
+          {errors?.tax_id?.message}
         </span>
       </label>
       <label

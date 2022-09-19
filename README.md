@@ -97,4 +97,4 @@ $ yarn run dev
 -   `yarn eject` — Remove a dependência build do projeto.
 -   `yarn lint` — Executa o ESLint para todos os arquivos no diretório src.
 -   `yarn lint:fix` — Executa o ESLint e corrige erros de formatação para todos os arquivos no diretório src.
--   `yarn format` — Executa o Prettier para todos os arquivos no diretório src.
+-   `yarn format` — Executa o Prettier para todos os arquivos no diretório src

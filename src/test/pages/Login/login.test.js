@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React from 'react'
 import { render } from '@testing-library/react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'

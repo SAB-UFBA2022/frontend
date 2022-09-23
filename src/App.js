@@ -2,11 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { AuthProvider } from './context/Auth/AuthProvider'
 import RequireAuth from './context/Auth/RequireAuth'
-import Login from './pages/Login'
-import DiscenteDashboard from './pages/Discente/Dashboard'
-import DocenteDashboard from './pages/Docente/Dashboard'
-import AdminDashboard from './pages/Admin/Dashboard'
-import Page404 from './pages/Page404'
+import { AdminDashboard, DiscenteDashboard, DocenteDashboard, Login, Page404 } from './pages'
 
 export default function App() {
   return (

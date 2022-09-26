@@ -63,7 +63,7 @@ export default function Login() {
           {showAlert && <Alert />}
           <FormInput
             label="CPF"
-            type="number"
+            type="text"
             id="tax_id"
             name="tax_id"
             value={values.tax_id}

@@ -1,14 +1,13 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
-import { useContext } from 'react'
-import AuthContext from './AuthProvider'
+import { useAppContext } from './appContext'
 
 function RequireAuth({ allowedRoles }) {
-  const { auth } = useContext(AuthContext)
+  const { name, userRole } = useAppContext()
   const location = useLocation()
 
-  return Object.keys(auth).includes('access_token') && allowedRoles === auth.role ? (
+  return allowedRoles === userRole ? (
     <Outlet />
-  ) : auth?.name ? (
+  ) : name ? (
     <Navigate to="/404" state={{ from: location }} replace />
   ) : (
     <Navigate to="/" state={{ from: location }} replace />

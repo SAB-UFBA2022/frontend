@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 
 export default function Discente() {
-  // const [showLogout, setShowLogout] = useState(false)
   const { logoutUser } = useAppContext()
   return (
     <div className="flex min-h-screen flex-auto flex-shrink-0 flex-col bg-gray-100 text-gray-800 antialiased">

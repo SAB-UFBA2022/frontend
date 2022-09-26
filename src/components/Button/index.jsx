@@ -5,7 +5,7 @@ export default function Button({ children, type, icon, color, loading, disabled 
       disabled={disabled || loading}
       className={`${
         color === 'green' ? `bg-green-500 hover:bg-green-800` : 'bg-blue-500 hover:bg-blue-800'
-      } flex h-12 w-full max-w-[395px] items-center justify-center rounded-lg text-base font-semibold leading-6 text-white transition-colors duration-300 ease-in disabled:cursor-not-allowed disabled:bg-blue-300`}
+      } flex h-12 w-full max-w-[395px] items-center justify-center rounded-lg text-base font-semibold leading-6 text-white transition-colors duration-300 ease-in disabled:cursor-not-allowed disabled:bg-blue-200`}
     >
       {loading ? (
         <svg

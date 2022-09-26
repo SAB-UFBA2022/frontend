@@ -1,19 +1,17 @@
-import { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import Button from '../../../components/Button'
-import AuthContext from '../../../context/Auth/AuthProvider'
+import { useAppContext } from '../../../context/appContext'
+import Sidebar from '../../../components/Sidebar/Discente'
 
 export default function DiscenteDashboard() {
-  const { auth } = useContext(AuthContext)
+  const { name } = useAppContext()
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-5 bg-gray-100">
-      <h1 className="font-poppins text-4xl font-semibold">Discente Dashboard</h1>
-      <p className="text-4xl font-medium">Olá, {auth.name}</p>
-      <Button type="button">
-        <Link to="/" className="flex h-full w-full items-center justify-center">
-          Voltar para a página inicial
-        </Link>
-      </Button>
+    <div className="flex h-screen gap-x-6 bg-gray-100">
+      <div className="w-[400px]">
+        <Sidebar />
+      </div>
+      <div className="flex w-full flex-col items-center justify-center gap-5">
+        <h1 className="font-poppins text-4xl font-semibold">Discente Dashboard</h1>
+        <p className="text-4xl font-medium">Olá, {name}</p>
+      </div>
     </div>
   )
 }

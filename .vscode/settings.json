@@ -4,5 +4,8 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true,
         "addMissingImports": true
+    },
+    "[javascriptreact]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     }
 }

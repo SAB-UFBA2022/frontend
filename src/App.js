@@ -4,6 +4,7 @@ import { AuthProvider } from './context/Auth/AuthProvider'
 import RequireAuth from './context/Auth/RequireAuth'
 import Login from './pages/Login'
 import DiscenteDashboard from './pages/Discente/Dashboard'
+import DiscentePerfil from './pages/Discente/Perfil'
 import DocenteDashboard from './pages/Docente/Dashboard'
 import AdminDashboard from './pages/Admin/Dashboard'
 import Page404 from './pages/Page404'
@@ -17,9 +18,12 @@ export default function App() {
           <Route path="/" element={<Login />} />
 
           {/* Rotas de usuário discente */}
-          <Route element={<RequireAuth allowedRoles="STUDENT" />}>
-            <Route path="discente/dashboard" element={<DiscenteDashboard />} />
-          </Route>
+          {/* <Route element={<RequireAuth allowedRoles="STUDENT" />}> */}
+          <Route path="discente/dashboard" element={<DiscenteDashboard />} />
+          {/* </Route> */}
+
+          {/* Rotas de usuário discente | Perfil */}
+          <Route path="discente/perfil" element={<DiscentePerfil />} />
 
           {/* Rotas de usuário docente */}
           <Route element={<RequireAuth allowedRoles="TEACHER" />}>

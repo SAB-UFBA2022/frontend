@@ -1,7 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import RequireAuth from './context/requireAuth'
-import { AdminDashboard, DiscenteDashboard, DocenteDashboard, Login, Page404 } from './pages'
+import {
+  AdminDashboard,
+  DiscenteDashboard,
+  DiscenteLista,
+  DocenteDashboard,
+  Login,
+  Page404
+} from './pages'
 
 export default function App() {
   return (
@@ -13,6 +20,7 @@ export default function App() {
         {/* Rotas de usuário discente */}
         <Route element={<RequireAuth allowedRoles="STUDENT" />}>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />
+          <Route path="discente/lista" element={<DiscenteLista />} />
         </Route>
 
         {/* Rotas de usuário docente */}

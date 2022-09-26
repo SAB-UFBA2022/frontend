@@ -4,7 +4,7 @@ import { useAppContext } from '../../context/appContext'
 export default function Discente() {
   const { logoutUser } = useAppContext()
   return (
-    <div className="flex min-h-screen flex-auto flex-shrink-0 flex-col bg-gray-100 text-gray-800 antialiased">
+    <div className="flex min-h-screen flex-col bg-gray-100 text-gray-800 antialiased">
       <div className="fixed top-0 left-0 flex h-full w-64 flex-col border-r bg-white">
         <div className="flex h-[186px] flex-col items-center justify-center gap-y-5 border-b">
           <img src="/assets/logo.png" alt="Logo" className="w-full max-w-[200px]" />
@@ -52,6 +52,19 @@ export default function Discente() {
                 </span>
                 <span className="ml-2.5 font-inter text-base font-medium leading-6 text-gray-800">
                   Artigos
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/discente/lista"
+                className="relative flex h-12 flex-row items-center border-l-4 border-transparent pr-6 text-gray-600 hover:border-blue-500 hover:bg-blue-100 hover:text-gray-800 focus:outline-none"
+              >
+                <span className="ml-4 inline-flex items-center justify-center">
+                  <img src="/assets/icons/list.svg" alt="List" className="w-6" />
+                </span>
+                <span className="ml-2.5 font-inter text-base font-medium leading-6 text-gray-800">
+                  Lista de Bolsistas
                 </span>
               </Link>
             </li>

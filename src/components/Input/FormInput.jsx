@@ -8,7 +8,8 @@ export default function FormInput({
   placeholder,
   handleChange,
   inputRef,
-  error
+  patternErro,
+  pattern
 }) {
   const input = useRef(inputRef ?? null)
 
@@ -25,19 +26,15 @@ export default function FormInput({
         id={name}
         type={type || 'text'}
         placeholder={placeholder}
-        aria-invalid={error ? 'true' : 'false'}
         value={value}
         name={name}
         ref={input}
         onChange={handleChangeInput}
-        className={`${
-          error ? `focus:ring-red-500` : `focus:ring-sky-500`
-        }' placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500`}
+        pattern={pattern}
+        title={pattern ? patternErro : ''}
+        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
       />
-      <span role="alert" className="h-[20px] font-inter text-xs text-red-500 md:text-sm">
-        {error ?? ''}
-      </span>
     </div>
   )
 }

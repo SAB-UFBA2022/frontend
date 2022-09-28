@@ -11,7 +11,8 @@
 [Proposta](https://docs.google.com/presentation/d/1ZFmNTl_J1z1zFfDj0APUG5PGdL459QwKcUtnf4H48xU/edit#slide=id.ge7debf7083_0_0) | 
 [Requisitos](https://docs.google.com/spreadsheets/d/1mP9sHRCpoDyPzAqeXPOXbrTp8NNgGUztj0FgI-nQb7k/edit?usp=sharing) | 
 [Protótipo](https://www.figma.com/file/c2RJlrC3kbbUfr1EI1tzdL/MATE85-Equipe2?node-id=0%3A1) | 
-[Versão de desenvolvimento](#)
+[Versão de desenvolvimento](https://aux-bolsistas.netlify.app/) |
+[Arquitetura](https://docs.google.com/presentation/d/1fom-CfQA__bDDZXrKyxoO9-3QYMczZLjdEKQkaNTPPA/edit#slide=id.g155e3ea10b4_0_0) |
 
 ### Sumário
 
@@ -97,4 +98,4 @@ $ yarn run dev
 -   `yarn eject` — Remove a dependência build do projeto.
 -   `yarn lint` — Executa o ESLint para todos os arquivos no diretório src.
 -   `yarn lint:fix` — Executa o ESLint e corrige erros de formatação para todos os arquivos no diretório src.
--   `yarn format` — Executa o Prettier para todos os arquivos no diretório src.
+-   `yarn format` — Executa o Prettier para todos os arquivos no diretório src

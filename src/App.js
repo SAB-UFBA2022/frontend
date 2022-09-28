@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import ForgetPassword from './pages/ForgetPassword'
 import RequireAuth from './context/requireAuth'
 import {
   AdminDashboard,
   DiscenteDashboard,
   DiscenteLista,
   DocenteDashboard,
+  ForgetPassword,
   Login,
   Page404
 } from './pages'

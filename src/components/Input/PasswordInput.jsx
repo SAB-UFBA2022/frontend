@@ -1,6 +1,15 @@
 import { useState, useRef } from 'react'
 
-export default function Input({ label, value, name, placeholder, handleChange, inputRef, error }) {
+export default function Input({
+  label,
+  value,
+  name,
+  placeholder,
+  handleChange,
+  inputRef,
+  patternErro,
+  pattern
+}) {
   const [visiblity, setVisiblity] = useState(false)
 
   const input = useRef(inputRef ?? null)
@@ -29,10 +38,10 @@ export default function Input({ label, value, name, placeholder, handleChange, i
         name={name}
         onChange={handleChangeInput}
         ref={input}
-        className={`${
-          error ? `focus:ring-red-500` : `focus:ring-sky-500`
-        }'placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 py-3 pl-4 pr-11 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500`}
+        pattern={pattern}
+        title={pattern ? patternErro : ''}
+        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 py-3 pl-4 pr-11 text-base font-normal leading-6 text-gray-800
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
       />
       <button
         className="absolute right-4 top-12"
@@ -47,9 +56,6 @@ export default function Input({ label, value, name, placeholder, handleChange, i
           height={24}
         />
       </button>
-      <span role="alert" className="h-[20px] font-inter text-xs text-red-500 md:text-sm">
-        {error ?? ''}
-      </span>
     </div>
   )
 }

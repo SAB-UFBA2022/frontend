@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, PasswordInput, Button, Alert } from '../../components'
 
@@ -58,7 +58,7 @@ export default function Login() {
         </h1>
         <form
           onSubmit={handleSubmit}
-          className="flex w-full max-w-[395px] flex-col gap-y-2 font-inter"
+          className="flex w-full max-w-[395px] flex-col gap-y-5 font-inter"
         >
           {showAlert && <Alert />}
           <FormInput
@@ -69,6 +69,8 @@ export default function Login() {
             value={values.tax_id}
             placeholder="Insira seu CPF"
             handleChange={handleChange}
+            pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}"
+            patternErro="CPF inválido, formato esperado: 000.000.000-00"
           />
           <PasswordInput
             label="Senha"
@@ -78,6 +80,9 @@ export default function Login() {
             placeholder="Digite sua senha"
             handleChange={handleChange}
           />
+          <Link to="/esqueci-a-senha" className="text-base font-normal leading-6 text-blue-600">
+            Esqueci a senha
+          </Link>
           <div className="mt-3">
             <Button
               type="submit"

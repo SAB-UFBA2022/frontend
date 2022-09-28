@@ -15,6 +15,10 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'react/jsx-props-no-spreading': 'off'
+    'react/jsx-props-no-spreading': 'off',
+    'import/prefer-default-export': 'off',
+    'eslint-disable-line-camelcase': 'off',
+    camelcase: 'off',
+    'no-nested-ternary': 'off'
   }
 }

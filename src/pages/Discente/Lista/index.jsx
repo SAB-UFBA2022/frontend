@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import Sidebar from '../../../components/Sidebar/Discente'
+import Sidebar from '../../../components/Sidebar/Admin'
 
 export default function DiscenteLista() {
   const [bolsistas, setBolsistas] = useState([])

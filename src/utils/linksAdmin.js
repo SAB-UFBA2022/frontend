@@ -7,7 +7,7 @@ export const linksAdmin = [
   {
     name: 'Estudantes',
     icon: 'list',
-    path: '/discente/lista-estudantes'
+    path: '/discente/lista'
   },
   {
     name: 'Relatórios',

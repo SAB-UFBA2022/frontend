@@ -5,7 +5,8 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  TOGGLE_SIDEBAR
 } from './actions'
 
 import { initialState } from './appContext' // eslint-disable-line
@@ -44,7 +45,6 @@ const reducer = (state, action) => {
       token: access_token
     }
   }
-
   if (action.type === LOGIN_USER_ERROR) {
     toast.error(action.payload)
     return {
@@ -58,6 +58,12 @@ const reducer = (state, action) => {
       user: null,
       token: null,
       userRole: ''
+    }
+  }
+  if (action.type === TOGGLE_SIDEBAR) {
+    return {
+      ...state,
+      expandSidebar: !state.expandSidebar
     }
   }
   throw new Error(`Não existe ação : ${action.type}`)

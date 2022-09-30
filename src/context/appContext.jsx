@@ -8,7 +8,8 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  TOGGLE_SIDEBAR
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -22,6 +23,7 @@ const initialState = {
   showToast: false,
   alertType: '',
   alertText: '',
+  expandSidebar: false,
   user: user || null,
   token: token || '',
   userRole: roles || '',
@@ -89,7 +91,11 @@ function AppProvider({ children }) {
     removeUserFromLocalStorage()
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser }}>{children}</AppContext.Provider>// eslint-disable-line
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR })
+  }
+
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

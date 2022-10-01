@@ -8,6 +8,7 @@ import DocenteDashboard from './pages/Docente/Dashboard'
 import AdminDashboard from './pages/Admin/Dashboard'
 import Page404 from './pages/Page404'
 import Cadastro from './pages/Cadastro'
+import CompleteCadastro from './pages/CompleteCadastro'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
 
           {/* Rotas públicas */}
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/complete-cadastro" element={<CompleteCadastro />} />
 
           {/* Rotas de usuário discente */}
           <Route element={<RequireAuth allowedRoles="STUDENT" />}>

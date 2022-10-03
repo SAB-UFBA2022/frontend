@@ -1,22 +1,22 @@
-export const linksAdmin = [
+export const linksDocente = [
   {
     name: 'Dashboard',
     icon: 'home',
-    path: '/discente/dashboard'
+    path: '/docente/dashboard'
   },
   {
     name: 'Estudantes',
     icon: 'list',
-    path: '/discente/lista'
+    path: '/docente/lista'
   },
   {
     name: 'Relatórios',
     icon: 'paper',
-    path: '/discente/relatorios'
+    path: '/docente/relatorios'
   },
   {
     name: 'Perfil',
     icon: 'profile',
-    path: '/discente/perfil'
+    path: '/docente/perfil'
   }
 ]

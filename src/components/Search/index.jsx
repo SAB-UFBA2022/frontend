@@ -14,12 +14,12 @@ export default function SearchContainer() {
     clearFilters()
   }
   return (
-    <div className="mx-auto my-12 w-9/12 rounded-lg bg-white p-8 shadow-sm">
+    <div className="mb-12 w-full rounded-lg bg-white p-8 shadow-sm lg:w-10/12">
       <form>
-        <h2 className="mb-4 font-poppins text-xl font-semibold text-gray-900">
+        <h2 className="mb-4 text-center font-poppins text-xl font-semibold text-gray-900 md:text-left">
           Formulário de pesquisa
         </h2>
-        <div className="grid grid-cols-2 place-items-center gap-y-8 gap-x-2">
+        <div className="grid grid-flow-col grid-cols-1 grid-rows-5 place-items-center gap-x-2 gap-y-4 xl:grid-flow-dense xl:grid-cols-2 xl:grid-rows-3 xl:gap-y-8">
           <Input
             type="text"
             label="Buscar"
@@ -28,21 +28,19 @@ export default function SearchContainer() {
             handleChange={handleSearch}
           />
           <Dropdown
-            label="Status"
-            name="searchStatus"
-            value={searchStatus}
-            handleChange={handleSearch}
-            list={['Todos', 'Tutor', 'Bolsista']}
-          />
-          {/* search by type */}
-          <Dropdown
             label="Curso"
             name="searchType"
             value={searchType}
             handleChange={handleSearch}
             list={['Todos', 'Mestrado', 'Doutorado']}
           />
-          {/* sort */}
+          <Dropdown
+            label="Status"
+            name="searchStatus"
+            value={searchStatus}
+            handleChange={handleSearch}
+            list={['Todos', 'Ativo', 'Inativo']}
+          />
           <Dropdown
             label="Ordenar"
             name="sort"

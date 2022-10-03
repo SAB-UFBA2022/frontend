@@ -6,7 +6,7 @@ import axios from 'axios'
 import AuthContext from '../../context/Auth/AuthProvider'
 import Button from '../Button'
 
-const CADASTRO_URL = 'https://aux-bolsistas-dev.herokuapp.com/cadastro'
+const { CADASTRO_URL } = process.env
 
 export default function CadastroForm() {
   const { setAuth } = useContext(AuthContext)

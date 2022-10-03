@@ -45,7 +45,6 @@ export default function CompleteCadastroForm() {
         Curso
         <select
           id="curso_id"
-          placeholder="Digite seu número de matrícula"
           aria-invalid={errors.curso_id ? 'true' : 'false'}
           autoComplete="off"
           {...register('curso_id', {
@@ -73,7 +72,6 @@ export default function CompleteCadastroForm() {
         Modalidade
         <select
           id="modalidade_id"
-          placeholder="Digite seu número de matrícula"
           aria-invalid={errors.modalidade_id ? 'true' : 'false'}
           autoComplete="off"
           {...register('modalidade_id', {
@@ -97,7 +95,6 @@ export default function CompleteCadastroForm() {
         Nome do orientador
         <select
           id="orientador_id"
-          placeholder="Digite seu número de matrícula"
           aria-invalid={errors.orientador_id ? 'true' : 'false'}
           autoComplete="off"
           {...register('orientador_id', {
@@ -147,7 +144,6 @@ export default function CompleteCadastroForm() {
         Agência
         <select
           id="agencia_id"
-          placeholder="Digite seu número de matrícula"
           aria-invalid={errors.agencia_id ? 'true' : 'false'}
           autoComplete="off"
           {...register('agencia_id', {

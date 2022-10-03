@@ -10,7 +10,9 @@ export default function Page404() {
             Página solicitada não encontrada.
           </h1>
           <Button type="button">
-            <Link to="/">Voltar para a página inicial</Link>
+            <Link to="/" className="flex h-full w-full items-center justify-center">
+              Voltar para a página inicial
+            </Link>
           </Button>
         </div>
         <img src="/assets/images/error.png" alt="Error" className=" w-full lg:w-6/12" />

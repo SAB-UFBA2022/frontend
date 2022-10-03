@@ -6,8 +6,7 @@ export default function SearchContainer() {
   const { isLoading, search, searchStatus, searchType, sort, clearFilters, sortOptions } =
     useAppContext()
   const handleSearch = () => {
-    if (isLoading) return true
-    return false
+    return true
   }
   const handleSubmit = (e) => {
     e.preventDefault()

@@ -1,5 +1,5 @@
 import { useAppContext } from '../../../context/appContext'
-import Sidebar from '../../../components/Sidebar/Admin'
+import Sidebar from '../../../components/Sidebar/Discente'
 
 export default function DiscenteDashboard() {
   const { name } = useAppContext()

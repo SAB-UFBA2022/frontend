@@ -9,7 +9,12 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
-  TOGGLE_SIDEBAR
+  TOGGLE_SIDEBAR,
+  CLEAR_FILTERS,
+  GET_STUDENTS_BEGIN,
+  GET_STUDENTS_SUCCESS,
+  GET_STUDENTS_ERROR,
+  CHANGE_PAGE
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -27,7 +32,18 @@ const initialState = {
   user: user || null,
   token: token || '',
   userRole: roles || '',
-  name: username || ''
+  name: username || '',
+  students: [],
+  totalItems: 0,
+  totalPages: 1,
+  currentPage: 1,
+  itemsPerPage: 0,
+  itemCount: 0,
+  search: '',
+  searchStatus: 'Todos',
+  searchType: 'Todos',
+  sort: 'Mais recente',
+  sortOptions: ['Mais recente', 'Mais antigo', 'a-z', 'z-a']
 }
 
 const AppContext = React.createContext()
@@ -95,7 +111,39 @@ function AppProvider({ children }) {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar }}>{children}</AppContext.Provider>// eslint-disable-line
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS })
+  }
+
+  const getStudents = async () => {
+    const { currentPage, search, searchStatus, searchType, sort } = state
+
+    let url = `v1/students/list/all?page=${currentPage}&status=${searchStatus}&course=${searchType}&sort=${sort}`
+    if (search) {
+      url += `&search=${search}`
+    }
+    dispatch({ type: GET_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
+      const { items, meta } = data
+      dispatch({
+        type: GET_STUDENTS_SUCCESS,
+        payload: {
+          items,
+          meta
+        }
+      })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+    clearAlert()
+  }
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } })
+  }
+
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, clearFilters, toggleSidebar, getStudents, changePage }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

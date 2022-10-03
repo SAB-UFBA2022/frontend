@@ -9,7 +9,8 @@ export default function FormInput({
   handleChange,
   inputRef,
   patternErro,
-  pattern
+  pattern,
+  className
 }) {
   const input = useRef(inputRef ?? null)
 
@@ -32,8 +33,10 @@ export default function FormInput({
         onChange={handleChangeInput}
         pattern={pattern}
         title={pattern ? patternErro : ''}
-        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500"
+        className={
+          className ||
+          'placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500'
+        }
       />
     </div>
   )

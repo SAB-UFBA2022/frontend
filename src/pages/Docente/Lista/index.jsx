@@ -18,7 +18,7 @@ export default function DiscenteLista() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-auto bg-gray-100 md:flex-row">
+    <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
       <section className="w-full p-6 py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
         <div className="shadow-base w-full space-y-8 lg:w-10/12">

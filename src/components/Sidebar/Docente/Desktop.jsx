@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useAppContext } from '../../../context/appContext'
-import { linksAdmin } from '../../../utils/linksAdmin'
+import { linksDocente } from '../../../utils/linksDocente'
 
 export default function Desktop() {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
@@ -9,7 +9,7 @@ export default function Desktop() {
     <aside
       className={`${
         expandSidebar ? 'w-60' : 'w-24'
-      } durantion-300 h-screen bg-white py-4 transition-all ease-in`}
+      } durantion-300 fixed h-screen bg-white py-4 transition-all ease-in`}
     >
       <div className="flex w-full flex-col items-center gap-x-2 transition-all duration-300 ease-in">
         <header className="flex flex-col items-center gap-y-5 px-5 pb-11">
@@ -37,7 +37,7 @@ export default function Desktop() {
           </a>
         </header>
         <ul className=" flex w-full flex-col items-center">
-          {linksAdmin.map((link) => (
+          {linksDocente.map((link) => (
             <li key={link.name} className="w-full hover:bg-blue-100">
               <NavLink
                 to={link.path}

@@ -1,18 +1,18 @@
 import { Link, NavLink } from 'react-router-dom'
 import { useAppContext } from '../../../context/appContext'
-import { linksAdmin } from '../../../utils/linksAdmin'
+import { linksDocente } from '../../../utils/linksDocente'
 
 export default function Mobile() {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
 
   return (
-    <header className="mb-5 space-y-5 bg-white p-5 pb-0">
+    <header className="mb-5 space-y-5 bg-white p-5 pb-2">
       <div className="flex w-full items-center justify-between">
-        <Link to="/discente/dashboard" className="w-32 justify-self-center">
+        <Link to="/docente/dashboard" className="w-32 justify-self-center">
           <img src="/assets/logo.png" alt="Logo" />
         </Link>
         <Link
-          to="/discente/dashboard"
+          to="/docente/dashboard"
           className="hidden w-32 text-center text-sm font-semibold sm:block"
         >
           Acompanhamento de Bolsistas
@@ -23,8 +23,8 @@ export default function Mobile() {
       </div>
       <nav className={`${expandSidebar ? 'h-64' : 'h-0'} transition-all`}>
         <ul className={`${expandSidebar ? 'opacity-1' : 'opacity-0'} transition-all`}>
-          {linksAdmin.map((link) => (
-            <li key={link.name}>
+          {linksDocente.map((link) => (
+            <li key={link.name} className={`${expandSidebar ? 'block' : 'hidden'} transition-all`}>
               <NavLink
                 to={link.path}
                 className="flex w-full items-center gap-x-3 border-l-4 border-transparent p-3 outline-none "
@@ -38,7 +38,7 @@ export default function Mobile() {
               </NavLink>
             </li>
           ))}
-          <li>
+          <li className={`${expandSidebar ? 'block' : 'hidden'} transition-all`}>
             <NavLink
               to="/"
               onClick={logoutUser}

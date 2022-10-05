@@ -1,9 +1,15 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { FormInput, Button } from '..'
+import { FormInput, Button, FormSelect } from '..'
 
 const initialState = {
-  matricula_id: ''
+  matricula_id: '',
+  curso_id: '',
+  modalidade_id: '',
+  orientador_id: '',
+  curriculo_id: '',
+  agencia_id: '',
+  inicio_id: '',
+  fim_id: ''
 }
 
 export default function CompleteCadastroForm() {
@@ -11,11 +17,6 @@ export default function CompleteCadastroForm() {
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
-
-  const {
-    register,
-    formState: { errors }
-  } = useForm()
 
   const [loading] = useState(false)
 
@@ -37,79 +38,43 @@ export default function CompleteCadastroForm() {
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <label
-        htmlFor="curso_id"
-        className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800"
-      >
-        Curso
-        <select
+      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+        <FormSelect
+          label="Curso"
           id="curso_id"
-          aria-invalid={errors.curso_id ? 'true' : 'false'}
-          autoComplete="off"
-          {...register('curso_id', {
-            required: {
-              value: true,
-              message: 'Campo Obrigatório.'
-            }
-          })}
-          className={`${
-            errors.nome ? `focus:ring-red-500` : `focus:ring-sky-500`
-          }'placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500 `}
-        >
-          <option value="mestrado">Mestrado</option>
-          <option value="doutorado">Doutorado</option>
-        </select>
-        <span role="alert" className="font-inter text-xs text-red-500 md:text-sm">
-          {errors?.curso_id?.message}
-        </span>
-      </label>
-      <label
-        htmlFor="modalidade_id"
-        className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800"
-      >
-        Modalidade
-        <select
+          name="curso_id"
+          value={{ elements: ['mestrado', 'doutorado'] }}
+          handleChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
+        focus:outline-none focus:ring-1 focus:ring-sky-500"
+        />
+      </div>
+      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+        <FormSelect
+          label="Modalidade"
           id="modalidade_id"
-          aria-invalid={errors.modalidade_id ? 'true' : 'false'}
-          autoComplete="off"
-          {...register('modalidade_id', {
-            required: {
-              value: true,
-              message: 'Campo Obrigatório.'
-            }
-          })}
-          className={`${
-            errors.nome ? `focus:ring-red-500` : `focus:ring-sky-500`
-          }'placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500 `}
-        >
-          <option value="mestrado">Test</option>
-        </select>
-      </label>
-      <label
-        htmlFor="orientador_id"
-        className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800"
-      >
-        Nome do orientador
-        <select
+          name="modalidade_id"
+          value={{
+            elements: ['Mestrado - GM', 'Doutorado - GD', 'Doutorado Sanduíche no país - SWP']
+          }}
+          handleChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
+        focus:outline-none focus:ring-1 focus:ring-sky-500"
+        />
+      </div>
+      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+        <FormSelect
+          label="Nome do orientador"
           id="orientador_id"
-          aria-invalid={errors.orientador_id ? 'true' : 'false'}
-          autoComplete="off"
-          {...register('orientador_id', {
-            required: {
-              value: true,
-              message: 'Campo Obrigatório.'
-            }
-          })}
-          className={`${
-            errors.nome ? `focus:ring-red-500` : `focus:ring-sky-500`
-          }'placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500 `}
-        >
-          <option value="mestrado">Test</option>
-        </select>
-      </label>
+          name="orientador_id"
+          value={{
+            elements: ['teste']
+          }}
+          handleChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
+        focus:outline-none focus:ring-1 focus:ring-sky-500"
+        />
+      </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
           label="Link currículo Lattes"
@@ -120,35 +85,25 @@ export default function CompleteCadastroForm() {
           placeholder="Link Lattes"
           autoComplete="off"
           handleChange={handleChange}
-          pattern="(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
+          // pattern="(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
           patternErro="Lattes inválido, formato esperado: http://lattes.cnpq.br/9001443717831147"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <label
-        htmlFor="agencia_id"
-        className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800"
-      >
-        Agência
-        <select
+      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+        <FormSelect
+          label="Agência"
           id="agencia_id"
-          aria-invalid={errors.agencia_id ? 'true' : 'false'}
-          autoComplete="off"
-          {...register('agencia_id', {
-            required: {
-              value: true,
-              message: 'Campo Obrigatório.'
-            }
-          })}
-          className={`${
-            errors.nome ? `focus:ring-red-500` : `focus:ring-sky-500`
-          }'placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500 `}
-        >
-          <option value="mestrado">Test</option>
-        </select>
-      </label>
+          name="agencia_id"
+          value={{
+            elements: ['teste']
+          }}
+          handleChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
+        focus:outline-none focus:ring-1 focus:ring-sky-500"
+        />
+      </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
           label="Valor da bolsa"
@@ -159,7 +114,7 @@ export default function CompleteCadastroForm() {
           placeholder="Digite o valor da bolsa"
           autoComplete="off"
           handleChange={handleChange}
-          pattern="^R\$(\d{1,3}(\.\d{3})*|\d+)(\,\d{2})?$"
+          // pattern="^R\$(\d{1,3}(\.\d{3})*|\d+)(\,\d{2})?$"
           patternErro="Bolsa inválida, formato esperado: R$1000"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"

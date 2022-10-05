@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import CadastroForm from '../../components/CadastroForm'
 
 export default function Cadastro() {
@@ -12,9 +13,9 @@ export default function Cadastro() {
         <CadastroForm />
         <p className="text-center text-base font-normal leading-6">
           Já tem uma conta?{' '}
-          <a href="/#" className="text-blue-600 transition-colors hover:text-blue-800">
+          <Link to="/" className="text-blue-600 transition-colors hover:text-blue-800">
             Entrar
-          </a>
+          </Link>
         </p>
       </section>
     </div>

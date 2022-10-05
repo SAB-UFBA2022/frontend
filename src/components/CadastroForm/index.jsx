@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, PasswordInput, Alert } from '..'
 
@@ -9,12 +10,13 @@ const initialState = {
   email_id: '',
   phone_id: '',
   password: '',
-  confirm: ''
+  confirm_password: ''
 }
 
 export default function CadastroForm() {
+  const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
-  const { displayAlert, showAlert } = useAppContext()
+  const { displayAlert, showAlert, preSaveUser } = useAppContext()
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -22,16 +24,32 @@ export default function CadastroForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const { name_id, tax_id, email_id, phone_id, password, confirm } = values
-    if (!name_id || !tax_id || !email_id || !phone_id || !password || !confirm) {
+    const { name_id, tax_id, email_id, phone_id, password, confirm_password } = values
+    if (!name_id || !tax_id || !email_id || !phone_id || !password || !confirm_password) {
       displayAlert()
     }
-    if (password !== confirm) {
+    if (password !== confirm_password) {
       displayAlert()
     }
-    // const saveUser = { name_id, tax_id, email_id, phone_id, password, confirm }
-    // saveUser(saveUser)
+    const dataUser = { name_id, tax_id, email_id, phone_id, password }
+    preSaveUser(dataUser)
   }
+
+  useEffect(() => {
+    if (
+      !!initialState.name_id &&
+      !!initialState.tax_id &&
+      !!initialState.email_id &&
+      !!initialState.phone_id &&
+      !!initialState.password &&
+      !!initialState.confirm_password &&
+      initialState.password === initialState.confirm_password
+    ) {
+      setTimeout(() => {
+        navigate('/complete-cadastro', { replace: true })
+      }, 2000)
+    }
+  }, [initialState, navigate])
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full max-w-[395px] flex-col gap-y-2 font-inter">
@@ -44,17 +62,21 @@ export default function CadastroForm() {
         value={values.name_id}
         placeholder="Insira seu nome"
         autoComplete="off"
+        handleChange={handleChange}
         className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-          focus:outline-none focus:ring-1 focus:ring-sky-500 "
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
       />
       <FormInput
         label="CPF"
-        type="number"
+        type="text"
         id="tax_id"
         name="tax_id"
         value={values.tax_id}
         placeholder="Insira seu CPF"
         autoComplete="off"
+        handleChange={handleChange}
+        pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}"
+        patternErro="CPF inválido, formato esperado: 000.000.000-00"
         className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
           focus:outline-none focus:ring-1 focus:ring-sky-500"
       />
@@ -70,6 +92,9 @@ export default function CadastroForm() {
             name="email_id"
             value={values.email_id}
             placeholder="Digite seu email"
+            handleChange={handleChange}
+            pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}"
+            patternErro="Email inválido, formato esperado: seu_email@email.com"
             className="placeholder-gray-400::placeholder mr-2 w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6
             text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
           />
@@ -80,6 +105,9 @@ export default function CadastroForm() {
             value={values.phone_id}
             placeholder="Digite seu telefone"
             autoComplete="off"
+            handleChange={handleChange}
+            pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}"
+            patternErro="Telefone inválido, formato esperado: 71999999999"
             className="placeholder-gray-400::placeholder ml-2 w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6
             text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
           />
@@ -97,9 +125,9 @@ export default function CadastroForm() {
       />
       <PasswordInput
         label="Confirmar senha"
-        id="confirm"
-        name="confirm"
-        value={values.confirm}
+        id="confirm_password"
+        name="confirm_password"
+        value={values.confirm_password}
         placeholder="Confirmar senha"
         handleChange={handleChange}
         className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 py-3 pl-4 pr-11 text-base font-normal leading-6 text-gray-800

@@ -5,7 +5,13 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  SAVE_USER_BEGIN,
+  SAVE_USER_SUCCESS,
+  SAVE_USER_ERROR,
+  PRE_SAVE_USER_BEGIN,
+  PRE_SAVE_USER_SUCCESS,
+  PRE_SAVE_USER_ERROR
 } from './actions'
 
 import { initialState } from './appContext' // eslint-disable-line
@@ -58,6 +64,54 @@ const reducer = (state, action) => {
       user: null,
       token: null,
       userRole: ''
+    }
+  }
+
+  if (action.type === SAVE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === SAVE_USER_SUCCESS) {
+    const { tax_id, role } = action.payload
+    toast.success('Cadastro realizado com sucesso.')
+    return {
+      ...state,
+      isLoading: false,
+      user: tax_id,
+      userRole: role
+    }
+  }
+  if (action.type === SAVE_USER_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+
+  if (action.type === PRE_SAVE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === PRE_SAVE_USER_SUCCESS) {
+    const { tax_id, role } = action.payload
+    toast.success('Pré Cadastro realizado com sucesso.')
+    return {
+      ...state,
+      isLoading: false,
+      user: tax_id,
+      userRole: role
+    }
+  }
+  if (action.type === PRE_SAVE_USER_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
     }
   }
   throw new Error(`Não existe ação : ${action.type}`)

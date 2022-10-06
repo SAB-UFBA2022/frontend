@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
 import reducer from './reducer' // eslint-disable-line
@@ -8,7 +9,10 @@ import {
   LOGIN_USER_BEGIN,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  FORGET_PASSWORD_BEGIN,
+  FORGET_PASSWORD_SUCCESS,
+  FORGET_PASSWORD_ERROR
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -58,6 +62,32 @@ function AppProvider({ children }) {
     localStorage.removeItem('name')
   }
 
+  const forgetPassword = async (forgestPasswordData) => {
+    dispatch({ type: FORGET_PASSWORD_BEGIN })
+    try {
+      const { data } = await axios.post(
+        'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
+        forgestPasswordData
+      )
+      console.log(data, 1000)
+      const { tax_id, access_token, role, name } = data
+      dispatch({
+        type: FORGET_PASSWORD_SUCCESS,
+        payload: { tax_id, access_token, role, name }
+      })
+    } catch (error) {
+      if (!error?.response) {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Sem resposta do servidor' })
+      } else if (error?.response?.status === 400) {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Credenciais inválidas!' })
+      } else if (error?.response?.status === 401) {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Request não autorizado' })
+      } else {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Erro inesperado.Tente novamente' })
+      }
+    }
+  }
+
   const loginUser = async (currentUser) => {
     dispatch({ type: LOGIN_USER_BEGIN })
     try {
@@ -89,7 +119,11 @@ function AppProvider({ children }) {
     removeUserFromLocalStorage()
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser }}>{children}</AppContext.Provider>// eslint-disable-line
+  return (
+    <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, forgetPassword }}>
+      {children}
+    </AppContext.Provider>
+  )
 }
 
 const useAppContext = () => {

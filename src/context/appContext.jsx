@@ -22,6 +22,9 @@ const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const roles = localStorage.getItem('role')
 const username = localStorage.getItem('name')
+const useremail = localStorage.getItem('email')
+const userphone = localStorage.getItem('phone')
+const userpassword = localStorage.getItem('password')
 
 const initialState = {
   isLoading: false,
@@ -32,7 +35,10 @@ const initialState = {
   user: user || null,
   token: token || '',
   userRole: roles || '',
-  name: username || ''
+  username: username || '',
+  useremail: useremail || '',
+  userphone: userphone || '',
+  userpassword: userpassword || ''
 }
 
 const AppContext = React.createContext()
@@ -124,12 +130,44 @@ function AppProvider({ children }) {
     dispatch({ type: SAVE_USER_BEGIN })
     try {
       const { data } = await axios.post(process.env.CADASTRO_URL, dataUser)
-      const { name_id, tax_id, email_id, phone_id, password } = data
+      console.log(data, 5000)
+      const {
+        id,
+        tax_id,
+        enrollment_number,
+        name,
+        email,
+        course,
+        link_lattes,
+        advisor_id,
+        enrollment_date_pgcomp,
+        defense_prediction,
+        phone_number,
+        role,
+        articles,
+        scholarship
+      } = data
       dispatch({
         type: SAVE_USER_SUCCESS,
-        payload: { name_id, tax_id, email_id, phone_id, password }
+        payload: {
+          id,
+          tax_id,
+          enrollment_number,
+          name,
+          email,
+          course,
+          link_lattes,
+          advisor_id,
+          enrollment_date_pgcomp,
+          defense_prediction,
+          phone_number,
+          role,
+          articles,
+          scholarship
+        }
       })
     } catch (error) {
+      console.log(error, 5001)
       if (!error?.response) {
         dispatch({ type: SAVE_USER_ERROR, payload: 'Sem resposta do servidor' })
       } else if (error?.response?.status === 400) {

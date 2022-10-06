@@ -1,27 +1,75 @@
 import { useState } from 'react'
+import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, FormSelect } from '..'
 
 const initialState = {
   matricula_id: '',
   curso_id: '',
-  modalidade_id: '',
   orientador_id: '',
   curriculo_id: '',
   agencia_id: '',
   inicio_id: '',
-  fim_id: ''
+  fim_id: '',
+  defesa_id: ''
 }
 
 export default function CompleteCadastroForm() {
   const [values, setValues] = useState(initialState)
+  const [loading] = useState(false)
+  const { displayAlert, saveUser, tax_id, username, useremail, userphone, userpassword } =
+    useAppContext()
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
 
-  const [loading] = useState(false)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const {
+      matricula_id,
+      curso_id,
+      orientador_id,
+      curriculo_id,
+      agencia_id,
+      bolsa_id,
+      inicio_id,
+      fim_id,
+      defesa_id
+    } = values
+    if (
+      !matricula_id ||
+      !curso_id ||
+      !orientador_id ||
+      !curriculo_id ||
+      !agencia_id ||
+      !bolsa_id ||
+      !inicio_id ||
+      !fim_id ||
+      !defesa_id
+    ) {
+      displayAlert()
+    }
+    const dataUser = {
+      tax_id,
+      enrollment_number: matricula_id,
+      name: username,
+      email: useremail,
+      course: curso_id,
+      link_lattes: curriculo_id,
+      advisor_id: orientador_id,
+      enrollment_date_pgcomp: defesa_id,
+      phone_number: userphone,
+      password: userpassword,
+      role: 'studant'
+    }
+    saveUser(dataUser)
+  }
 
   return (
-    <form className="tablet:grid-cols-2 flex w-full flex-wrap items-center justify-center gap-y-2 font-inter">
+    <form
+      onSubmit={handleSubmit}
+      className="tablet:grid-cols-2 flex w-full flex-wrap items-center justify-center gap-y-2 font-inter"
+    >
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
           label="Número matrícula"
@@ -50,13 +98,14 @@ export default function CompleteCadastroForm() {
         />
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
-        <FormSelect
-          label="Modalidade"
-          id="modalidade_id"
-          name="modalidade_id"
-          value={{
-            elements: ['Mestrado - GM', 'Doutorado - GD', 'Doutorado Sanduíche no país - SWP']
-          }}
+        <FormInput
+          label="Data prevista para defesa"
+          type="date"
+          id="defesa_id"
+          name="defesa_id"
+          value={values.defesa_id}
+          placeholder="Selecione data de início"
+          autoComplete="off"
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"

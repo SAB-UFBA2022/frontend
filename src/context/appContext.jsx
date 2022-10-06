@@ -144,7 +144,6 @@ function AppProvider({ children }) {
     dispatch({ type: SAVE_USER_BEGIN })
     try {
       const { data } = await axios.post(process.env.CADASTRO_URL, dataUser)
-      console.log(data, 5000)
       const {
         id,
         tax_id,
@@ -181,7 +180,6 @@ function AppProvider({ children }) {
         }
       })
     } catch (error) {
-      console.log(error, 5001)
       if (!error?.response) {
         dispatch({ type: SAVE_USER_ERROR, payload: 'Sem resposta do servidor' })
       } else if (error?.response?.status === 400) {

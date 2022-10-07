@@ -65,15 +65,12 @@ function AppProvider({ children }) {
   const forgetPassword = async (forgestPasswordData) => {
     dispatch({ type: FORGET_PASSWORD_BEGIN })
     try {
-      const { data } = await axios.post(
+      await axios.post(
         'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
         forgestPasswordData
       )
-      console.log(data, 1000)
-      const { tax_id, access_token, role, name } = data
       dispatch({
-        type: FORGET_PASSWORD_SUCCESS,
-        payload: { tax_id, access_token, role, name }
+        type: FORGET_PASSWORD_SUCCESS
       })
     } catch (error) {
       if (!error?.response) {

@@ -1,4 +1,4 @@
-export default function Dropdown({ label, name, value, handleChange, list }) {
+export default function Dropdown({ label, name, value, handleChange, list = [] }) {
   return (
     <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
       <label htmlFor={name} className="text-base font-medium leading-7 text-gray-800">

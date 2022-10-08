@@ -1,5 +1,5 @@
 import { useAppContext } from '../../context/appContext'
-import Dropdown from '../Dropdown'
+import Dropdown from '../Input/Dropdown'
 import Input from '../Input/FormInput'
 
 export default function SearchContainer() {

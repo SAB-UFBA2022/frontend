@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
-import Button from '../Button'
+import { Button, Alert } from '..'
 
 export default function ForgetPasswordForm() {
   const {
@@ -45,49 +45,14 @@ export default function ForgetPasswordForm() {
     }, 10000)
   }, [])
 
-  const handleClick = () => {
-    setSuccessMessage(false)
-    setErrorMessage(false)
-  }
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit(onSubmit)
-    }
-  }
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full max-w-[395px] flex-col gap-y-2 font-inter"
     >
       <div className="flex flex-col items-center gap-y-3 py-2">
-        {successMessage && (
-          <div className="flex w-full items-center justify-center gap-x-4 rounded-md bg-green-400 px-4 py-3">
-            <p className="md:text-md text-gray-800">Sucesso</p>
-            <button
-              type="button"
-              className="cursor-pointer border-none"
-              onClick={handleClick}
-              onKeyPress={handleKeyPress}
-            >
-              <img src="assets/icons/close.svg" alt="Fechar" />
-            </button>
-          </div>
-        )}
-        {errorMessage && (
-          <div className="flex w-full items-center justify-center gap-x-4 rounded-md bg-red-400 px-4 py-3">
-            <p className="text-md text-gray-800">Erro inesperado.Tente novamente.</p>
-            <button
-              type="button"
-              className="cursor-pointer border-none"
-              onClick={handleClick}
-              onKeyPress={handleKeyPress}
-            >
-              <img src="assets/icons/close.svg" alt="Fechar" />
-            </button>
-          </div>
-        )}
+        {successMessage && <Alert alertType="error" alertText="Teste de erro" />}
+        {errorMessage && <Alert alertType="error" alertText="Teste de erro" />}
       </div>
       <label
         htmlFor="email"

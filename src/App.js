@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import ForgetPassword from './pages/ForgetPassword'
 import RequireAuth from './context/requireAuth'
+import DiscentePerfil from './pages/Discente/Perfil'
 import {
   AdminDashboard,
   DiscenteDashboard,
@@ -20,8 +21,9 @@ export default function App() {
         <Route path="/esqueci-a-senha" element={<ForgetPassword />} />
 
         {/* Rotas de usuário discente */}
-        <Route element={<RequireAuth allowedRoles="STUDENT" />}>
+        <Route>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />
+          <Route path="discente/perfil" element={<DiscentePerfil />} />
         </Route>
 
         {/* Rotas de usuário docente */}

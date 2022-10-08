@@ -5,8 +5,8 @@ import RequireAuth from './context/requireAuth'
 import {
   AdminDashboard,
   DiscenteDashboard,
-  DiscenteLista,
   DocenteDashboard,
+  DocenteLista,
   Login,
   Page404
 } from './pages'
@@ -22,12 +22,12 @@ export default function App() {
         {/* Rotas de usuário discente */}
         <Route element={<RequireAuth allowedRoles="STUDENT" />}>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />
-          <Route path="discente/lista" element={<DiscenteLista />} />
         </Route>
 
         {/* Rotas de usuário docente */}
-        <Route element={<RequireAuth allowedRoles="TEACHER" />}>
+        <Route element={<RequireAuth allowedRoles="ADVISOR" />}>
           <Route path="docente/dashboard" element={<DocenteDashboard />} />
+          <Route path="docente/lista" element={<DocenteLista />} />
         </Route>
 
         {/* Rotas de usuário administrador */}

@@ -10,7 +10,6 @@ import {
   LOGIN_USER_ERROR,
   LOGOUT_USER,
   TOGGLE_SIDEBAR,
-  CLEAR_FILTERS,
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
@@ -111,31 +110,49 @@ function AppProvider({ children }) {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  const clearFilters = () => {
-    dispatch({ type: CLEAR_FILTERS })
-  }
-
-  const getStudents = async () => {
-    const { currentPage, search, searchStatus, searchType, sort } = state
-
-    let url = `v1/students/list/all?page=${currentPage}&status=${searchStatus}&course=${searchType}&sort=${sort}`
-    if (search) {
-      url += `&search=${search}`
-    }
+  const getStudents = async (defineType, name) => {
+    const { currentPage } = state
+    const url = `v1/students/list/all?page=${currentPage}`
     dispatch({ type: GET_STUDENTS_BEGIN })
+
     try {
       const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
       const { items, meta } = data
+      let studentList
+      let metaList
+      if (defineType === 'course') {
+        studentList = items.filter((item) => item.course === name)
+        metaList = {
+          totalItems: studentList.length,
+          itemCount: studentList.length,
+          itemsPerPage: studentList.length,
+          totalPages: 1,
+          currentPage: 1
+        }
+      } else if (defineType === 'scholarship_ends_at') {
+        studentList = items.filter((item) => item.scholarship.scholarship_ends_at === name)
+        metaList = {
+          totalItems: studentList.length,
+          itemCount: studentList.length,
+          itemsPerPage: studentList.length,
+          totalPages: 1,
+          currentPage: 1
+        }
+      } else {
+        studentList = items
+        metaList = meta
+      }
       dispatch({
         type: GET_STUDENTS_SUCCESS,
         payload: {
-          items,
-          meta
+          studentList,
+          metaList
         }
       })
     } catch (error) {
       dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
     }
+
     clearAlert()
   }
 
@@ -143,7 +160,7 @@ function AppProvider({ children }) {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, clearFilters, toggleSidebar, getStudents, changePage }}>{children}</AppContext.Provider>// eslint-disable-line
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

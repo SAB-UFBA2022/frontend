@@ -3,6 +3,7 @@ import { useAppContext } from '../../../context/appContext'
 import Sidebar from '../../../components/Sidebar/Docente'
 import Loading from '../../../components/Loading'
 import Paginacao from '../../../components/Paginacao'
+import Search from '../../../components/Search'
 
 export default function DiscenteLista() {
   const { getStudents, students, isLoading, totalItems, currentPage, totalPages } = useAppContext()
@@ -21,6 +22,7 @@ export default function DiscenteLista() {
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
       <section className="w-full p-6 py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
+        <Search />
         <div className="shadow-base w-full space-y-8 lg:w-10/12">
           {isLoading ? (
             <Loading />
@@ -34,7 +36,7 @@ export default function DiscenteLista() {
                   return (
                     <article
                       key={student.id}
-                      className="shadow-base h-[300px] w-full overflow-y-auto rounded-lg bg-white p-4 text-left font-inter text-base leading-7 text-gray-600"
+                      className="shadow-base  w-full overflow-y-auto rounded-lg bg-white p-4 text-left font-inter text-base leading-7 text-gray-600"
                     >
                       <div className="flex items-center gap-x-4 pb-2">
                         <div
@@ -84,6 +86,39 @@ export default function DiscenteLista() {
                         </div>
                         <p className="font-inter text-sm text-gray-800">
                           {formatDate(student.enrollment_date_pgcomp)}
+                        </p>
+                        <div className="flex items-center gap-x-2">
+                          <img src="/assets/icons/calendar.svg" alt="Calendar" className="w-5" />
+                          <p className="pr-1 font-inter text-sm font-semibold text-gray-800">
+                            Início da bolsa
+                          </p>
+                        </div>
+                        <p className="font-inter text-sm text-gray-800">
+                          {student.scholarship?.scholarship_starts_at
+                            ? formatDate(student.scholarship.scholarship_starts_at)
+                            : 'Não informado'}
+                        </p>
+                        <div className="flex items-center gap-x-2">
+                          <img src="/assets/icons/calendar.svg" alt="Calendar" className="w-5" />
+                          <p className="pr-1 font-inter text-sm font-semibold text-gray-800">
+                            Fim da bolsa
+                          </p>
+                        </div>
+                        <p className="font-inter text-sm text-gray-800">
+                          {student.scholarship?.scholarship_ends_at
+                            ? formatDate(student.scholarship.scholarship_ends_at)
+                            : 'Não informado'}
+                        </p>
+                        <div className="flex items-center gap-x-2">
+                          <img src="/assets/icons/calendar.svg" alt="Calendar" className="w-5" />
+                          <p className="pr-1 font-inter text-sm font-semibold text-gray-800">
+                            Previsão de defesa
+                          </p>
+                        </div>
+                        <p className="font-inter text-sm text-gray-800">
+                          {student.defense_prediction
+                            ? formatDate(student.defense_prediction)
+                            : 'Não informado'}
                         </p>
                         <div className="flex items-center gap-x-2">
                           <img src="/assets/icons/chain.svg" alt="Chain" className="w-5" />

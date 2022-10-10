@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, PasswordInput, Alert } from '..'
@@ -33,23 +33,8 @@ export default function CadastroForm() {
     }
     const dataUser = { name_id, tax_id, email_id, phone_id, password }
     preSaveUser(dataUser)
+    navigate('/complete-cadastro', { replace: true })
   }
-
-  useEffect(() => {
-    if (
-      !!initialState.name_id &&
-      !!initialState.tax_id &&
-      !!initialState.email_id &&
-      !!initialState.phone_id &&
-      !!initialState.password &&
-      !!initialState.confirm_password &&
-      initialState.password === initialState.confirm_password
-    ) {
-      setTimeout(() => {
-        navigate('/complete-cadastro', { replace: true })
-      }, 2000)
-    }
-  }, [initialState, navigate])
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full max-w-[395px] flex-col gap-y-2 font-inter">
@@ -87,7 +72,7 @@ export default function CadastroForm() {
         Contato
         <div className="flex flex-1">
           <FormInput
-            type="text"
+            type="email"
             id="email_id"
             name="email_id"
             value={values.email_id}

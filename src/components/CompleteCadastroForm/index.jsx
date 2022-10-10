@@ -16,7 +16,7 @@ const initialState = {
 export default function CompleteCadastroForm() {
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, tax_id, username, useremail, userphone, userpassword } =
+  const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword } =
     useAppContext()
 
   const handleChange = (e) => {
@@ -47,10 +47,10 @@ export default function CompleteCadastroForm() {
       !fim_id ||
       !defesa_id
     ) {
-      displayAlert()
+      return displayAlert()
     }
     const dataUser = {
-      tax_id,
+      tax_id: usertax_id,
       enrollment_number: matricula_id,
       name: username,
       email: useremail,
@@ -60,9 +60,11 @@ export default function CompleteCadastroForm() {
       enrollment_date_pgcomp: defesa_id,
       phone_number: userphone,
       password: userpassword,
-      role: 'studant'
+      role: 'STUDENT',
+      scholarship_starts_at: inicio_id,
+      scholarship_ends_at: fim_id
     }
-    saveUser(dataUser)
+    return saveUser(dataUser)
   }
 
   return (
@@ -104,7 +106,7 @@ export default function CompleteCadastroForm() {
           id="defesa_id"
           name="defesa_id"
           value={values.defesa_id}
-          placeholder="Selecione data de início"
+          placeholder="Selecione data da defesa"
           autoComplete="off"
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
@@ -117,7 +119,7 @@ export default function CompleteCadastroForm() {
           id="orientador_id"
           name="orientador_id"
           value={{
-            elements: ['teste']
+            elements: ['Fred Durão', 'Leobino']
           }}
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
@@ -126,12 +128,12 @@ export default function CompleteCadastroForm() {
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
-          label="Link currículo Lattes"
+          label="Url Lattes"
           type="text"
           id="curriculo_id"
           name="curriculo_id"
           value={values.curriculo_id}
-          placeholder="Link Lattes"
+          placeholder="Url Lattes"
           autoComplete="off"
           handleChange={handleChange}
           // pattern="(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
@@ -146,7 +148,7 @@ export default function CompleteCadastroForm() {
           id="agencia_id"
           name="agencia_id"
           value={{
-            elements: ['teste']
+            elements: ['CNPQ', 'Fapesb', 'Capes']
           }}
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800

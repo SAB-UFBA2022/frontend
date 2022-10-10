@@ -31,6 +31,7 @@ const username = localStorage.getItem('name')
 const useremail = localStorage.getItem('email')
 const userphone = localStorage.getItem('phone')
 const userpassword = localStorage.getItem('password')
+const usertax_id = localStorage.getItem('tax_id')
 
 const initialState = {
   isLoading: false,
@@ -57,7 +58,8 @@ const initialState = {
   username: username || '',
   useremail: useremail || '',
   userphone: userphone || '',
-  userpassword: userpassword || ''
+  userpassword: userpassword || '',
+  usertax_id: usertax_id || ''
 }
 
 const AppContext = React.createContext()
@@ -143,7 +145,10 @@ function AppProvider({ children }) {
   const saveUser = async (dataUser) => {
     dispatch({ type: SAVE_USER_BEGIN })
     try {
-      const { data } = await axios.post(process.env.CADASTRO_URL, dataUser)
+      const { data } = await axios.post(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students`,
+        dataUser
+      )
       const {
         id,
         tax_id,
@@ -183,7 +188,7 @@ function AppProvider({ children }) {
       if (!error?.response) {
         dispatch({ type: SAVE_USER_ERROR, payload: 'Sem resposta do servidor' })
       } else if (error?.response?.status === 400) {
-        dispatch({ type: SAVE_USER_ERROR, payload: 'Credenciais inválidas!' })
+        dispatch({ type: SAVE_USER_ERROR, payload: error?.response })
       } else if (error?.response?.status === 401) {
         dispatch({ type: SAVE_USER_ERROR, payload: 'Cadastro não autorizado' })
       } else {

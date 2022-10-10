@@ -78,14 +78,11 @@ const reducer = (state, action) => {
     }
   }
   if (action.type === FORGET_PASSWORD_SUCCESS) {
-    const { tax_id, access_token, role } = action.payload
+    // const { tax_id, access_token, role } = action.payload
     toast.success('Email enviado com sucesso.')
     return {
       ...state,
-      isLoading: false,
-      user: tax_id,
-      userRole: role,
-      token: access_token
+      isLoading: false
     }
   }
   throw new Error(`Não existe ação : ${action.type}`)

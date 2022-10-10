@@ -132,10 +132,10 @@ function AppProvider({ children }) {
             break
           case 'scholarship':
             studentList = data.sort((a, b) => {
-              if (name === 'Mais recente') {
+              if (name === 'Bolsas recentes') {
                 return a.scholarship.scholarship_starts_at > b.scholarship.scholarship_starts_at
               }
-              if (name === 'Mais antigo') {
+              if (name === 'Bolsas próximas de encerrar') {
                 return a.scholarship.scholarship_ends_at > b.scholarship.scholarship_ends_at
               }
               return 0

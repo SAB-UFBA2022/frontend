@@ -43,7 +43,7 @@ const initialState = {
   courseType: '',
   courseOptions: ['Mestrado', 'Doutorado'],
   scholarshipDate: '',
-  scholarshipOptions: ['Mais recente', 'Mais antigo'],
+  scholarshipOptions: ['Bolsas recentes', 'Bolsas próximas de encerrar'],
   sort: '',
   sortOptions: ['A-Z', 'Z-A'],
   selectedItem: ''

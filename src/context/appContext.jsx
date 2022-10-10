@@ -114,6 +114,51 @@ function AppProvider({ children }) {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
+  const filterItems = async (defineType, name) => {
+    const { data } = await axios.get(
+      `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+    )
+    let studentList
+    switch (defineType) {
+      case 'course':
+        studentList = data.filter((student) => student.course === name)
+        break
+      case 'scholarship':
+        if (name === 'Bolsas recentes') {
+          studentList = data.sort((a, b) => {
+            return (
+              new Date(b.scholarship.scholarship_starts_at) -
+              new Date(a.scholarship.scholarship_starts_at)
+            )
+          })
+        }
+        if (name === 'Bolsas próximas de encerrar') {
+          studentList = data.sort((a, b) => {
+            return (
+              new Date(a.scholarship.scholarship_ends_at) -
+              new Date(b.scholarship.scholarship_ends_at)
+            )
+          })
+        }
+        break
+      case 'sort':
+        if (name === 'A-Z') {
+          studentList = data.sort((a, b) => {
+            return a.name.localeCompare(b.name)
+          })
+        }
+        if (name === 'Z-A') {
+          studentList = data.sort((a, b) => {
+            return b.name.localeCompare(a.name)
+          })
+        }
+        break
+      default:
+        break
+    }
+    return studentList
+  }
+
   const getStudents = async (defineType, name) => {
     const { currentPage } = state
     const url = `v1/students/list/all?page=${currentPage}`
@@ -123,46 +168,7 @@ function AppProvider({ children }) {
       let studentList
       let metaList
       if (defineType !== 'all' && name !== '-') {
-        const { data } = await axios.get(
-          `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
-        )
-        switch (defineType) {
-          case 'course':
-            studentList = data.filter((student) => student.course === name)
-            break
-          case 'scholarship':
-            if (name === 'Bolsas recentes') {
-              studentList = data.sort((a, b) => {
-                return (
-                  new Date(b.scholarship.scholarship_starts_at) -
-                  new Date(a.scholarship.scholarship_starts_at)
-                )
-              })
-            }
-            if (name === 'Bolsas próximas de encerrar') {
-              studentList = data.sort((a, b) => {
-                return (
-                  new Date(a.scholarship.scholarship_ends_at) -
-                  new Date(b.scholarship.scholarship_ends_at)
-                )
-              })
-            }
-            break
-          case 'sort':
-            if (name === 'A-Z') {
-              studentList = data.sort((a, b) => {
-                return a.name.localeCompare(b.name)
-              })
-            }
-            if (name === 'Z-A') {
-              studentList = data.sort((a, b) => {
-                return b.name.localeCompare(a.name)
-              })
-            }
-            break
-          default:
-            break
-        }
+        studentList = await filterItems(defineType, name)
         metaList = {
           totalItems: studentList.length,
           itemCount: studentList.length,

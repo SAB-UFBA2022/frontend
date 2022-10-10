@@ -163,7 +163,6 @@ function AppProvider({ children }) {
     const { currentPage } = state
     const url = `v1/students/list/all?page=${currentPage}`
     dispatch({ type: GET_STUDENTS_BEGIN })
-
     try {
       let studentList
       let metaList

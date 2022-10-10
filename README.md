@@ -64,10 +64,10 @@ $ node -v
 $ yarn -v
 
 # Clone este repositório na sua máquina:
-$ git clone https://github.com/boliveira12/MATE85-Acompanhamento-Bolsistas.git
+$ git clone https://github.com/SAB-UFBA2022/frontend.git
 
 # Abra a pasta do projeto
-$ cd /MATE85-Acompanhamento-Bolsistas/frontend
+$ cd /frontend
 
 # Execute o yarn install para instalar as dependências
 $ yarn install

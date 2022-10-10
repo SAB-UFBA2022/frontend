@@ -76,7 +76,7 @@ export default function DiscenteLista() {
                       key={student.id}
                       className="shadow-base  w-full overflow-y-auto rounded-lg bg-white p-4 text-left font-inter text-base leading-7 text-gray-600"
                     >
-                      <div className="flex items-center gap-x-4 pb-2">
+                      <div className="relative flex w-full items-center gap-x-4 pb-2">
                         <div
                           className={`${
                             student.id % 2 === 0 ? 'bg-blue-100' : 'bg-red-100'
@@ -90,6 +90,11 @@ export default function DiscenteLista() {
                           </h2>
                           <p className="font-inter">{student.course}</p>
                         </div>
+                        {!student.scholarship.active && (
+                          <p className="absolute right-4 hidden rounded-md bg-red-100 px-3 py-1 text-sm font-medium text-red-700 sm:block">
+                            Bolsa expirada
+                          </p>
+                        )}
                       </div>
                       <hr />
                       <div className="grid w-full grid-cols-2 content-between gap-y-4 pt-4">

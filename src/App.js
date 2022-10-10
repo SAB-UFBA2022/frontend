@@ -9,7 +9,8 @@ import {
   DocenteDashboard,
   DocenteLista,
   Login,
-  Page404
+  Page404,
+  DiscenteEditarPerfil
 } from './pages'
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
         <Route>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />
           <Route path="discente/perfil" element={<DiscentePerfil />} />
+          <Route path="discente/perfil/editar" element={<DiscenteEditarPerfil />} />
         </Route>
 
         {/* Rotas de usuário docente */}

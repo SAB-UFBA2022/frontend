@@ -1,7 +1,8 @@
-export default function Button({ children, type, icon, color, loading, disabled }) {
+export default function Button({ children, type, icon, color, loading, disabled, onClick }) {
   return (
     <button
       type={type === 'submit' ? 'submit' : 'button'}
+      onClick={onClick}
       disabled={disabled || loading}
       className={`${
         color === 'green' ? `bg-green-500 hover:bg-green-800` : 'bg-blue-500 hover:bg-blue-800'

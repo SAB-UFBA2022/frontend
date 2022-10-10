@@ -3,7 +3,15 @@ import DatePicker from 'react-datepicker'
 import ptBR from 'date-fns/locale/pt-BR'
 import 'react-datepicker/dist/react-datepicker.css'
 
-export default function DateInput({ label, name, placeholder, patternErro, pattern, className }) {
+export default function DateInput({
+  label,
+  name,
+  placeholder,
+  patternErro,
+  pattern,
+  className,
+  disabled
+}) {
   const [startDate, setStartDate] = useState(new Date())
   return (
     <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
@@ -21,9 +29,11 @@ export default function DateInput({ label, name, placeholder, patternErro, patte
           onChange={setStartDate}
           pattern={pattern}
           title={pattern ? patternErro : ''}
+          disabled={disabled}
           className={
             `placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500` +
-            ` ${className}`
+            ` ${className}
+            ${disabled ? ' bg-gray-200' : ''}`
           }
         />
         <img

@@ -131,26 +131,34 @@ function AppProvider({ children }) {
             studentList = data.filter((student) => student.course === name)
             break
           case 'scholarship':
-            studentList = data.sort((a, b) => {
-              if (name === 'Bolsas recentes') {
-                return a.scholarship.scholarship_starts_at > b.scholarship.scholarship_starts_at
-              }
-              if (name === 'Bolsas próximas de encerrar') {
-                return a.scholarship.scholarship_ends_at > b.scholarship.scholarship_ends_at
-              }
-              return 0
-            })
+            if (name === 'Bolsas recentes') {
+              studentList = data.sort((a, b) => {
+                return (
+                  new Date(b.scholarship.scholarship_starts_at) -
+                  new Date(a.scholarship.scholarship_starts_at)
+                )
+              })
+            }
+            if (name === 'Bolsas próximas de encerrar') {
+              studentList = data.sort((a, b) => {
+                return (
+                  new Date(a.scholarship.scholarship_ends_at) -
+                  new Date(b.scholarship.scholarship_ends_at)
+                )
+              })
+            }
             break
           case 'sort':
-            studentList = data.sort((a, b) => {
-              if (name === 'A-Z') {
-                return a.name > b.name
-              }
-              if (name === 'Z-A') {
-                return a.name < b.name
-              }
-              return 0
-            })
+            if (name === 'A-Z') {
+              studentList = data.sort((a, b) => {
+                return a.name.localeCompare(b.name)
+              })
+            }
+            if (name === 'Z-A') {
+              studentList = data.sort((a, b) => {
+                return b.name.localeCompare(a.name)
+              })
+            }
             break
           default:
             break

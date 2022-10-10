@@ -10,11 +10,11 @@ import {
   LOGIN_USER_ERROR,
   LOGOUT_USER,
   TOGGLE_SIDEBAR,
-  CLEAR_FILTERS,
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
-  CHANGE_PAGE
+  CHANGE_PAGE,
+  HANDLE_CHANGE
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -39,11 +39,14 @@ const initialState = {
   currentPage: 1,
   itemsPerPage: 0,
   itemCount: 0,
-  search: '',
-  searchStatus: 'Todos',
-  searchType: 'Todos',
-  sort: 'Mais recente',
-  sortOptions: ['Mais recente', 'Mais antigo', 'a-z', 'z-a']
+  allItems: 'Todos',
+  courseType: '',
+  courseOptions: ['Mestrado', 'Doutorado'],
+  scholarshipDate: '',
+  scholarshipOptions: ['Bolsas recentes', 'Bolsas próximas de encerrar'],
+  sort: '',
+  sortOptions: ['A-Z', 'Z-A'],
+  selectedItem: ''
 }
 
 const AppContext = React.createContext()
@@ -111,31 +114,79 @@ function AppProvider({ children }) {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  const clearFilters = () => {
-    dispatch({ type: CLEAR_FILTERS })
-  }
-
-  const getStudents = async () => {
-    const { currentPage, search, searchStatus, searchType, sort } = state
-
-    let url = `v1/students/list/all?page=${currentPage}&status=${searchStatus}&course=${searchType}&sort=${sort}`
-    if (search) {
-      url += `&search=${search}`
-    }
+  const getStudents = async (defineType, name) => {
+    const { currentPage } = state
+    const url = `v1/students/list/all?page=${currentPage}`
     dispatch({ type: GET_STUDENTS_BEGIN })
+
     try {
-      const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
-      const { items, meta } = data
+      let studentList
+      let metaList
+      if (defineType !== 'all' && name !== '-') {
+        const { data } = await axios.get(
+          `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        )
+        switch (defineType) {
+          case 'course':
+            studentList = data.filter((student) => student.course === name)
+            break
+          case 'scholarship':
+            if (name === 'Bolsas recentes') {
+              studentList = data.sort((a, b) => {
+                return (
+                  new Date(b.scholarship.scholarship_starts_at) -
+                  new Date(a.scholarship.scholarship_starts_at)
+                )
+              })
+            }
+            if (name === 'Bolsas próximas de encerrar') {
+              studentList = data.sort((a, b) => {
+                return (
+                  new Date(a.scholarship.scholarship_ends_at) -
+                  new Date(b.scholarship.scholarship_ends_at)
+                )
+              })
+            }
+            break
+          case 'sort':
+            if (name === 'A-Z') {
+              studentList = data.sort((a, b) => {
+                return a.name.localeCompare(b.name)
+              })
+            }
+            if (name === 'Z-A') {
+              studentList = data.sort((a, b) => {
+                return b.name.localeCompare(a.name)
+              })
+            }
+            break
+          default:
+            break
+        }
+        metaList = {
+          totalItems: studentList.length,
+          itemCount: studentList.length,
+          itemsPerPage: studentList.length,
+          totalPages: 1,
+          currentPage: 1
+        }
+      } else {
+        const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
+        const { items, meta } = data
+        studentList = items
+        metaList = meta
+      }
       dispatch({
         type: GET_STUDENTS_SUCCESS,
         payload: {
-          items,
-          meta
+          studentList,
+          metaList
         }
       })
     } catch (error) {
       dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
     }
+
     clearAlert()
   }
 
@@ -143,7 +194,11 @@ function AppProvider({ children }) {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, clearFilters, toggleSidebar, getStudents, changePage }}>{children}</AppContext.Provider>// eslint-disable-line
+  const handleChange = ({ name, value, id }) => {
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
+  }
+
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage, handleChange }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

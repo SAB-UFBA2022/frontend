@@ -42,6 +42,19 @@ export default function DiscenteLista() {
     return newDate.toLocaleDateString('pt-BR')
   }
 
+  const formatType = (type) => {
+    if (type === 'course' && courseType !== '-') {
+      return courseType
+    }
+    if (type === 'scholarship' && scholarshipDate !== '-') {
+      return scholarshipDate
+    }
+    if (type === 'sort' && sort !== '-') {
+      return sort
+    }
+    return 'Todos'
+  }
+
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
@@ -53,7 +66,8 @@ export default function DiscenteLista() {
           ) : (
             <>
               <h3 className="font-poppins text-lg font-medium text-gray-800">
-                {totalItems} Estudante{students.length > 1 && 's'} encontrados
+                {totalItems} Resultado{students.length > 1 && 's'} encontrado
+                {students.length > 1 && 's'}: {formatType(selectedItem)}{' '}
               </h3>
               <div className="grid gap-4 xl:grid-cols-2">
                 {students.map((student) => {
@@ -149,6 +163,7 @@ export default function DiscenteLista() {
                           <a
                             href={`https://${student.link_lattes}`}
                             className="font-inter text-sm font-semibold text-blue-500"
+                            target="blank"
                           >
                             Lattes
                           </a>

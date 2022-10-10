@@ -3,15 +3,39 @@ import { useAppContext } from '../../../context/appContext'
 import Sidebar from '../../../components/Sidebar/Docente'
 import Loading from '../../../components/Loading'
 import Paginacao from '../../../components/Paginacao'
-import Search from '../../../components/Search'
+import Filter from '../../../components/Filter'
 
 export default function DiscenteLista() {
-  const { getStudents, students, isLoading, totalItems, currentPage, totalPages } = useAppContext()
+  const {
+    getStudents,
+    students,
+    isLoading,
+    totalItems,
+    currentPage,
+    totalPages,
+    allItems,
+    courseType,
+    scholarshipDate,
+    sort,
+    selectedItem
+  } = useAppContext()
 
   useEffect(() => {
-    getStudents()
+    switch (selectedItem) {
+      case 'course':
+        getStudents(selectedItem, courseType)
+        break
+      case 'scholarship':
+        getStudents(selectedItem, scholarshipDate)
+        break
+      case 'sort':
+        getStudents(selectedItem, sort)
+        break
+      default:
+        getStudents('all', '-')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, allItems, courseType, scholarshipDate, sort])
 
   const formatDate = (date) => {
     const newDate = new Date(date)
@@ -21,9 +45,9 @@ export default function DiscenteLista() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
-      <section className="w-full p-6 py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
-        <Search />
-        <div className="shadow-base w-full space-y-8 lg:w-10/12">
+      <section className="w-full py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
+        <Filter />
+        <div className="shadow-base mb-6 w-full space-y-8 lg:w-10/12">
           {isLoading ? (
             <Loading />
           ) : (

@@ -10,7 +10,8 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
-  CHANGE_PAGE
+  CHANGE_PAGE,
+  HANDLE_CHANGE
 } from './actions'
 
 import { initialState } from './appContext' // eslint-disable-line
@@ -94,6 +95,14 @@ const reducer = (state, action) => {
   }
   if (action.type === CHANGE_PAGE) {
     return { ...state, currentPage: action.payload.page }
+  }
+  if (action.type === HANDLE_CHANGE) {
+    return {
+      ...state,
+      currentPage: 1,
+      [action.payload.name]: action.payload.value,
+      selectedItem: action.payload.id
+    }
   }
   throw new Error(`Não existe ação : ${action.type}`)
 }

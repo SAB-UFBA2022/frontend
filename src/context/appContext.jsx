@@ -13,7 +13,8 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
-  CHANGE_PAGE
+  CHANGE_PAGE,
+  HANDLE_CHANGE
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -38,11 +39,14 @@ const initialState = {
   currentPage: 1,
   itemsPerPage: 0,
   itemCount: 0,
-  search: '',
-  searchStatus: 'Todos',
-  searchType: 'Todos',
-  sort: 'Mais recente',
-  sortOptions: ['Mais recente', 'Mais antigo', 'a-z', 'z-a']
+  allItems: 'Todos',
+  courseType: '',
+  courseOptions: ['Mestrado', 'Doutorado'],
+  scholarshipDate: '',
+  scholarshipOptions: ['Mais recente', 'Mais antigo'],
+  sort: '',
+  sortOptions: ['A-Z', 'Z-A'],
+  selectedItem: ''
 }
 
 const AppContext = React.createContext()
@@ -116,21 +120,41 @@ function AppProvider({ children }) {
     dispatch({ type: GET_STUDENTS_BEGIN })
 
     try {
-      const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
-      const { items, meta } = data
       let studentList
       let metaList
-      if (defineType === 'course') {
-        studentList = items.filter((item) => item.course === name)
-        metaList = {
-          totalItems: studentList.length,
-          itemCount: studentList.length,
-          itemsPerPage: studentList.length,
-          totalPages: 1,
-          currentPage: 1
+      if (defineType !== 'all' && name !== '-') {
+        const { data } = await axios.get(
+          `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        )
+        switch (defineType) {
+          case 'course':
+            studentList = data.filter((student) => student.course === name)
+            break
+          case 'scholarship':
+            studentList = data.sort((a, b) => {
+              if (name === 'Mais recente') {
+                return a.scholarship.scholarship_starts_at > b.scholarship.scholarship_starts_at
+              }
+              if (name === 'Mais antigo') {
+                return a.scholarship.scholarship_ends_at > b.scholarship.scholarship_ends_at
+              }
+              return 0
+            })
+            break
+          case 'sort':
+            studentList = data.sort((a, b) => {
+              if (name === 'A-Z') {
+                return a.name > b.name
+              }
+              if (name === 'Z-A') {
+                return a.name < b.name
+              }
+              return 0
+            })
+            break
+          default:
+            break
         }
-      } else if (defineType === 'scholarship_ends_at') {
-        studentList = items.filter((item) => item.scholarship.scholarship_ends_at === name)
         metaList = {
           totalItems: studentList.length,
           itemCount: studentList.length,
@@ -139,6 +163,8 @@ function AppProvider({ children }) {
           currentPage: 1
         }
       } else {
+        const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
+        const { items, meta } = data
         studentList = items
         metaList = meta
       }
@@ -160,7 +186,11 @@ function AppProvider({ children }) {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage }}>{children}</AppContext.Provider>// eslint-disable-line
+  const handleChange = ({ name, value, id }) => {
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
+  }
+
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage, handleChange }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

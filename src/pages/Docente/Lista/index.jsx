@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 import Filter from '../../../components/Filter'
 import Paginacao from '../../../components/Paginacao'
 import Loading from '../../../components/Loading'
@@ -58,33 +58,22 @@ export default function DiscenteLista() {
   }
 
   const columns = [
-    { field: 'Nome', headerName: 'Nome', width: 70 },
-    { field: 'Telefone', headerName: 'Telefone', width: 90 },
-    { field: 'Matrícula', headerName: 'Matrícula', width: 100 },
-    { field: 'Data de matrícula PGCOMP', headerName: 'Data de matrícula PGCOMP', width: 160 },
+    { field: 'name', headerName: 'Nome', width: 70 },
+    { field: 'phone_number', headerName: 'Telefone', width: 90 },
+    { field: 'enrollment_number', headerName: 'Matrícula', width: 100 },
+    { field: 'enrollment_date_pgcomp', headerName: 'Data de matrícula PGCOMP', width: 160 },
     {
-      field: 'Início da Bolsa',
+      field: 'scholarship_starts_at',
       headerName: 'Início da Bolsa',
       sortable: false,
-      width: 120
+      width: 120,
+      renderCell: (params) => formatDate(params.row.scholarship.scholarship_starts_at)
       // valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}`
     },
-    { field: 'Fim da Bolsa', headerName: 'Fim da Bolsa', width: 120 },
     { field: 'Previsão de defesa', headerName: 'Previsão de defesa', width: 120 }
   ]
 
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
-  ]
-
+  console.log(students)
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
@@ -97,11 +86,12 @@ export default function DiscenteLista() {
             <>
               <div style={{ height: 400, width: '100%' }}>
                 <DataGrid
-                  rows={rows}
+                  rows={students}
                   columns={columns}
                   pageSize={5}
                   rowsPerPageOptions={[5]}
-                  checkboxSelection
+                  disableColumnMenu
+                  GridCellParams={students.scholarship}
                 />
               </div>
               <h3 className="font-poppins text-lg font-medium text-gray-800">

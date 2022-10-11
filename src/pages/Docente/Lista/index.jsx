@@ -58,19 +58,33 @@ export default function DiscenteLista() {
   }
 
   const columns = [
-    { field: 'name', headerName: 'Nome', width: 70 },
-    { field: 'phone_number', headerName: 'Telefone', width: 90 },
-    { field: 'enrollment_number', headerName: 'Matrícula', width: 100 },
-    { field: 'enrollment_date_pgcomp', headerName: 'Data de matrícula PGCOMP', width: 160 },
+    { field: 'name', headerName: 'Nome', width: 190 },
+    { field: 'phone_number', headerName: 'Telefone', width: 150 },
+    { field: 'enrollment_number', headerName: 'Matrícula', width: 120 },
+    {
+      field: 'enrollment_date_pgcomp',
+      headerName: 'Data de matrícula PGCOMP',
+      width: 220,
+      renderCell: (params) => formatDate(params.row.enrollment_date_pgcomp)
+    },
     {
       field: 'scholarship_starts_at',
       headerName: 'Início da Bolsa',
-      sortable: false,
       width: 120,
       renderCell: (params) => formatDate(params.row.scholarship.scholarship_starts_at)
-      // valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}`
     },
-    { field: 'Previsão de defesa', headerName: 'Previsão de defesa', width: 120 }
+    {
+      field: 'scholarship_ends_at',
+      headerName: 'Fim da Bolsa',
+      width: 120,
+      renderCell: (params) => formatDate(params.row.scholarship.scholarship_ends_at)
+    },
+    {
+      field: 'defense_prediction',
+      headerName: 'Previsão de defesa',
+      width: 160,
+      renderCell: (params) => formatDate(params.row.defense_prediction)
+    }
   ]
 
   console.log(students)

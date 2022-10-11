@@ -59,22 +59,18 @@ export default function DiscenteLista() {
 
   const columns = [
     { field: 'Nome', headerName: 'Nome', width: 70 },
-    { field: 'Telefone', headerName: 'Telefone', width: 130 },
-    { field: 'lastName', headerName: 'Matrícula', width: 130 },
+    { field: 'Telefone', headerName: 'Telefone', width: 90 },
+    { field: 'Matrícula', headerName: 'Matrícula', width: 100 },
+    { field: 'Data de matrícula PGCOMP', headerName: 'Data de matrícula PGCOMP', width: 160 },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 90
-    },
-    {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
+      field: 'Início da Bolsa',
+      headerName: 'Início da Bolsa',
       sortable: false,
-      width: 160,
-      valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}`
-    }
+      width: 120
+      // valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}`
+    },
+    { field: 'Fim da Bolsa', headerName: 'Fim da Bolsa', width: 120 },
+    { field: 'Previsão de defesa', headerName: 'Previsão de defesa', width: 120 }
   ]
 
   const rows = [

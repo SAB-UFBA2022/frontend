@@ -62,10 +62,6 @@ export default function DiscenteLista() {
     return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
   }
 
-  const handleChangeViewTable = () => {
-    setViewList(!viewList)
-  }
-
   const columns = [
     { field: 'name', headerName: 'Nome Completo', width: 190 },
     { field: 'course', headerName: 'Curso', width: 100 },

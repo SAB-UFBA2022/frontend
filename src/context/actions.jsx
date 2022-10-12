@@ -19,4 +19,3 @@ export const GET_STUDENTS_ERROR = 'GET_STUDENTS_ERROR'
 
 export const CHANGE_PAGE = 'CHANGE_PAGE'
 export const HANDLE_CHANGE = 'HANDLE_CHANGE'
-

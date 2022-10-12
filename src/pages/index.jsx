@@ -9,7 +9,6 @@ import ForgetPassword from './ForgetPassword'
 export {
   AdminDashboard,
   DiscenteDashboard,
-  DiscenteLista,
   DocenteLista,
   DocenteDashboard,
   Login,

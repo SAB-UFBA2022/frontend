@@ -116,6 +116,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false
+    }
   }
 
   if (action.type === CHANGE_PAGE) {

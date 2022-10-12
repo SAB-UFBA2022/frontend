@@ -11,7 +11,7 @@ import {
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
   CHANGE_PAGE,
-  CLEAR_FILTERS
+  HANDLE_CHANGE
 } from './actions'
 
 import { initialState } from './appContext' // eslint-disable-line
@@ -78,12 +78,12 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      students: action.payload.items,
-      totalItems: action.payload.meta.totalItems,
-      totalPages: action.payload.meta.totalPages,
-      currentPage: action.payload.meta.currentPage,
-      itemsPerPage: action.payload.meta.itemsPerPage,
-      itemCount: action.payload.meta.itemCount
+      students: action.payload.studentList,
+      totalItems: action.payload.metaList.totalItems,
+      totalPages: action.payload.metaList.totalPages,
+      currentPage: action.payload.metaList.currentPage,
+      itemsPerPage: action.payload.metaList.itemsPerPage,
+      itemCount: action.payload.metaList.itemCount
     }
   }
   if (action.type === GET_STUDENTS_ERROR) {
@@ -96,13 +96,12 @@ const reducer = (state, action) => {
   if (action.type === CHANGE_PAGE) {
     return { ...state, currentPage: action.payload.page }
   }
-  if (action.type === CLEAR_FILTERS) {
+  if (action.type === HANDLE_CHANGE) {
     return {
       ...state,
-      search: '',
-      searchStatus: 'Todos',
-      searchType: 'Todos',
-      sort: 'Mais recente'
+      currentPage: 1,
+      [action.payload.name]: action.payload.value,
+      selectedItem: action.payload.id
     }
   }
   throw new Error(`Não existe ação : ${action.type}`)

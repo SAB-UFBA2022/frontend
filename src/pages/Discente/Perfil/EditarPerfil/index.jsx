@@ -18,14 +18,14 @@ export default function DiscenteEditarPerfil() {
           <Dropdown label="Curso" />
           <Dropdown label="Orientador" />
           <FormInput label="Link curriculo Lattes" />
-          <DateInput label="Inicio da bolsa" />
-          <DateInput label="Fim da bolsa" />
-          <Dropdown label="Agência" />
+          <DateInput disabled label="Inicio da bolsa" />
+          <DateInput disabled label="Fim da bolsa" />
+          <Dropdown disabled label="Agência" />
           <PasswordInput label="Senha" />
           <PasswordInput label="Confirmar senha" />
         </div>
         <div className="flex justify-center">
-          <Link to="/discente/perfil" className=" w-80">
+          <Link to="/discente/profile" className=" w-80">
             <Button color="green">Salvar</Button>
           </Link>
         </div>

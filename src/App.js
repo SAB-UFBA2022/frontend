@@ -19,13 +19,13 @@ export default function App() {
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
-        <Route path="/esqueci-a-senha" element={<ForgetPassword />} />
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
 
         {/* Rotas de usuário discente */}
-        <Route>
+        <Route element={<RequireAuth allowedRoles="STUDENT" />}>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />
-          <Route path="discente/perfil" element={<DiscentePerfil />} />
-          <Route path="discente/perfil/editar" element={<DiscenteEditarPerfil />} />
+          <Route path="discente/profile" element={<DiscentePerfil />} />
+          <Route path="discente/profile/edit" element={<DiscenteEditarPerfil />} />
         </Route>
 
         {/* Rotas de usuário docente */}

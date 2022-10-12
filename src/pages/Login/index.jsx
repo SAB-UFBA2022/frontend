@@ -64,7 +64,6 @@ export default function Login() {
           <FormInput
             label="CPF"
             type="text"
-            id="tax_id"
             name="tax_id"
             value={values.tax_id}
             placeholder="Insira seu CPF"
@@ -74,7 +73,6 @@ export default function Login() {
           />
           <PasswordInput
             label="Senha"
-            id="password"
             name="password"
             value={values.password}
             placeholder="Digite sua senha"

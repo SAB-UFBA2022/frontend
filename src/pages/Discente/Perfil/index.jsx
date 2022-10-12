@@ -23,7 +23,7 @@ export default function DiscentePerfil() {
           <Dropdown disabled label="Agência" />
         </div>
         <div className="flex justify-center">
-          <Link to="editar" className=" w-80">
+          <Link to="edit" className=" w-80">
             <Button>Editar Perfil</Button>
           </Link>
         </div>

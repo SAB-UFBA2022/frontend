@@ -4,6 +4,7 @@ export default function Dropdown({
   value,
   handleChange,
   list = [],
+  id,
   className,
   disabled
 }) {
@@ -13,6 +14,7 @@ export default function Dropdown({
         {label}
       </label>
       <select
+        id={id}
         name={name}
         value={value}
         onChange={handleChange}

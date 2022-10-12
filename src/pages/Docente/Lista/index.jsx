@@ -13,9 +13,7 @@ export default function DiscenteLista() {
     getStudents,
     students,
     isLoading,
-    totalItems,
     currentPage,
-    totalPages,
     allItems,
     courseType,
     scholarshipDate,
@@ -99,15 +97,12 @@ export default function DiscenteLista() {
     {
       field: 'defense_prediction',
       headerName: 'Previsão de defesa',
-      width: 160,
+      width: 150,
       renderCell: (params) => formatDate(params.row.defense_prediction)
     },
     { field: 'link_lattes', headerName: 'Lattes', width: 100 }
   ]
 
-  // eslint-disable-next-line no-console
-  console.log(students)
-  console.log('7181703123'.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'))
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
@@ -117,7 +112,7 @@ export default function DiscenteLista() {
           {isLoading ? (
             <Loading />
           ) : (
-            <div style={{ height: 700, width: '100%' }}>
+            <div style={{ height: 650, width: '100%' }}>
               <DataGrid
                 hideFooterPagination
                 rows={students}

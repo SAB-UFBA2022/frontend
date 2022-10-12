@@ -83,7 +83,7 @@ export default function DiscenteLista() {
           {isLoading ? (
             <Loading />
           ) : (
-            <div style={{ height: '85vh', width: '100%', backgroundColor: 'white' }}>
+            <div style={{ height: '77vh', width: '100%', backgroundColor: 'white' }}>
               <DataGrid
                 hideFooterPagination
                 rows={students}
@@ -94,6 +94,7 @@ export default function DiscenteLista() {
                 GridCellParams={students.scholarship}
                 isRowSelectable={() => false}
                 rowHeight={60}
+                hideFooter
               />
             </div>
           )}

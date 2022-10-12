@@ -2,7 +2,7 @@
 import { useEffect } from 'react'
 import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 
-import Filter from '../../../components/Filter'
+import { formatDate, formatPhone } from '../../../utils/formatters'
 import Paginacao from '../../../components/Paginacao'
 import Loading from '../../../components/Loading'
 import Sidebar from '../../../components/Sidebar/Docente'
@@ -37,28 +37,6 @@ export default function DiscenteLista() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, allItems, courseType, scholarshipDate, sort])
-
-  const formatDate = (date) => {
-    const newDate = new Date(date)
-    return newDate.toLocaleDateString('pt-BR')
-  }
-
-  const formatType = (type) => {
-    if (type === 'course' && courseType !== '-') {
-      return courseType
-    }
-    if (type === 'scholarship' && scholarshipDate !== '-') {
-      return scholarshipDate
-    }
-    if (type === 'sort' && sort !== '-') {
-      return sort
-    }
-    return 'Todos'
-  }
-
-  const formatPhone = (phone) => {
-    return phone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3')
-  }
 
   const columns = [
     { field: 'name', headerName: 'Nome Completo', width: 190 },
@@ -105,7 +83,7 @@ export default function DiscenteLista() {
           {isLoading ? (
             <Loading />
           ) : (
-            <div style={{ height: 650, width: '100%', backgroundColor: 'white' }}>
+            <div style={{ height: '85vh', width: '100%', backgroundColor: 'white' }}>
               <DataGrid
                 hideFooterPagination
                 rows={students}
@@ -114,7 +92,8 @@ export default function DiscenteLista() {
                 rowsPerPageOptions={[10]}
                 disableColumnMenu
                 GridCellParams={students.scholarship}
-                isRowSelectable={(params) => false}
+                isRowSelectable={() => false}
+                rowHeight={60}
               />
             </div>
           )}

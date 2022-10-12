@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 
 import Filter from '../../../components/Filter'
@@ -20,8 +20,6 @@ export default function DiscenteLista() {
     sort,
     selectedItem
   } = useAppContext()
-
-  const [viewList, setViewList] = useState(false)
 
   useEffect(() => {
     switch (selectedItem) {
@@ -103,12 +101,11 @@ export default function DiscenteLista() {
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
       <section className="w-full py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
-        <Filter />
         <div className="shadow-base mb-6 w-full space-y-8 lg:w-10/12">
           {isLoading ? (
             <Loading />
           ) : (
-            <div style={{ height: 650, width: '100%' }}>
+            <div style={{ height: 650, width: '100%', backgroundColor: 'white' }}>
               <DataGrid
                 hideFooterPagination
                 rows={students}
@@ -117,6 +114,7 @@ export default function DiscenteLista() {
                 rowsPerPageOptions={[10]}
                 disableColumnMenu
                 GridCellParams={students.scholarship}
+                isRowSelectable={(params) => false}
               />
             </div>
           )}

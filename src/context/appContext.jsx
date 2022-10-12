@@ -12,7 +12,13 @@ import {
   LOGOUT_USER,
   FORGET_PASSWORD_BEGIN,
   FORGET_PASSWORD_SUCCESS,
-  FORGET_PASSWORD_ERROR
+  FORGET_PASSWORD_ERROR,
+  TOGGLE_SIDEBAR,
+  GET_STUDENTS_BEGIN,
+  GET_STUDENTS_SUCCESS,
+  GET_STUDENTS_ERROR,
+  CHANGE_PAGE,
+  HANDLE_CHANGE
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -26,10 +32,25 @@ const initialState = {
   showToast: false,
   alertType: '',
   alertText: '',
+  expandSidebar: false,
   user: user || null,
   token: token || '',
   userRole: roles || '',
-  name: username || ''
+  name: username || '',
+  students: [],
+  totalItems: 0,
+  totalPages: 1,
+  currentPage: 1,
+  itemsPerPage: 0,
+  itemCount: 0,
+  allItems: 'Todos',
+  courseType: '',
+  courseOptions: ['Mestrado', 'Doutorado'],
+  scholarshipDate: '',
+  scholarshipOptions: ['Bolsas recentes', 'Bolsas próximas de encerrar'],
+  sort: '',
+  sortOptions: ['A-Z', 'Z-A'],
+  selectedItem: ''
 }
 
 const AppContext = React.createContext()
@@ -116,11 +137,95 @@ function AppProvider({ children }) {
     removeUserFromLocalStorage()
   }
 
-  return (
-    <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, forgetPassword }}>
-      {children}
-    </AppContext.Provider>
-  )
+  const toggleSidebar = () => {
+    dispatch({ type: TOGGLE_SIDEBAR })
+  }
+
+  const getStudents = async (defineType, name) => {
+    const { currentPage } = state
+    const url = `v1/students/list/all?page=${currentPage}`
+    dispatch({ type: GET_STUDENTS_BEGIN })
+
+    try {
+      let studentList
+      let metaList
+      if (defineType !== 'all' && name !== '-') {
+        const { data } = await axios.get(
+          `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        )
+        switch (defineType) {
+          case 'course':
+            studentList = data.filter((student) => student.course === name)
+            break
+          case 'scholarship':
+            if (name === 'Bolsas recentes') {
+              studentList = data.sort((a, b) => {
+                return (
+                  new Date(b.scholarship.scholarship_starts_at) -
+                  new Date(a.scholarship.scholarship_starts_at)
+                )
+              })
+            }
+            if (name === 'Bolsas próximas de encerrar') {
+              studentList = data.sort((a, b) => {
+                return (
+                  new Date(a.scholarship.scholarship_ends_at) -
+                  new Date(b.scholarship.scholarship_ends_at)
+                )
+              })
+            }
+            break
+          case 'sort':
+            if (name === 'A-Z') {
+              studentList = data.sort((a, b) => {
+                return a.name.localeCompare(b.name)
+              })
+            }
+            if (name === 'Z-A') {
+              studentList = data.sort((a, b) => {
+                return b.name.localeCompare(a.name)
+              })
+            }
+            break
+          default:
+            break
+        }
+        metaList = {
+          totalItems: studentList.length,
+          itemCount: studentList.length,
+          itemsPerPage: studentList.length,
+          totalPages: 1,
+          currentPage: 1
+        }
+      } else {
+        const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
+        const { items, meta } = data
+        studentList = items
+        metaList = meta
+      }
+      dispatch({
+        type: GET_STUDENTS_SUCCESS,
+        payload: {
+          studentList,
+          metaList
+        }
+      })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+
+    clearAlert()
+  }
+
+  const changePage = (page) => {
+    dispatch({ type: CHANGE_PAGE, payload: { page } })
+  }
+
+  const handleChange = ({ name, value, id }) => {
+    dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
+  }
+
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, forgetPassword, toggleSidebar, getStudents, changePage, handleChange }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../../utils/formatters'
-import Paginacao from '../../../components/Paginacao'
+import Pagination from '../../../components/Pagination'
 import Loading from '../../../components/Loading'
 import Sidebar from '../../../components/Sidebar/Docente'
 import { useAppContext } from '../../../context/appContext'
@@ -148,7 +148,7 @@ export default function DiscenteLista() {
               </div>
             )}
           </div>
-          <Paginacao />
+          <Pagination />
         </div>
       </section>
     </div>

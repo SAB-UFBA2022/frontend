@@ -42,7 +42,7 @@ export default function DiscenteLista() {
     {
       field: 'name',
       headerName: 'Nome Completo',
-      width: 200,
+      width: 260,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2">
           <img src="/assets/icons/profile.svg" alt="Profile" />
@@ -80,7 +80,7 @@ export default function DiscenteLista() {
       width: 150,
       renderCell: (params) => formatDate(params.row.defense_prediction)
     },
-    { field: 'email', headerName: 'E-mail', width: 200 },
+    { field: 'email', headerName: 'E-mail', width: 220 },
     {
       field: 'phone_number',
       headerName: 'Telefone',

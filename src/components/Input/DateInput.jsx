@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import DatePicker from 'react-datepicker'
 import ptBR from 'date-fns/locale/pt-BR'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -10,9 +10,10 @@ export default function DateInput({
   patternErro,
   pattern,
   className,
-  disabled
+  disabled,
+  value = new Date(),
+  onChange
 }) {
-  const [startDate, setStartDate] = useState(new Date())
   return (
     <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
       <label htmlFor={name} className="text-base font-medium leading-7 text-gray-800">
@@ -23,10 +24,10 @@ export default function DateInput({
           id={name}
           placeholder={placeholder}
           name={name}
-          selected={startDate}
+          selected={value}
           locale={ptBR}
           dateFormat="P"
-          onChange={setStartDate}
+          onChange={onChange}
           pattern={pattern}
           title={pattern ? patternErro : ''}
           disabled={disabled}

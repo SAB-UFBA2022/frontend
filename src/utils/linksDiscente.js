@@ -12,6 +12,6 @@ export const linksDiscente = [
   {
     name: 'Perfil',
     icon: 'profile',
-    path: '/discente/perfil'
+    path: '/discente/profile'
   }
 ]

@@ -14,13 +14,17 @@ import {
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
   CHANGE_PAGE,
-  HANDLE_CHANGE
+  HANDLE_CHANGE,
+  GET_LOGGED_STUDENT_SUCCESS,
+  GET_LOGGED_STUDENT_ERROR,
+  GET_LOGGED_STUDENT_BEGIN
 } from './actions'
 
 const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const roles = localStorage.getItem('role')
 const username = localStorage.getItem('name')
+const userId = localStorage.getItem('userId')
 
 const initialState = {
   isLoading: false,
@@ -33,6 +37,7 @@ const initialState = {
   token: token || '',
   userRole: roles || '',
   name: username || '',
+  userId: userId || '',
   students: [],
   totalItems: 0,
   totalPages: 1,
@@ -46,7 +51,8 @@ const initialState = {
   scholarshipOptions: ['Bolsas recentes', 'Bolsas próximas de encerrar'],
   sort: '',
   sortOptions: ['A-Z', 'Z-A'],
-  selectedItem: ''
+  selectedItem: '',
+  loggedStudent: null
 }
 
 const AppContext = React.createContext()
@@ -65,11 +71,12 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
-  const addUserToLocalStorage = (taxId, accessToken, userRole, userName) => {
+  const addUserToLocalStorage = (taxId, accessToken, userRole, userName, id) => {
     localStorage.setItem('user', JSON.stringify(taxId))
     localStorage.setItem('token', accessToken)
     localStorage.setItem('role', userRole)
     localStorage.setItem('name', userName)
+    localStorage.setItem('userId', id)
   }
 
   const removeUserFromLocalStorage = () => {
@@ -77,6 +84,7 @@ function AppProvider({ children }) {
     localStorage.removeItem('user')
     localStorage.removeItem('role')
     localStorage.removeItem('name')
+    localStorage.removeItem('userId')
   }
 
   const loginUser = async (currentUser) => {
@@ -86,12 +94,12 @@ function AppProvider({ children }) {
         'https://aux-bolsistas-dev.herokuapp.com/login',
         currentUser
       )
-      const { tax_id, access_token, role, name } = data
+      const { tax_id, access_token, role, name, id } = data
       dispatch({
         type: LOGIN_USER_SUCCESS,
-        payload: { tax_id, access_token, role, name }
+        payload: { tax_id, access_token, role, name, id }
       })
-      addUserToLocalStorage(tax_id, access_token, role, name)
+      addUserToLocalStorage(tax_id, access_token, role, name, id)
     } catch (error) {
       if (!error?.response) {
         dispatch({ type: LOGIN_USER_ERROR, payload: 'Sem resposta do servidor' })
@@ -190,6 +198,20 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
+  const getLoggedStudent = async (studentId) => {
+    try {
+      dispatch({ type: GET_LOGGED_STUDENT_BEGIN })
+
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byid/${studentId}`
+      )
+
+      dispatch({ type: GET_LOGGED_STUDENT_SUCCESS, payload: data })
+    } catch (error) {
+      dispatch({ type: GET_LOGGED_STUDENT_ERROR, payload: 'Erro ao carregar usuário logado' })
+    }
+  }
+
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
@@ -198,7 +220,19 @@ function AppProvider({ children }) {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage, handleChange }}>{children}</AppContext.Provider>// eslint-disable-line
+  // eslint-disable-next-line
+  const contextValue = {
+    ...state,
+    displayAlert,
+    loginUser,
+    logoutUser,
+    toggleSidebar,
+    getStudents,
+    getLoggedStudent,
+    changePage,
+    handleChange
+  }
+  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
 }
 
 const useAppContext = () => {

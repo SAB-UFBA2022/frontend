@@ -31,7 +31,7 @@ const username = localStorage.getItem('name')
 const useremail = localStorage.getItem('email')
 const userphone = localStorage.getItem('phone')
 const userpassword = localStorage.getItem('password')
-const usertax_id = localStorage.getItem('tax_id')
+const usertax_id = localStorage.getItem('taxId')
 
 const initialState = {
   isLoading: false,
@@ -145,44 +145,9 @@ function AppProvider({ children }) {
   const saveUser = async (dataUser) => {
     dispatch({ type: SAVE_USER_BEGIN })
     try {
-      const { data } = await axios.post(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students`,
-        dataUser
-      )
-      const {
-        id,
-        tax_id,
-        enrollment_number,
-        name,
-        email,
-        course,
-        link_lattes,
-        advisor_id,
-        enrollment_date_pgcomp,
-        defense_prediction,
-        phone_number,
-        role,
-        articles,
-        scholarship
-      } = data
+      await axios.post(`https://aux-bolsistas-dev.herokuapp.com/v1/students`, dataUser)
       dispatch({
-        type: SAVE_USER_SUCCESS,
-        payload: {
-          id,
-          tax_id,
-          enrollment_number,
-          name,
-          email,
-          course,
-          link_lattes,
-          advisor_id,
-          enrollment_date_pgcomp,
-          defense_prediction,
-          phone_number,
-          role,
-          articles,
-          scholarship
-        }
+        type: SAVE_USER_SUCCESS
       })
     } catch (error) {
       if (!error?.response) {

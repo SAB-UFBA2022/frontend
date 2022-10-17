@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 
 export default function FormSelect({
   label,
@@ -10,8 +10,8 @@ export default function FormSelect({
   pattern,
   className
 }) {
+  const [keys] = useState(Object.keys(value.elements))
   const input = useRef(inputRef ?? null)
-
   const handleChangeInput = (e) => {
     handleChange(e)
   }
@@ -33,9 +33,10 @@ export default function FormSelect({
           'placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500'
         }
       >
-        {value.elements.map((el) => (
+        {keys.map((el) => (
           <option key={el} value={el}>
-            {el[0].toUpperCase() + el.substring(1)}
+            {/* {values[el].toUpperCase() + el.substring(1)} */}
+            {value.elements[el][0].toUpperCase() + value.elements[el].substring(1)}
           </option>
         ))}
       </select>

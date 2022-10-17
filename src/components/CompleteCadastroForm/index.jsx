@@ -1,4 +1,6 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, FormSelect } from '..'
 
@@ -14,6 +16,7 @@ const initialState = {
 }
 
 export default function CompleteCadastroForm() {
+  const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
   const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword } =
@@ -47,7 +50,7 @@ export default function CompleteCadastroForm() {
       !fim_id ||
       !defesa_id
     ) {
-      return displayAlert()
+      displayAlert()
     }
     const dataUser = {
       tax_id: usertax_id,
@@ -56,15 +59,22 @@ export default function CompleteCadastroForm() {
       email: useremail,
       course: curso_id,
       link_lattes: curriculo_id,
-      advisor_id: orientador_id,
+      advisor_id: Number(orientador_id),
       enrollment_date_pgcomp: defesa_id,
       phone_number: userphone,
       password: userpassword,
       role: 'STUDENT',
-      scholarship_starts_at: inicio_id,
-      scholarship_ends_at: fim_id
+      scholarship: {
+        scholarship_starts_at: inicio_id,
+        scholarship_ends_at: fim_id,
+        salary: Number(bolsa_id),
+        agency_id: Number(agencia_id),
+        active: true,
+        model: 'model teste'
+      }
     }
-    return saveUser(dataUser)
+    saveUser(dataUser)
+    navigate('/', { replace: true })
   }
 
   return (
@@ -89,15 +99,17 @@ export default function CompleteCadastroForm() {
         />
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
-        <FormSelect
-          label="Curso"
+        <label className="text-base font-medium leading-7 text-gray-800">Curso</label>
+        <select
           id="curso_id"
           name="curso_id"
-          value={{ elements: ['mestrado', 'doutorado'] }}
-          handleChange={handleChange}
+          onChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
+        >
+          <option value="Mestrado">Mestrado</option>
+          <option value="Doutorado">Doutorado</option>
+        </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
@@ -119,7 +131,10 @@ export default function CompleteCadastroForm() {
           id="orientador_id"
           name="orientador_id"
           value={{
-            elements: ['Fred Durão', 'Leobino']
+            elements: {
+              1: 'Fred Durão',
+              10: 'Leobino'
+            }
           }}
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
@@ -148,7 +163,11 @@ export default function CompleteCadastroForm() {
           id="agencia_id"
           name="agencia_id"
           value={{
-            elements: ['CNPQ', 'Fapesb', 'Capes']
+            elements: {
+              1: 'CNPQ',
+              2: 'Fapesb',
+              3: 'Capes'
+            }
           }}
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
@@ -158,7 +177,7 @@ export default function CompleteCadastroForm() {
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
           label="Valor da bolsa"
-          type="text"
+          type="number"
           id="bolsa_id"
           name="bolsa_id"
           value={values.bolsa_id}

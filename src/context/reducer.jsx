@@ -107,13 +107,10 @@ const reducer = (state, action) => {
     }
   }
   if (action.type === SAVE_USER_SUCCESS) {
-    const { tax_id, role } = action.payload
     toast.success('Cadastro realizado com sucesso.')
     return {
       ...state,
-      isLoading: false,
-      user: tax_id,
-      userRole: role
+      isLoading: false
     }
   }
   if (action.type === SAVE_USER_ERROR) {

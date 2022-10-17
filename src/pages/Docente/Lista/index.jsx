@@ -1,107 +1,154 @@
+/* eslint-disable no-unused-vars */
 import { useEffect } from 'react'
-import { useAppContext } from '../../../context/appContext'
-import Sidebar from '../../../components/Sidebar/Docente'
+import { DataGrid, GridCellParams } from '@mui/x-data-grid'
+
+import { formatDate, formatPhone } from '../../../utils/formatters'
+import Pagination from '../../../components/Pagination'
 import Loading from '../../../components/Loading'
-import Paginacao from '../../../components/Paginacao'
+import Sidebar from '../../../components/Sidebar/Docente'
+import { useAppContext } from '../../../context/appContext'
 
 export default function DiscenteLista() {
-  const { getStudents, students, isLoading, totalItems, currentPage, totalPages } = useAppContext()
+  const {
+    getStudents,
+    students,
+    isLoading,
+    currentPage,
+    allItems,
+    courseType,
+    scholarshipDate,
+    sort,
+    selectedItem
+  } = useAppContext()
 
   useEffect(() => {
-    getStudents()
+    switch (selectedItem) {
+      case 'course':
+        getStudents(selectedItem, courseType)
+        break
+      case 'scholarship':
+        getStudents(selectedItem, scholarshipDate)
+        break
+      case 'sort':
+        getStudents(selectedItem, sort)
+        break
+      default:
+        getStudents('all', '-')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, allItems, courseType, scholarshipDate, sort])
 
-  const formatDate = (date) => {
-    const newDate = new Date(date)
-    return newDate.toLocaleDateString('pt-BR')
-  }
+  const columns = [
+    {
+      field: 'name',
+      headerName: 'Nome Completo',
+      width: 260,
+      renderCell: (params) => (
+        <div className="flex items-center gap-x-2">
+          <img src="/assets/icons/profile.svg" alt="Profile" />
+          {params.row.name}
+        </div>
+      )
+    },
+    { field: 'course', headerName: 'Curso', width: 100 },
+    {
+      field: 'enrollment_number',
+      headerName: 'Matrícula',
+      width: 120
+    },
+    {
+      field: 'enrollment_date_pgcomp',
+      headerName: 'Data de Matrícula',
+      width: 150,
+      renderCell: (params) => formatDate(params.row.enrollment_date_pgcomp)
+    },
+    {
+      field: 'scholarship_starts_at',
+      headerName: 'Início da Bolsa',
+      width: 120,
+      renderCell: (params) => formatDate(params.row.scholarship.scholarship_starts_at)
+    },
+    {
+      field: 'scholarship_ends_at',
+      headerName: 'Fim da Bolsa',
+      width: 120,
+      renderCell: (params) => formatDate(params.row.scholarship.scholarship_ends_at)
+    },
+    {
+      field: 'defense_prediction',
+      headerName: 'Previsão de defesa',
+      width: 150,
+      renderCell: (params) => formatDate(params.row.defense_prediction)
+    },
+    { field: 'email', headerName: 'E-mail', width: 220 },
+    {
+      field: 'phone_number',
+      headerName: 'Telefone',
+      width: 150,
+      renderCell: (params) => formatPhone(params.row.phone_number)
+    },
+    {
+      field: 'link_lattes',
+      headerName: 'Lattes',
+      width: 70,
+      align: 'center',
+      renderCell: (params) => (
+        <a
+          href={params.row.link_lattes}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-500 underline"
+        >
+          Link
+        </a>
+      )
+    },
+    {
+      field: 'active',
+      headerName: 'Bolsa ativa',
+      width: 100,
+      align: 'center',
+      renderCell: (params) =>
+        params.row.scholarship.active ? (
+          <p className="text-green-500">Sim</p>
+        ) : (
+          <p className="text-red-500">Não</p>
+        )
+    }
+  ]
 
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar />
-      <section className="w-full p-6 py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
-        <div className="shadow-base w-full space-y-8 lg:w-10/12">
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <>
-              <h3 className="font-poppins text-lg font-medium text-gray-800">
-                {totalItems} Estudante{students.length > 1 && 's'} encontrados
-              </h3>
-              <div className="grid gap-4 xl:grid-cols-2">
-                {students.map((student) => {
-                  return (
-                    <article
-                      key={student.id}
-                      className="shadow-base h-[300px] w-full overflow-y-auto rounded-lg bg-white p-4 text-left font-inter text-base leading-7 text-gray-600"
-                    >
-                      <div className="flex items-center gap-x-4 pb-2">
-                        <div
-                          className={`${
-                            student.id % 2 === 0 ? 'bg-blue-100' : 'bg-red-100'
-                          } max-w-max rounded-md p-3`}
-                        >
-                          <img src="/assets/icons/person.svg" alt="Person" className="w-6" />
-                        </div>
-                        <div>
-                          <h2 className="font-poppins text-xl font-semibold text-gray-900">
-                            {student.name}
-                          </h2>
-                          <p className="font-inter">{student.course}</p>
-                        </div>
-                      </div>
-                      <hr />
-                      <div className="grid w-full grid-cols-2 content-between gap-y-4 pt-4">
-                        <div className="flex items-center gap-x-2">
-                          <img src="/assets/icons/email.svg" alt="Email" className="w-5" />
-                          <p className="font-inter text-sm font-semibold text-gray-800">E-mail</p>
-                        </div>
-                        <p className="font-inter text-sm text-gray-800">{student.email}</p>
-                        <div className="flex items-center gap-x-2">
-                          <img src="/assets/icons/telephone.svg" alt="Telephone" className="w-5" />
-                          <p className="font-inter text-sm font-semibold text-gray-800">Telefone</p>
-                        </div>
-                        <p className="font-inter text-sm text-gray-800">{student.phone_number}</p>
-                        <div className="flex items-center gap-x-2">
-                          <img
-                            src="/assets/icons/university.svg"
-                            alt="University"
-                            className="w-5"
-                          />
-                          <p className="font-inter text-sm font-semibold text-gray-800">
-                            Número de matrícula
-                          </p>
-                        </div>
-                        <p className="font-inter text-sm text-gray-800">
-                          {student.enrollment_number}
-                        </p>
-                        <div className="flex items-center gap-x-2">
-                          <img src="/assets/icons/calendar.svg" alt="Calendar" className="w-5" />
-                          <p className="pr-1 font-inter text-sm font-semibold text-gray-800">
-                            Data de matrícula PGCOMP
-                          </p>
-                        </div>
-                        <p className="font-inter text-sm text-gray-800">
-                          {formatDate(student.enrollment_date_pgcomp)}
-                        </p>
-                        <div className="flex items-center gap-x-2">
-                          <img src="/assets/icons/chain.svg" alt="Chain" className="w-5" />
-                          <a
-                            href={`https://${student.link_lattes}`}
-                            className="font-inter text-sm font-semibold text-blue-500"
-                          >
-                            Lattes
-                          </a>
-                        </div>
-                      </div>
-                    </article>
-                  )
-                })}
+      <section className="w-full py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
+        <div className="shadow-base mb-6 w-full space-y-8 lg:w-10/12">
+          <div className="shadow-base rounded-lg bg-white p-8">
+            <div className="mb-8 flex items-center gap-x-4">
+              <div className="rounded-md bg-yellow-500 p-3">
+                <img src="/assets/icons/list.svg" alt="Lista" />
               </div>
-            </>
-          )}
-          {totalPages > 1 && <Paginacao />}
+              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+            </div>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <div style={{ height: '675px', width: '100%', backgroundColor: 'white' }}>
+                <DataGrid
+                  hideFooterPagination
+                  rows={students}
+                  columns={columns}
+                  pageSize={10}
+                  rowsPerPageOptions={[10]}
+                  disableColumnMenu
+                  GridCellParams={students.scholarship}
+                  isRowSelectable={() => false}
+                  rowHeight={60}
+                  hideFooter
+                />
+              </div>
+            )}
+          </div>
+          <Pagination />
         </div>
       </section>
     </div>

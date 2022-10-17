@@ -1,6 +1,6 @@
 import { useAppContext } from '../../context/appContext'
 
-export default function Paginacao() {
+export default function Pagination() {
   const { totalPages, currentPage, changePage } = useAppContext()
 
   const pages = Array.from({ length: totalPages }, (_, index) => {

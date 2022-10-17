@@ -10,6 +10,7 @@ export default function FormInput({
   inputRef,
   patternErro,
   pattern,
+  id,
   className
 }) {
   const input = useRef(inputRef ?? null)
@@ -24,7 +25,7 @@ export default function FormInput({
         {label}
       </label>
       <input
-        id={name}
+        id={id}
         type={type || 'text'}
         placeholder={placeholder}
         value={value}

@@ -134,17 +134,15 @@ function AppProvider({ children }) {
 
   const preSaveUser = async (dataUser) => {
     dispatch({ type: PRE_SAVE_USER_BEGIN })
-    try {
-      const { name_id, tax_id, email_id, phone_id, password } = dataUser
+    const { name_id, tax_id, email_id, phone_id, password } = dataUser
+    if (name_id && tax_id && email_id && phone_id && password) {
+      saveUserToLocalStorage(name_id, tax_id, email_id, phone_id, password)
       dispatch({
         type: PRE_SAVE_USER_SUCCESS,
         payload: { name_id, tax_id, email_id, phone_id, password }
       })
-      saveUserToLocalStorage(name_id, tax_id, email_id, phone_id, password)
-    } catch (error) {
-      if (!error?.response) {
-        dispatch({ type: PRE_SAVE_USER_ERROR, payload: 'Erro inesperado.Tente novamente' })
-      }
+    } else {
+      dispatch({ type: PRE_SAVE_USER_ERROR, payload: 'Preencha todos os campos' })
     }
   }
 

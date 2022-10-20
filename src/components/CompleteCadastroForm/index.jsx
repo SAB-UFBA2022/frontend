@@ -21,7 +21,7 @@ export default function CompleteCadastroForm() {
   const [loading] = useState(false)
   const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword } =
     useAppContext()
-
+  let flag = true
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
@@ -51,6 +51,7 @@ export default function CompleteCadastroForm() {
       !defesa_id
     ) {
       displayAlert()
+      flag = false
     }
     const dataUser = {
       tax_id: usertax_id,
@@ -73,8 +74,10 @@ export default function CompleteCadastroForm() {
         model: 'model teste'
       }
     }
-    saveUser(dataUser)
-    navigate('/', { replace: true })
+    if (flag) {
+      saveUser(dataUser)
+      navigate('/', { replace: true })
+    }
   }
 
   return (
@@ -92,8 +95,8 @@ export default function CompleteCadastroForm() {
           placeholder="Digite seu número de matrícula"
           autoComplete="off"
           handleChange={handleChange}
-          pattern="[0-9]{9}"
-          patternErro="Matrícula inválida, formato esperado: 111111000"
+          pattern="[0-9]{10}"
+          patternErro="Matrícula inválida, formato esperado: 1111110000"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
@@ -107,7 +110,9 @@ export default function CompleteCadastroForm() {
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         >
-          <option value="Mestrado">Mestrado</option>
+          <option value="Mestrado" selected="selected">
+            Mestrado
+          </option>
           <option value="Doutorado">Doutorado</option>
         </select>
       </div>
@@ -184,7 +189,7 @@ export default function CompleteCadastroForm() {
           placeholder="Digite o valor da bolsa"
           autoComplete="off"
           handleChange={handleChange}
-          // pattern="^R\$(\d{1,3}(\.\d{3})*|\d+)(\,\d{2})?$"
+          pattern="(?:^[1-9]([0-9]+)?(?:\.[0-9]{1,2})?$)|(?:^(?:0)$)|(?:^[0-9]\.[0-9](?:[0-9])?$)"
           patternErro="Bolsa inválida, formato esperado: R$1000"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"

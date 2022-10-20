@@ -17,6 +17,7 @@ export default function CadastroForm() {
   const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const { displayAlert, showAlert, preSaveUser } = useAppContext()
+  let flag = true
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -27,13 +28,17 @@ export default function CadastroForm() {
     const { name_id, tax_id, email_id, phone_id, password, confirm_password } = values
     if (!name_id || !tax_id || !email_id || !phone_id || !password || !confirm_password) {
       displayAlert()
+      flag = false
     }
     if (password !== confirm_password) {
       displayAlert()
+      flag = false
     }
     const dataUser = { name_id, tax_id, email_id, phone_id, password }
-    preSaveUser(dataUser)
-    navigate('/complete-cadastro', { replace: true })
+    if (flag) {
+      preSaveUser(dataUser)
+      navigate('/complete-cadastro', { replace: true })
+    }
   }
 
   return (
@@ -78,7 +83,7 @@ export default function CadastroForm() {
             value={values.email_id}
             placeholder="Digite seu email"
             handleChange={handleChange}
-            // pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}"
             patternErro="Email inválido, formato esperado: seu_email@email.com"
             className="placeholder-gray-400::placeholder mr-2 w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6
             text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
@@ -91,7 +96,7 @@ export default function CadastroForm() {
             placeholder="Digite seu telefone"
             autoComplete="off"
             handleChange={handleChange}
-            // pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}"
+            pattern="[0-9]{10,11}"
             patternErro="Telefone inválido, formato esperado: 71999999999"
             className="placeholder-gray-400::placeholder ml-2 w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6
             text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"

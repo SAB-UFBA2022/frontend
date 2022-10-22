@@ -2,7 +2,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { useAppContext } from '../../../context/appContext'
 import { linksDocente } from '../../../utils/linksDocente'
 
-export default function Mobile() {
+export default function MobileDocente() {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
 
   return (

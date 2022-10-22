@@ -1,7 +1,7 @@
 import DesktopSidebar from './Desktop'
 import MobileSidebar from './Mobile'
 
-export default function Sidebar() {
+export default function SidebarDocente() {
   return (
     <>
       <div className="hidden md:block">

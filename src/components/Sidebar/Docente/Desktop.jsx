@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useAppContext } from '../../../context/appContext'
 import { linksDocente } from '../../../utils/linksDocente'
 
-export default function Desktop() {
+export default function DesktopDocente() {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
 
   return (
@@ -52,7 +52,9 @@ export default function Desktop() {
                 })}
               >
                 <img src={`/assets/icons/${link.icon}.svg`} alt={link.icon} />
-                <span className="font-inter font-medium text-gray-800">{link.name}</span>
+                <span className="text-center font-inter font-medium text-gray-800">
+                  {link.name}
+                </span>
               </NavLink>
             </li>
           ))}

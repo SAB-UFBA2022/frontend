@@ -31,9 +31,9 @@ export default function Desktop() {
             href="/"
             className={`${
               expandSidebar ? 'block' : 'hidden'
-            } text-center font-poppins text-lg font-semibold`}
+            } text-center font-poppins text-base font-semibold`}
           >
-            Acompanhamento de Bolsistas
+            Sistema de acompanhamento de bolsistas do PGCOMP
           </a>
         </header>
         <ul className=" flex w-full flex-col items-center">

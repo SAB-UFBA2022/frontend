@@ -3,7 +3,7 @@ import { useAppContext } from '../../context/appContext'
 import Sidebar from '../Sidebar/Docente'
 import Loading from '../Loading'
 import Pagination from '../Pagination'
-import Filter from '../Filter'
+import Filter from '../Lists'
 
 export default function DiscenteLista() {
   const {

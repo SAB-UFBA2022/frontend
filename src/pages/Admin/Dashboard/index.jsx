@@ -1,17 +1,32 @@
 import { Link } from 'react-router-dom'
-import { useAppContext } from '../../../context/appContext'
-import Button from '../../../components/Button'
+import Sidebar from '../../../components/Sidebar/Admin'
+import { menuListAdmin } from '../../../utils/menuListAdmin'
 
 export default function DiscenteDashboard() {
-  const { name, logoutUser } = useAppContext()
   return (
-    <div className="flex h-screen flex-col gap-x-6 bg-gray-100 md:flex-row">
-      <div className="flex w-full flex-col items-center justify-center gap-5">
-        <h1 className="font-poppins text-4xl font-semibold">Admin Dashboard</h1>
-        <p className="text-4xl font-medium">Olá, {name}</p>
-        <Link to="/" className="w-80" onClick={logoutUser}>
-          <Button>Sair</Button>
-        </Link>
+    <div className="flex h-screen flex-col gap-x-6 overflow-y-auto bg-gray-100 md:flex-row">
+      <Sidebar />
+      <div className="ml-auto flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
+        <div className="space-y-1.5 text-center">
+          <h1 className="font-poppins text-4xl font-semibold">Dashboard</h1>
+          <p className="font-inter text-base font-medium">
+            Escolha uma das opções para seguir na plataforma
+          </p>
+        </div>
+        <div className="flex flex-col gap-5 lg:flex-row">
+          {menuListAdmin.map((card) => {
+            return (
+              <Link
+                key={card.title}
+                to={card.link}
+                className={`flex h-60 w-64 flex-col items-center justify-center gap-y-4 rounded-md bg-${card.color}-400 transition-colors duration-300 hover:bg-${card.color}-500`}
+              >
+                <img src={`/assets/icons/${card.icon}.svg`} alt={card.title} className="w-16" />
+                <p className="font-poppins text-xl font-medium">{card.title}</p>
+              </Link>
+            )
+          })}
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, FormSelect } from '..'
 
@@ -16,7 +16,7 @@ const initialState = {
 }
 
 export default function CompleteCadastroForm() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
   const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword } =
@@ -39,17 +39,7 @@ export default function CompleteCadastroForm() {
       fim_id,
       defesa_id
     } = values
-    if (
-      !matricula_id ||
-      !curso_id ||
-      !orientador_id ||
-      !curriculo_id ||
-      !agencia_id ||
-      !bolsa_id ||
-      !inicio_id ||
-      !fim_id ||
-      !defesa_id
-    ) {
+    if (!matricula_id || !curriculo_id || !bolsa_id || !inicio_id || !fim_id || !defesa_id) {
       displayAlert()
       flag = false
     }
@@ -76,7 +66,7 @@ export default function CompleteCadastroForm() {
     }
     if (flag) {
       saveUser(dataUser)
-      navigate('/', { replace: true })
+      // navigate('/', { replace: true })
     }
   }
 
@@ -95,8 +85,8 @@ export default function CompleteCadastroForm() {
           placeholder="Digite seu número de matrícula"
           autoComplete="off"
           handleChange={handleChange}
-          pattern="[0-9]{10}"
-          patternErro="Matrícula inválida, formato esperado: 1111110000"
+          pattern="[0-9]{9}"
+          patternErro="Matrícula inválida, formato esperado: 9 dígitos"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
@@ -109,10 +99,9 @@ export default function CompleteCadastroForm() {
           onChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
+          defaultValue="Mestrado"
         >
-          <option value="Mestrado" selected="selected">
-            Mestrado
-          </option>
+          <option value="Mestrado">Mestrado</option>
           <option value="Doutorado">Doutorado</option>
         </select>
       </div>
@@ -141,6 +130,7 @@ export default function CompleteCadastroForm() {
               10: 'Leobino'
             }
           }}
+          defaultValue="Fred Durão"
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
@@ -156,7 +146,7 @@ export default function CompleteCadastroForm() {
           placeholder="Url Lattes"
           autoComplete="off"
           handleChange={handleChange}
-          // pattern="(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])"
+          pattern="https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$"
           patternErro="Lattes inválido, formato esperado: http://lattes.cnpq.br/9001443717831147"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
@@ -174,6 +164,7 @@ export default function CompleteCadastroForm() {
               3: 'Capes'
             }
           }}
+          defaultValue="CNPQ"
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
@@ -189,7 +180,7 @@ export default function CompleteCadastroForm() {
           placeholder="Digite o valor da bolsa"
           autoComplete="off"
           handleChange={handleChange}
-          pattern="(?:^[1-9]([0-9]+)?(?:\.[0-9]{1,2})?$)|(?:^(?:0)$)|(?:^[0-9]\.[0-9](?:[0-9])?$)"
+          // pattern="(?:^[1-9]([0-9]+)?(?:\.[0-9]{1,2})?$)|(?:^(?:0)$)|(?:^[0-9]\.[0-9](?:[0-9])?$)"
           patternErro="Bolsa inválida, formato esperado: R$1000"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"

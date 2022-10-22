@@ -157,7 +157,7 @@ function AppProvider({ children }) {
       if (!error?.response) {
         dispatch({ type: SAVE_USER_ERROR, payload: 'Sem resposta do servidor' })
       } else if (error?.response?.status === 400) {
-        dispatch({ type: SAVE_USER_ERROR, payload: error?.response })
+        dispatch({ type: SAVE_USER_ERROR, payload: error?.response?.message })
       } else if (error?.response?.status === 401) {
         dispatch({ type: SAVE_USER_ERROR, payload: 'Cadastro não autorizado' })
       } else {

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Sidebar from '../../../components/Sidebar/Docente'
+import { menuListDocente } from '../../../utils/menuListDocente'
 
 export default function DiscenteDashboard() {
   return (
@@ -13,13 +14,18 @@ export default function DiscenteDashboard() {
           </p>
         </div>
         <div className="flex flex-col gap-5 lg:flex-row">
-          <Link
-            to="/docente/lista"
-            className="flex h-64 w-72 flex-col items-center justify-center gap-y-4 rounded-md bg-blue-400 transition-colors duration-300 hover:bg-blue-500"
-          >
-            <img src="/assets/icons/list.svg" alt="List" className="w-16" />
-            <p className="font-poppins text-xl font-medium">Lista de estudantes</p>
-          </Link>
+          {menuListDocente.map((card) => {
+            return (
+              <Link
+                key={card.title}
+                to={card.link}
+                className={`flex h-60 w-64 flex-col items-center justify-center gap-y-4 rounded-md bg-${card.color}-400 transition-colors duration-300 hover:bg-${card.color}-500`}
+              >
+                <img src={`/assets/icons/${card.icon}.svg`} alt={card.title} className="w-16" />
+                <p className="font-poppins text-xl font-medium">{card.title}</p>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </div>

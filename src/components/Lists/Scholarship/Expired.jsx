@@ -21,7 +21,7 @@ export default function ScholarshipExpired() {
       headerName: 'Nome Completo',
       width: 260,
       renderCell: (params) => (
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 overflow-auto">
           <img src="/assets/icons/profile.svg" alt="Profile" />
           {params.row.name}
         </div>
@@ -57,7 +57,14 @@ export default function ScholarshipExpired() {
       width: 150,
       renderCell: (params) => formatDate(params.row.defense_prediction)
     },
-    { field: 'email', headerName: 'E-mail', width: 220 },
+    {
+      field: 'email',
+      headerName: 'E-mail',
+      width: 220,
+      renderCell: (params) => (
+        <p className="flex items-center gap-x-2 overflow-auto">{params.row.email}</p>
+      )
+    },
     {
       field: 'phone_number',
       headerName: 'Telefone',

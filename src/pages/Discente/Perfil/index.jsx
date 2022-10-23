@@ -35,8 +35,7 @@ export default function DiscentePerfil() {
               value={loggedStudent.course}
               list={[loggedStudent.course]}
             />
-            {/* // TODO cade o orientador */}
-            <Dropdown disabled label="Orientador" value={loggedStudent.name} />
+            <Dropdown disabled label="Orientador" value="Fred Durão" list={['Fred Durão']} />
             <FormInput disabled label="Link curriculo Lattes" value={loggedStudent.link_lattes} />
             <DateInput
               disabled
@@ -48,8 +47,7 @@ export default function DiscentePerfil() {
               label="Fim da bolsa"
               value={new Date(loggedStudent.scholarship.scholarship_ends_at)}
             />
-            {/* // TODO a agencia */}
-            <Dropdown disabled label="Agência" value={loggedStudent.scholarship.agency_id} />
+            <Dropdown disabled label="Agência" value="Capes" list={['Capes']} />
           </div>
           <div className="flex justify-center">
             <Link to="edit" className=" w-80">

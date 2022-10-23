@@ -25,7 +25,7 @@ export default function DiscentePerfil() {
           <FormInput label="Telefone" value={loggedStudent.phone_number} />
           <Dropdown label="Curso" value={loggedStudent.course} list={[loggedStudent.course]} />
           {/* // TODO cade o orientador */}
-          <Dropdown disabled label="Orientador" value={loggedStudent.name} />
+          <Dropdown disabled label="Orientador" value="Fred Durão" />
           <FormInput label="Link curriculo Lattes" value={loggedStudent.link_lattes} />
           <DateInput
             disabled

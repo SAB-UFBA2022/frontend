@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
-import Sidebar from '../../../components/Sidebar/Admin'
+import Sidebar from '../../../components/Sidebar'
 import { menuListAdmin } from '../../../utils/menuListAdmin'
 
 export default function DiscenteDashboard() {
   return (
     <div className="flex h-screen flex-col gap-x-6 overflow-y-auto bg-gray-100 md:flex-row">
-      <Sidebar />
+      <Sidebar userType="admin" />
       <div className="ml-auto flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
         <div className="space-y-1.5 text-center">
           <h1 className="font-poppins text-4xl font-semibold">Dashboard</h1>

@@ -1,10 +1,10 @@
-import Sidebar from '../../../components/Sidebar/Docente'
+import Sidebar from '../../../components/Sidebar'
 import ScholarshipExpired from '../../../components/Lists/Scholarship/Expired'
 
 export default function BolsasExpiradas() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
-      <Sidebar />
+      <Sidebar userType="teacher" />
       <section className="w-full py-6 md:ml-auto md:max-w-[70vw] xl:max-w-[80vw]">
         <div className="shadow-base mb-6 w-full space-y-8 lg:w-10/12">
           <div className="shadow-base rounded-lg bg-white p-8">

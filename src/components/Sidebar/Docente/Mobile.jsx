@@ -13,9 +13,9 @@ export default function Mobile() {
         </Link>
         <Link
           to="/docente/dashboard"
-          className="hidden w-32 text-center text-sm font-semibold sm:block"
+          className="hidden w-56 text-center text-sm font-semibold sm:block"
         >
-          Acompanhamento de Bolsistas
+          Sistema de acompanhamento de bolsistas do PGCOMP
         </Link>
         <button type="button" onClick={toggleSidebar}>
           <img src="/assets/icons/menu.svg" alt="Menu" />

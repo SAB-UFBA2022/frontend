@@ -1,15 +1,32 @@
+import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { useAppContext } from '../../../context/appContext'
-import { linksDocente } from '../../../utils/linksDocente'
+import { useAppContext } from '../../context/appContext'
+import { linksAdmin } from '../../utils/linksAdmin'
+import { linksDiscente } from '../../utils/linksDiscente'
+import { linksDocente } from '../../utils/linksDocente'
 
-export default function Desktop() {
+export default function Desktop({ userType }) {
   const { logoutUser, toggleSidebar, expandSidebar } = useAppContext()
+  const [links, setLinks] = useState([])
+
+  useEffect(() => {
+    switch (userType) {
+      case 'admin':
+        return setLinks(linksAdmin)
+      case 'student':
+        return setLinks(linksDiscente)
+      case 'teacher':
+        return setLinks(linksDocente)
+      default:
+        return setLinks([])
+    }
+  }, [userType])
 
   return (
     <aside
       className={`${
         expandSidebar ? 'w-60' : 'w-24'
-      } durantion-300 fixed h-screen bg-white py-4 transition-all ease-in`}
+      } durantion-300 fixed h-screen overflow-auto bg-white py-4 transition-all ease-in`}
     >
       <div className="flex w-full flex-col items-center gap-x-2 transition-all duration-300 ease-in">
         <header className="flex flex-col items-center gap-y-5 px-5 pb-11">
@@ -37,7 +54,7 @@ export default function Desktop() {
           </a>
         </header>
         <ul className=" flex w-full flex-col items-center">
-          {linksDocente.map((link) => (
+          {links.map((link) => (
             <li key={link.name} className="w-full hover:bg-blue-100">
               <NavLink
                 to={link.path}
@@ -52,7 +69,9 @@ export default function Desktop() {
                 })}
               >
                 <img src={`/assets/icons/${link.icon}.svg`} alt={link.icon} />
-                <span className="font-inter font-medium text-gray-800">{link.name}</span>
+                <span className="text-center font-inter font-medium text-gray-800">
+                  {link.name}
+                </span>
               </NavLink>
             </li>
           ))}

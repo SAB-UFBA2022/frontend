@@ -14,7 +14,10 @@ import {
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
   CHANGE_PAGE,
-  HANDLE_CHANGE
+  HANDLE_CHANGE,
+  GET_EXPIRED_STUDENTS_SUCCESS,
+  GET_EXPIRED_STUDENTS_ERROR,
+  GET_EXPIRED_STUDENTS_BEGIN
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -198,7 +201,27 @@ function AppProvider({ children }) {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage, handleChange }}>{children}</AppContext.Provider>// eslint-disable-line
+  const getExpiredStudents = async () => {
+    dispatch({ type: GET_EXPIRED_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
+      const expiredStudents = data.filter((student) => student.scholarship.active === false)
+      const metaList = {
+        totalItems: expiredStudents.length,
+        itemCount: expiredStudents.length,
+        itemsPerPage: expiredStudents.length,
+        totalPages: 1,
+        currentPage: 1
+      }
+      dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: { expiredStudents, metaList } })
+    } catch (error) {
+      dispatch({ type: GET_EXPIRED_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+  }
+
+  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage, handleChange, getExpiredStudents }}>{children}</AppContext.Provider>// eslint-disable-line
 }
 
 const useAppContext = () => {

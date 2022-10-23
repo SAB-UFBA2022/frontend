@@ -21,7 +21,7 @@ export default function MobileAdmin() {
           <img src="/assets/icons/menu.svg" alt="Menu" />
         </button>
       </div>
-      <nav className={`${expandSidebar ? 'h-64' : 'h-0'} transition-all`}>
+      <nav className={`${expandSidebar ? 'h-max' : 'h-0'} transition-all`}>
         <ul className={`${expandSidebar ? 'opacity-1' : 'opacity-0'} transition-all`}>
           {linksAdmin.map((link) => (
             <li key={link.name} className={`${expandSidebar ? 'block' : 'hidden'} transition-all`}>

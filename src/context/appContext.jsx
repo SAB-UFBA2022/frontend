@@ -103,6 +103,8 @@ function AppProvider({ children }) {
         dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Credenciais inválidas!' })
       } else if (error?.response?.status === 401) {
         dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Request não autorizado' })
+      } else if (error?.response?.status === 404) {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Usuário não encontrado' })
       } else {
         dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Erro inesperado.Tente novamente' })
       }

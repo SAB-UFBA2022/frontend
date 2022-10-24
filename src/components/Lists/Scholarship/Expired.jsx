@@ -4,7 +4,6 @@ import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import Loading from '../../Loading'
-import Pagination from '../../Pagination'
 import { useAppContext } from '../../../context/appContext'
 
 export default function ScholarshipExpired() {

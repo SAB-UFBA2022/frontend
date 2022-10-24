@@ -1,3 +1,4 @@
+import ScholarshipList from '../../../components/Lists/Scholarship/Finalization'
 import Sidebar from '../../../components/Sidebar'
 
 export default function DiscenteLista() {
@@ -11,8 +12,12 @@ export default function DiscenteLista() {
               <div className="rounded-md bg-blue-400 p-3">
                 <img src="/assets/icons/list.svg" alt="Lista" />
               </div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+              <div>
+                <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+                <p className="poppins font-medium text-gray-500">Ordem de finalização</p>
+              </div>
             </div>
+            <ScholarshipList />
           </div>
         </div>
       </section>

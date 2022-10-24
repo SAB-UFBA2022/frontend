@@ -181,7 +181,7 @@ export default function CompleteCadastroForm() {
           autoComplete="off"
           handleChange={handleChange}
           // pattern="(?:^[1-9]([0-9]+)?(?:\.[0-9]{1,2})?$)|(?:^(?:0)$)|(?:^[0-9]\.[0-9](?:[0-9])?$)"
-          patternErro="Bolsa inválida, formato esperado: R$1000"
+          patternErro="Bolsa inválida, formato esperado: 1000"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />

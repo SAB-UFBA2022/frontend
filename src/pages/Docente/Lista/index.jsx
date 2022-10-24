@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react'
-import { DataGrid, GridCellParams } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../../utils/formatters'
 import Pagination from '../../../components/Pagination'

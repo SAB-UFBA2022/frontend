@@ -12,9 +12,10 @@ export default function BolsasExpiradas() {
               <div className="rounded-md bg-blue-400 p-3">
                 <img src="/assets/icons/cancel.svg" alt="Expirado" className="w-7" />
               </div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">
-                Estudantes com bolsas expiradas
-              </h2>
+              <div>
+                <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+                <p className="poppins font-medium text-gray-500">Bolsas expiradas</p>
+              </div>
             </div>
             <ScholarshipExpired />
           </div>

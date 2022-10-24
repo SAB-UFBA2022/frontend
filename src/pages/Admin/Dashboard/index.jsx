@@ -8,7 +8,7 @@ export default function DiscenteDashboard() {
       <Sidebar userType="admin" />
       <div className="ml-auto flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
         <div className="space-y-1.5 text-center">
-          <h1 className="font-poppins text-4xl font-semibold">Dashboard</h1>
+          <h1 className="font-poppins text-4xl font-semibold">Dashboard Admin</h1>
           <p className="font-inter text-base font-medium">
             Escolha uma das opções para seguir na plataforma
           </p>

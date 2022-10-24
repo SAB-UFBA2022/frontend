@@ -1,5 +1,5 @@
 import Sidebar from '../../../components/Sidebar'
-import StudentsList from '../../../components/Lists/Students'
+import List from '../../../components/Lists'
 
 export default function DiscenteLista() {
   return (
@@ -14,7 +14,7 @@ export default function DiscenteLista() {
               </div>
               <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
             </div>
-            <StudentsList />
+            <List listType="todos" />
           </div>
         </div>
       </section>

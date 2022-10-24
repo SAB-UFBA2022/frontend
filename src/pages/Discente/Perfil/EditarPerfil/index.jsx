@@ -25,20 +25,18 @@ export default function DiscentePerfil() {
           <FormInput label="Telefone" value={loggedStudent.phone_number} />
           <Dropdown label="Curso" value={loggedStudent.course} list={[loggedStudent.course]} />
           {/* // TODO cade o orientador */}
-          <Dropdown disabled label="Orientador" value="Fred Durão" />
+          <Dropdown label="Orientador" value="Fred Durão" list={['Fred Durao', 'Outro']} />
           <FormInput label="Link curriculo Lattes" value={loggedStudent.link_lattes} />
           <DateInput
-            disabled
             label="Inicio da bolsa"
             value={new Date(loggedStudent.scholarship.scholarship_starts_at)}
           />
           <DateInput
-            disabled
             label="Fim da bolsa"
             value={new Date(loggedStudent.scholarship.scholarship_ends_at)}
           />
           {/* // TODO a agencia */}
-          <Dropdown disabled label="Agência" value={loggedStudent.scholarship.agency_id} />
+          <Dropdown label="Agência" value="Capes" list={['Capes', 'CNPQ', 'Fapesb']} />
           <PasswordInput label="Senha" />
           <PasswordInput label="Confirmar senha" />
         </div>

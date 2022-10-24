@@ -16,6 +16,9 @@ import {
   GET_STUDENTS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
+  GET_EXPIRED_STUDENTS_SUCCESS,
+  GET_EXPIRED_STUDENTS_ERROR,
+  GET_EXPIRED_STUDENTS_BEGIN,
   SAVE_USER_BEGIN,
   SAVE_USER_SUCCESS,
   SAVE_USER_ERROR,
@@ -259,6 +262,26 @@ function AppProvider({ children }) {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
   }
 
+  const getExpiredStudents = async () => {
+    dispatch({ type: GET_EXPIRED_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
+      const expiredStudents = data.filter((student) => student.scholarship.active === false)
+      const metaList = {
+        totalItems: expiredStudents.length,
+        itemCount: expiredStudents.length,
+        itemsPerPage: expiredStudents.length,
+        totalPages: 1,
+        currentPage: 1
+      }
+      dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: { expiredStudents, metaList } })
+    } catch (error) {
+      dispatch({ type: GET_EXPIRED_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -270,13 +293,14 @@ function AppProvider({ children }) {
         getStudents,
         changePage,
         handleChange,
+        getExpiredStudents,
         preSaveUser,
         saveUser
       }}
     >
       {children}
     </AppContext.Provider>
-  )
+  ) // eslint-disable-line
 }
 
 const useAppContext = () => {

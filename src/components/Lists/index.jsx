@@ -2,17 +2,30 @@
 import { useEffect } from 'react'
 import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 
-import { formatDate, formatPhone } from '../../../utils/formatters'
-import Loading from '../../Loading'
-import { useAppContext } from '../../../context/appContext'
+import { formatDate, formatPhone } from '../../utils/formatters'
+import Loading from '../Loading'
+import { useAppContext } from '../../context/appContext'
 
-export default function StudentsList() {
-  const { getStudentsEndDate, students, isLoading, currentPage } = useAppContext()
+export default function StudentsList({ listType }) {
+  const { getStudents, getExpiredStudents, getStudentsEndDate, students, isLoading } =
+    useAppContext()
 
   useEffect(() => {
-    getStudentsEndDate()
+    switch (listType) {
+      case 'todos':
+        getStudents()
+        break
+      case 'finalizacao':
+        getStudentsEndDate()
+        break
+      case 'expirado':
+        getExpiredStudents()
+        break
+      default:
+        getStudents()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [listType])
 
   const columns = [
     {

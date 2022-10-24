@@ -1,4 +1,4 @@
-import ScholarshipList from '../../../components/Lists/Scholarship/Finalization'
+import List from '../../../components/Lists'
 import Sidebar from '../../../components/Sidebar'
 
 export default function DiscenteLista() {
@@ -17,7 +17,7 @@ export default function DiscenteLista() {
                 <p className="poppins font-medium text-gray-500">Ordem de finalização</p>
               </div>
             </div>
-            <ScholarshipList />
+            <List listType="finalizacao" />
           </div>
         </div>
       </section>

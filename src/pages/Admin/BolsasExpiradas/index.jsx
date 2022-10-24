@@ -1,5 +1,5 @@
 import Sidebar from '../../../components/Sidebar'
-import ScholarshipExpired from '../../../components/Lists/Scholarship/Expired'
+import List from '../../../components/Lists'
 
 export default function BolsasExpiradas() {
   return (
@@ -17,7 +17,7 @@ export default function BolsasExpiradas() {
                 <p className="poppins font-medium text-gray-500">Bolsas expiradas</p>
               </div>
             </div>
-            <ScholarshipExpired />
+            <List listType="expirado" />
           </div>
         </div>
       </section>

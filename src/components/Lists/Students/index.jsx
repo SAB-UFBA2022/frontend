@@ -3,39 +3,16 @@ import { useEffect } from 'react'
 import { DataGrid, GridCellParams } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../../utils/formatters'
-import Pagination from '../../Pagination'
 import Loading from '../../Loading'
 import { useAppContext } from '../../../context/appContext'
 
 export default function StudentsList() {
-  const {
-    getStudents,
-    students,
-    isLoading,
-    currentPage,
-    allItems,
-    courseType,
-    scholarshipDate,
-    sort,
-    selectedItem
-  } = useAppContext()
+  const { getStudents, students, isLoading, currentPage } = useAppContext()
 
   useEffect(() => {
-    switch (selectedItem) {
-      case 'course':
-        getStudents(selectedItem, courseType)
-        break
-      case 'scholarship':
-        getStudents(selectedItem, scholarshipDate)
-        break
-      case 'sort':
-        getStudents(selectedItem, sort)
-        break
-      default:
-        getStudents('all', '-')
-    }
+    getStudents()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, allItems, courseType, scholarshipDate, sort])
+  }, [currentPage])
 
   const columns = [
     {
@@ -83,9 +60,7 @@ export default function StudentsList() {
       field: 'email',
       headerName: 'E-mail',
       width: 220,
-      renderCell: (params) => (
-        <p className="flex items-center gap-x-2 overflow-auto">{params.row.email}</p>
-      )
+      renderCell: (params) => <p className="overflow-auto">{params.row.email}</p>
     },
     {
       field: 'phone_number',
@@ -124,13 +99,12 @@ export default function StudentsList() {
   ]
 
   return (
-    <>
+    <div>
       {isLoading ? (
         <Loading />
       ) : (
-        <div style={{ height: '675px', width: '100%', backgroundColor: 'white' }}>
+        <div style={{ height: '710px', width: '100%', backgroundColor: 'white' }}>
           <DataGrid
-            hideFooterPagination
             rows={students}
             columns={columns}
             pageSize={10}
@@ -139,13 +113,9 @@ export default function StudentsList() {
             GridCellParams={students.scholarship}
             isRowSelectable={() => false}
             rowHeight={60}
-            hideFooter
           />
         </div>
       )}
-      <div className="mt-6">
-        <Pagination />
-      </div>
-    </>
+    </div>
   )
 }

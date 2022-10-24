@@ -61,9 +61,7 @@ export default function ScholarshipExpired() {
       field: 'email',
       headerName: 'E-mail',
       width: 220,
-      renderCell: (params) => (
-        <p className="flex items-center gap-x-2 overflow-auto">{params.row.email}</p>
-      )
+      renderCell: (params) => <p className="overflow-auto">{params.row.email}</p>
     },
     {
       field: 'phone_number',
@@ -102,13 +100,12 @@ export default function ScholarshipExpired() {
   ]
 
   return (
-    <>
+    <div>
       {isLoading ? (
         <Loading />
       ) : (
-        <div style={{ height: '675px', width: '100%', backgroundColor: 'white' }}>
+        <div style={{ height: '710px', width: '100%', backgroundColor: 'white' }}>
           <DataGrid
-            hideFooterPagination
             rows={students}
             columns={columns}
             pageSize={10}
@@ -117,13 +114,9 @@ export default function ScholarshipExpired() {
             GridCellParams={students.scholarship}
             isRowSelectable={() => false}
             rowHeight={60}
-            hideFooter
           />
         </div>
       )}
-      <div className="mt-6">
-        <Pagination />
-      </div>
-    </>
+    </div>
   )
 }

@@ -4,9 +4,9 @@ import { menuListDocente } from '../../../utils/menuListDocente'
 
 export default function DiscenteDashboard() {
   return (
-    <div className="flex h-screen flex-col gap-x-6 overflow-y-auto bg-gray-100 md:flex-row">
+    <div className="flex h-screen flex-col overflow-y-auto bg-gray-100 md:flex-row">
       <Sidebar userType="teacher" />
-      <div className="ml-auto flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
+      <div className="flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
         <div className="space-y-1.5 text-center">
           <h1 className="font-poppins text-4xl font-semibold">Dashboard</h1>
           <p className="font-inter text-base font-medium">

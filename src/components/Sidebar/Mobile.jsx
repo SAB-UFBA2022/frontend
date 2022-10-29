@@ -32,7 +32,7 @@ export default function Mobile({ userType }) {
           to="/admin/dashboard"
           className="hidden w-56 text-center text-sm font-semibold sm:block"
         >
-          Sistema de acompanhamento de bolsistas do PGCOMP
+          Sistema de acompanhamento de bolsistas
         </Link>
         <button type="button" onClick={toggleSidebar}>
           <img src="/assets/icons/menu.svg" alt="Menu" />

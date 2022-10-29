@@ -116,16 +116,17 @@ export default function StudentsList({ listType }) {
       {isLoading ? (
         <Loading />
       ) : (
-        <div style={{ height: '710px', width: '100%', backgroundColor: 'white' }}>
+        <div style={{ height: 'auto', width: '100%', backgroundColor: 'white' }}>
           <DataGrid
             rows={students}
             columns={columns}
-            pageSize={10}
-            rowsPerPageOptions={[10]}
+            pageSize={7}
+            rowsPerPageOptions={[7]}
             disableColumnMenu
             GridCellParams={students.scholarship}
             isRowSelectable={() => false}
-            rowHeight={60}
+            rowHeight={45}
+            autoHeight
           />
         </div>
       )}

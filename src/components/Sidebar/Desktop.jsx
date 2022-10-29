@@ -26,7 +26,7 @@ export default function Desktop({ userType }) {
     <aside
       className={`${
         expandSidebar ? 'w-60' : 'w-24'
-      } durantion-300 fixed h-screen overflow-auto bg-white py-4 transition-all ease-in`}
+      } durantion-300 block !min-h-screen overflow-auto bg-white pt-4 transition-all ease-in`}
     >
       <div className="flex w-full flex-col items-center gap-x-2 transition-all duration-300 ease-in">
         <header className="flex flex-col items-center gap-y-5 px-5 pb-11">
@@ -50,7 +50,7 @@ export default function Desktop({ userType }) {
               expandSidebar ? 'block' : 'hidden'
             } text-center font-poppins text-base font-semibold`}
           >
-            Sistema de acompanhamento de bolsistas do PGCOMP
+            Sistema de acompanhamento de bolsistas
           </a>
         </header>
         <ul className=" flex w-full flex-col items-center">

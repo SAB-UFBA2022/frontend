@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
 import reducer from './reducer' // eslint-disable-line
@@ -17,13 +18,17 @@ import {
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
   GET_EXPIRED_STUDENTS_ERROR,
-  GET_EXPIRED_STUDENTS_BEGIN
+  GET_EXPIRED_STUDENTS_BEGIN,
+  GET_LOGGED_STUDENT_SUCCESS,
+  GET_LOGGED_STUDENT_ERROR,
+  GET_LOGGED_STUDENT_BEGIN
 } from './actions'
 
 const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const roles = localStorage.getItem('role')
 const username = localStorage.getItem('name')
+const userId = localStorage.getItem('userId')
 
 const initialState = {
   isLoading: false,
@@ -36,6 +41,7 @@ const initialState = {
   token: token || '',
   userRole: roles || '',
   name: username || '',
+  userId: userId || '',
   students: [],
   totalItems: 0,
   totalPages: 1,
@@ -49,7 +55,8 @@ const initialState = {
   scholarshipOptions: ['Bolsas recentes', 'Bolsas próximas de encerrar'],
   sort: '',
   sortOptions: ['A-Z', 'Z-A'],
-  selectedItem: ''
+  selectedItem: '',
+  loggedStudent: null
 }
 
 const AppContext = React.createContext()
@@ -68,11 +75,12 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
-  const addUserToLocalStorage = (taxId, accessToken, userRole, userName) => {
+  const addUserToLocalStorage = (taxId, accessToken, userRole, userName, id) => {
     localStorage.setItem('user', JSON.stringify(taxId))
     localStorage.setItem('token', accessToken)
     localStorage.setItem('role', userRole)
     localStorage.setItem('name', userName)
+    localStorage.setItem('userId', id)
   }
 
   const removeUserFromLocalStorage = () => {
@@ -80,6 +88,7 @@ function AppProvider({ children }) {
     localStorage.removeItem('user')
     localStorage.removeItem('role')
     localStorage.removeItem('name')
+    localStorage.removeItem('userId')
   }
 
   const loginUser = async (currentUser) => {
@@ -89,12 +98,12 @@ function AppProvider({ children }) {
         'https://aux-bolsistas-dev.herokuapp.com/login',
         currentUser
       )
-      const { tax_id, access_token, role, name } = data
+      const { tax_id, access_token, role, name, id } = data
       dispatch({
         type: LOGIN_USER_SUCCESS,
-        payload: { tax_id, access_token, role, name }
+        payload: { tax_id, access_token, role, name, id }
       })
-      addUserToLocalStorage(tax_id, access_token, role, name)
+      addUserToLocalStorage(tax_id, access_token, role, name, id)
     } catch (error) {
       if (!error?.response) {
         dispatch({ type: LOGIN_USER_ERROR, payload: 'Sem resposta do servidor' })
@@ -133,6 +142,20 @@ function AppProvider({ children }) {
     }
 
     clearAlert()
+  }
+
+  const getLoggedStudent = async (studentId) => {
+    try {
+      dispatch({ type: GET_LOGGED_STUDENT_BEGIN })
+
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byid/${studentId}`
+      )
+
+      dispatch({ type: GET_LOGGED_STUDENT_SUCCESS, payload: data })
+    } catch (error) {
+      dispatch({ type: GET_LOGGED_STUDENT_ERROR, payload: 'Erro ao carregar usuário logado' })
+    }
   }
 
   const changePage = (page) => {
@@ -179,7 +202,25 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
-  return <AppContext.Provider value={{ ...state, displayAlert, loginUser, logoutUser, toggleSidebar, getStudents, changePage, handleChange, getExpiredStudents, getStudentsEndDate }}>{children}</AppContext.Provider>// eslint-disable-line
+  return (
+    <AppContext.Provider
+      value={{
+        ...state,
+        displayAlert,
+        loginUser,
+        logoutUser,
+        toggleSidebar,
+        getStudents,
+        changePage,
+        handleChange,
+        getExpiredStudents,
+        getStudentsEndDate,
+        getLoggedStudent
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  )
 }
 
 const useAppContext = () => {

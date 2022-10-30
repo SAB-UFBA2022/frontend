@@ -10,7 +10,8 @@ export default function FormInput({
   inputRef,
   patternErro,
   pattern,
-  id
+  className,
+  disabled
 }) {
   const input = useRef(inputRef ?? null)
 
@@ -24,7 +25,7 @@ export default function FormInput({
         {label}
       </label>
       <input
-        id={id}
+        id={name}
         type={type || 'text'}
         placeholder={placeholder}
         value={value}
@@ -33,8 +34,11 @@ export default function FormInput({
         onChange={handleChangeInput}
         pattern={pattern}
         title={pattern ? patternErro : ''}
-        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4 py-3 text-left text-base font-normal
-          leading-6 text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
+        disabled={disabled}
+        className={`placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 px-4
+          py-3 text-base font-normal leading-6 text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500
+          ${className}
+          ${disabled ? ' bg-gray-200' : ''}`}
       />
     </div>
   )

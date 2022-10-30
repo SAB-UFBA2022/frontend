@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAppContext } from '../../../context/appContext'
 import { Button, FormInput, Dropdown, DateInput } from '../../../components'
-import Sidebar from '../../../components/Sidebar/Discente'
+import Sidebar from '../../../components/Sidebar'
 import Loading from '../../../components/Loading'
 
 export default function DiscentePerfil() {
@@ -14,7 +14,7 @@ export default function DiscentePerfil() {
 
   return (
     <div className="flex flex-col bg-gray-100 md:flex-row">
-      <Sidebar />
+      <Sidebar userType="student" />
       {isLoading || loggedStudent === null ? (
         <div className="flex w-full items-center justify-center">
           <Loading />

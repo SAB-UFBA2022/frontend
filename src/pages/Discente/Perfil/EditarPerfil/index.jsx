@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useAppContext } from '../../../../context/appContext'
 import { Button, FormInput, PasswordInput, Dropdown, DateInput } from '../../../../components'
-import Sidebar from '../../../../components/Sidebar/Discente'
+import Sidebar from '../../../../components/Sidebar'
 
 export default function DiscentePerfil() {
   const { userId, getLoggedStudent, loggedStudent } = useAppContext()
@@ -13,7 +13,7 @@ export default function DiscentePerfil() {
 
   return (
     <div className="flex flex-col bg-gray-100 md:flex-row">
-      <Sidebar />
+      <Sidebar userType="student" />
       <div className="mx-80 flex h-screen flex-col justify-center">
         <div className="flex justify-center">
           <h1 className="text-3xl font-bold">Perfil</h1>

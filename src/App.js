@@ -5,9 +5,12 @@ import RequireAuth from './context/requireAuth'
 import DiscentePerfil from './pages/Discente/Perfil'
 import {
   AdminDashboard,
+  AdminLista,
+  AdminBolsasExpiradas,
   DiscenteDashboard,
   DocenteDashboard,
   DocenteLista,
+  DocenteBolsasExpiradas,
   Login,
   Page404,
   DiscenteEditarPerfil
@@ -32,11 +35,14 @@ export default function App() {
         <Route element={<RequireAuth allowedRoles="ADVISOR" />}>
           <Route path="docente/dashboard" element={<DocenteDashboard />} />
           <Route path="docente/lista" element={<DocenteLista />} />
+          <Route path="docente/bolsas/expiradas" element={<DocenteBolsasExpiradas />} />
         </Route>
 
         {/* Rotas de usuário administrador */}
         <Route element={<RequireAuth allowedRoles="ADMIN" />}>
           <Route path="admin/dashboard" element={<AdminDashboard />} />
+          <Route path="admin/lista" element={<AdminLista />} />
+          <Route path="admin/bolsas/expiradas" element={<AdminBolsasExpiradas />} />
         </Route>
 
         {/* Qualquer rota */}

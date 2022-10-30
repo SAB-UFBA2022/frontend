@@ -82,12 +82,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      students: action.payload.studentList,
-      totalItems: action.payload.metaList.totalItems,
-      totalPages: action.payload.metaList.totalPages,
-      currentPage: action.payload.metaList.currentPage,
-      itemsPerPage: action.payload.metaList.itemsPerPage,
-      itemCount: action.payload.metaList.itemCount
+      students: action.payload
     }
   }
   if (action.type === GET_STUDENTS_ERROR) {
@@ -123,6 +118,23 @@ const reducer = (state, action) => {
       currentPage: 1,
       [action.payload.name]: action.payload.value,
       selectedItem: action.payload.id
+    }
+  }
+  if (action.type === 'GET_EXPIRED_STUDENTS_BEGIN') {
+    return { ...state, isLoading: true, showAlert: false }
+  }
+  if (action.type === 'GET_EXPIRED_STUDENTS_SUCCESS') {
+    return {
+      ...state,
+      isLoading: false,
+      students: action.payload
+    }
+  }
+  if (action.type === 'GET_EXPIRED_STUDENTS_ERROR') {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
     }
   }
   throw new Error(`Não existe ação : ${action.type}`)

@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom'
-import Sidebar from '../../../components/Sidebar/Docente'
+import Sidebar from '../../../components/Sidebar'
+import { menuListDocente } from '../../../utils/menuListDocente'
 
 export default function DiscenteDashboard() {
   return (
-    <div className="flex h-screen flex-col gap-x-6 overflow-y-auto bg-gray-100 md:flex-row">
-      <Sidebar />
-      <div className="ml-auto flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
+    <div className="flex h-screen flex-col overflow-y-auto bg-gray-100 md:flex-row">
+      <Sidebar userType="teacher" />
+      <div className="flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
         <div className="space-y-1.5 text-center">
           <h1 className="font-poppins text-4xl font-semibold">Dashboard</h1>
           <p className="font-inter text-base font-medium">
@@ -13,13 +14,18 @@ export default function DiscenteDashboard() {
           </p>
         </div>
         <div className="flex flex-col gap-5 lg:flex-row">
-          <Link
-            to="/docente/lista"
-            className="flex h-64 w-72 flex-col items-center justify-center gap-y-4 rounded-md bg-blue-400 transition-colors duration-300 hover:bg-blue-500"
-          >
-            <img src="/assets/icons/list.svg" alt="List" className="w-16" />
-            <p className="font-poppins text-xl font-medium">Lista de estudantes</p>
-          </Link>
+          {menuListDocente.map((card) => {
+            return (
+              <Link
+                key={card.title}
+                to={card.link}
+                className={`flex h-60 w-64 flex-col items-center justify-center gap-y-4 rounded-md bg-${card.color}-400 transition-colors duration-300 hover:bg-${card.color}-500`}
+              >
+                <img src={`/assets/icons/${card.icon}.svg`} alt={card.title} className="w-16" />
+                <p className="font-poppins text-xl font-medium">{card.title}</p>
+              </Link>
+            )
+          })}
         </div>
       </div>
     </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useReducer, useContext } from 'react'
 import axios from 'axios'
 import reducer from './reducer' // eslint-disable-line
@@ -15,6 +16,9 @@ import {
   GET_STUDENTS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
+  GET_EXPIRED_STUDENTS_SUCCESS,
+  GET_EXPIRED_STUDENTS_ERROR,
+  GET_EXPIRED_STUDENTS_BEGIN,
   GET_LOGGED_STUDENT_SUCCESS,
   GET_LOGGED_STUDENT_ERROR,
   GET_LOGGED_STUDENT_BEGIN
@@ -122,74 +126,16 @@ function AppProvider({ children }) {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  const getStudents = async (defineType, name) => {
-    const { currentPage } = state
-    const url = `v1/students/list/all?page=${currentPage}`
+  const getStudents = async () => {
     dispatch({ type: GET_STUDENTS_BEGIN })
 
     try {
-      let studentList
-      let metaList
-      if (defineType !== 'all' && name !== '-') {
-        const { data } = await axios.get(
-          `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
-        )
-        switch (defineType) {
-          case 'course':
-            studentList = data.filter((student) => student.course === name)
-            break
-          case 'scholarship':
-            if (name === 'Bolsas recentes') {
-              studentList = data.sort((a, b) => {
-                return (
-                  new Date(b.scholarship.scholarship_starts_at) -
-                  new Date(a.scholarship.scholarship_starts_at)
-                )
-              })
-            }
-            if (name === 'Bolsas próximas de encerrar') {
-              studentList = data.sort((a, b) => {
-                return (
-                  new Date(a.scholarship.scholarship_ends_at) -
-                  new Date(b.scholarship.scholarship_ends_at)
-                )
-              })
-            }
-            break
-          case 'sort':
-            if (name === 'A-Z') {
-              studentList = data.sort((a, b) => {
-                return a.name.localeCompare(b.name)
-              })
-            }
-            if (name === 'Z-A') {
-              studentList = data.sort((a, b) => {
-                return b.name.localeCompare(a.name)
-              })
-            }
-            break
-          default:
-            break
-        }
-        metaList = {
-          totalItems: studentList.length,
-          itemCount: studentList.length,
-          itemsPerPage: studentList.length,
-          totalPages: 1,
-          currentPage: 1
-        }
-      } else {
-        const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
-        const { items, meta } = data
-        studentList = items
-        metaList = meta
-      }
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
       dispatch({
         type: GET_STUDENTS_SUCCESS,
-        payload: {
-          studentList,
-          metaList
-        }
+        payload: data
       })
     } catch (error) {
       dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
@@ -220,19 +166,61 @@ function AppProvider({ children }) {
     dispatch({ type: HANDLE_CHANGE, payload: { name, value, id } })
   }
 
-  // eslint-disable-next-line
-  const contextValue = {
-    ...state,
-    displayAlert,
-    loginUser,
-    logoutUser,
-    toggleSidebar,
-    getStudents,
-    getLoggedStudent,
-    changePage,
-    handleChange
+  const getExpiredStudents = async () => {
+    dispatch({ type: GET_EXPIRED_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
+      const expiredStudents = data.filter((student) => student.scholarship.active === false)
+      dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: expiredStudents })
+    } catch (error) {
+      dispatch({ type: GET_EXPIRED_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
   }
-  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+
+  const getStudentsEndDate = async () => {
+    dispatch({ type: GET_STUDENTS_BEGIN })
+
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
+      const studentList = data.sort((a, b) => {
+        return (
+          new Date(a.scholarship.scholarship_ends_at) - new Date(b.scholarship.scholarship_ends_at)
+        )
+      })
+      dispatch({
+        type: GET_STUDENTS_SUCCESS,
+        payload: studentList
+      })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+
+    clearAlert()
+  }
+
+  return (
+    <AppContext.Provider
+      value={{
+        ...state,
+        displayAlert,
+        loginUser,
+        logoutUser,
+        toggleSidebar,
+        getStudents,
+        changePage,
+        handleChange,
+        getExpiredStudents,
+        getStudentsEndDate,
+        getLoggedStudent
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  )
 }
 
 const useAppContext = () => {

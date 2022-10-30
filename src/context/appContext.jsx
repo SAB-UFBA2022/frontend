@@ -178,74 +178,16 @@ function AppProvider({ children }) {
     dispatch({ type: TOGGLE_SIDEBAR })
   }
 
-  const getStudents = async (defineType, name) => {
-    const { currentPage } = state
-    const url = `v1/students/list/all?page=${currentPage}`
+  const getStudents = async () => {
     dispatch({ type: GET_STUDENTS_BEGIN })
 
     try {
-      let studentList
-      let metaList
-      if (defineType !== 'all' && name !== '-') {
-        const { data } = await axios.get(
-          `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
-        )
-        switch (defineType) {
-          case 'course':
-            studentList = data.filter((student) => student.course === name)
-            break
-          case 'scholarship':
-            if (name === 'Bolsas recentes') {
-              studentList = data.sort((a, b) => {
-                return (
-                  new Date(b.scholarship.scholarship_starts_at) -
-                  new Date(a.scholarship.scholarship_starts_at)
-                )
-              })
-            }
-            if (name === 'Bolsas próximas de encerrar') {
-              studentList = data.sort((a, b) => {
-                return (
-                  new Date(a.scholarship.scholarship_ends_at) -
-                  new Date(b.scholarship.scholarship_ends_at)
-                )
-              })
-            }
-            break
-          case 'sort':
-            if (name === 'A-Z') {
-              studentList = data.sort((a, b) => {
-                return a.name.localeCompare(b.name)
-              })
-            }
-            if (name === 'Z-A') {
-              studentList = data.sort((a, b) => {
-                return b.name.localeCompare(a.name)
-              })
-            }
-            break
-          default:
-            break
-        }
-        metaList = {
-          totalItems: studentList.length,
-          itemCount: studentList.length,
-          itemsPerPage: studentList.length,
-          totalPages: 1,
-          currentPage: 1
-        }
-      } else {
-        const { data } = await axios.get(`https://aux-bolsistas-dev.herokuapp.com/${url}`)
-        const { items, meta } = data
-        studentList = items
-        metaList = meta
-      }
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
       dispatch({
         type: GET_STUDENTS_SUCCESS,
-        payload: {
-          studentList,
-          metaList
-        }
+        payload: data
       })
     } catch (error) {
       dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
@@ -269,17 +211,33 @@ function AppProvider({ children }) {
         `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
       )
       const expiredStudents = data.filter((student) => student.scholarship.active === false)
-      const metaList = {
-        totalItems: expiredStudents.length,
-        itemCount: expiredStudents.length,
-        itemsPerPage: expiredStudents.length,
-        totalPages: 1,
-        currentPage: 1
-      }
-      dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: { expiredStudents, metaList } })
+      dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: expiredStudents })
     } catch (error) {
       dispatch({ type: GET_EXPIRED_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
     }
+  }
+
+  const getStudentsEndDate = async () => {
+    dispatch({ type: GET_STUDENTS_BEGIN })
+
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+      )
+      const studentList = data.sort((a, b) => {
+        return (
+          new Date(a.scholarship.scholarship_ends_at) - new Date(b.scholarship.scholarship_ends_at)
+        )
+      })
+      dispatch({
+        type: GET_STUDENTS_SUCCESS,
+        payload: studentList
+      })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+
+    clearAlert()
   }
 
   return (
@@ -294,6 +252,7 @@ function AppProvider({ children }) {
         changePage,
         handleChange,
         getExpiredStudents,
+        getStudentsEndDate,
         preSaveUser,
         saveUser
       }}

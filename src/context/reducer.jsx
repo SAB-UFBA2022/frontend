@@ -84,12 +84,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      students: action.payload.studentList,
-      totalItems: action.payload.metaList.totalItems,
-      totalPages: action.payload.metaList.totalPages,
-      currentPage: action.payload.metaList.currentPage,
-      itemsPerPage: action.payload.metaList.itemsPerPage,
-      itemCount: action.payload.metaList.itemCount
+      students: action.payload
     }
   }
   if (action.type === GET_STUDENTS_ERROR) {
@@ -138,12 +133,7 @@ const reducer = (state, action) => {
     return {
       ...state,
       isLoading: false,
-      students: action.payload.expiredStudents,
-      totalItems: action.payload.metaList.totalItems,
-      totalPages: action.payload.metaList.totalPages,
-      currentPage: action.payload.metaList.currentPage,
-      itemsPerPage: action.payload.metaList.itemsPerPage,
-      itemCount: action.payload.metaList.itemCount
+      students: action.payload
     }
   }
   if (action.type === 'GET_EXPIRED_STUDENTS_ERROR') {

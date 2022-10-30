@@ -12,7 +12,7 @@
 [Requisitos](https://docs.google.com/spreadsheets/d/1mP9sHRCpoDyPzAqeXPOXbrTp8NNgGUztj0FgI-nQb7k/edit?usp=sharing) | 
 [Protótipo](https://www.figma.com/file/c2RJlrC3kbbUfr1EI1tzdL/MATE85-Equipe2?node-id=0%3A1) | 
 [Versão de desenvolvimento](https://aux-bolsistas.netlify.app/) |
-[Arquitetura](https://docs.google.com/presentation/d/1fom-CfQA__bDDZXrKyxoO9-3QYMczZLjdEKQkaNTPPA/edit#slide=id.g155e3ea10b4_0_0) |
+[Arquitetura](https://docs.google.com/document/d/1jHvPHyMUaWMB04ysHTmhiFuUj_YFKQp_z5WNl_RVveY/edit?usp=sharing) |
 
 ### Sumário
 

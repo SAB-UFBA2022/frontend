@@ -10,6 +10,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  FORGET_PASSWORD_BEGIN,
+  FORGET_PASSWORD_SUCCESS,
+  FORGET_PASSWORD_ERROR,
   TOGGLE_SIDEBAR,
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
@@ -83,7 +86,12 @@ function AppProvider({ children }) {
   }
 
   const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT })
+    dispatch({ type: DISPLAY_ALERT, payload: 'Por favor, preencha todos os campos' })
+    clearAlert()
+  }
+
+  const displayFormAlert = (text) => {
+    dispatch({ type: DISPLAY_ALERT, payload: text })
     clearAlert()
   }
 
@@ -107,6 +115,33 @@ function AppProvider({ children }) {
     localStorage.setItem('email', emailId)
     localStorage.setItem('phone', phoneId)
     localStorage.setItem('password', password)
+  }
+
+  const forgetPassword = async (forgestPasswordData) => {
+    const { email } = forgestPasswordData
+    dispatch({ type: FORGET_PASSWORD_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byemail?email=${email}`
+      )
+      if (data) {
+        await axios.post(
+          'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
+          forgestPasswordData
+        )
+        dispatch({
+          type: FORGET_PASSWORD_SUCCESS
+        })
+      }
+    } catch (error) {
+      if (!error?.response) {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Sem resposta do servidor' })
+      } else if (error?.response?.status === 404) {
+        displayFormAlert('Usuário não encontrado.')
+      } else {
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Erro inesperado. Tente novamente' })
+      }
+    }
   }
 
   const loginUser = async (currentUser) => {
@@ -253,6 +288,8 @@ function AppProvider({ children }) {
         handleChange,
         getExpiredStudents,
         getStudentsEndDate,
+        forgetPassword,
+        displayFormAlert,
         preSaveUser,
         saveUser
       }}

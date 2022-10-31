@@ -6,6 +6,9 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_ERROR,
   LOGOUT_USER,
+  FORGET_PASSWORD_BEGIN,
+  FORGET_PASSWORD_SUCCESS,
+  FORGET_PASSWORD_ERROR,
   TOGGLE_SIDEBAR,
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
@@ -28,12 +31,13 @@ const reducer = (state, action) => {
       ...state,
       showAlert: true,
       alertType: 'error',
-      alertText: 'Por favor, preencha todos os campos'
+      alertText: action.payload
     }
   }
   if (action.type === CLEAR_ALERT) {
     return {
       ...state,
+      isLoading: false,
       showAlert: false,
       alertType: '',
       alertText: ''
@@ -95,21 +99,22 @@ const reducer = (state, action) => {
     }
   }
 
-  if (action.type === SAVE_USER_BEGIN) {
+  if (action.type === FORGET_PASSWORD_BEGIN) {
     return {
       ...state,
       isLoading: true
     }
   }
-  if (action.type === SAVE_USER_SUCCESS) {
-    toast.success('Cadastro realizado com sucesso.')
+  if (action.type === FORGET_PASSWORD_ERROR) {
+    toast.error(action.payload)
     return {
       ...state,
       isLoading: false
     }
   }
-  if (action.type === SAVE_USER_ERROR) {
-    toast.error(action.payload)
+
+  if (action.type === FORGET_PASSWORD_SUCCESS) {
+    toast.success('Email enviado com sucesso.')
     return {
       ...state,
       isLoading: false
@@ -118,6 +123,7 @@ const reducer = (state, action) => {
   if (action.type === CHANGE_PAGE) {
     return { ...state, currentPage: action.payload.page }
   }
+
   if (action.type === HANDLE_CHANGE) {
     return {
       ...state,
@@ -143,6 +149,7 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
+
   if (action.type === PRE_SAVE_USER_BEGIN) {
     return {
       ...state,
@@ -166,6 +173,28 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
+
+  if (action.type === SAVE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === SAVE_USER_SUCCESS) {
+    toast.success('Cadastro realizado com sucesso.')
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  if (action.type === SAVE_USER_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+
   throw new Error(`Não existe ação : ${action.type}`)
 }
 

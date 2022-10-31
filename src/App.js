@@ -7,6 +7,7 @@ import {
   AdminBolsasExpiradas,
   DiscenteDashboard,
   DocenteDashboard,
+  ForgetPassword,
   DocenteLista,
   DocenteBolsasExpiradas,
   Login,
@@ -23,7 +24,7 @@ export default function App() {
         <Route path="/" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/complete-cadastro" element={<CompleteCadastro />} />
-
+        <Route path="/esqueci-a-senha" element={<ForgetPassword />} />
         {/* Rotas de usuário discente */}
         <Route element={<RequireAuth allowedRoles="STUDENT" />}>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />

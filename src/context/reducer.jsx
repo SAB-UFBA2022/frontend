@@ -25,12 +25,13 @@ const reducer = (state, action) => {
       ...state,
       showAlert: true,
       alertType: 'error',
-      alertText: 'Por favor, preencha todos os campos'
+      alertText: action.payload
     }
   }
   if (action.type === CLEAR_ALERT) {
     return {
       ...state,
+      isLoading: false,
       showAlert: false,
       alertType: '',
       alertText: ''

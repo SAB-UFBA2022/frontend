@@ -12,7 +12,8 @@ const initialState = {
   agencia_id: 1,
   inicio_id: '',
   fim_id: '',
-  defesa_id: ''
+  defesa_id: '',
+  bolsa_id: ''
 }
 
 export default function CompleteCadastroForm() {
@@ -173,7 +174,7 @@ export default function CompleteCadastroForm() {
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
           label="Valor da bolsa"
-          type="number"
+          type="text"
           id="bolsa_id"
           name="bolsa_id"
           value={values.bolsa_id}

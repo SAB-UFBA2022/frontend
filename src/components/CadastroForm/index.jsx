@@ -89,15 +89,15 @@ export default function CadastroForm() {
             text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
           />
           <FormInput
-            type="number"
+            type="text"
             id="phone_id"
             name="phone_id"
             value={values.phone_id}
             placeholder="Digite seu telefone"
             autoComplete="off"
             handleChange={handleChange}
-            pattern="[0-9]{10,11}"
-            patternErro="Telefone inválido, formato esperado: 71999999999"
+            pattern="[0-9]{10}"
+            patternErro="Telefone inválido, formato esperado: 9988888888"
             className="placeholder-gray-400::placeholder ml-2 w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6
             text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
           />

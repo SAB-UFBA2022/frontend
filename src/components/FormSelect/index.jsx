@@ -35,7 +35,6 @@ export default function FormSelect({
       >
         {keys.map((el) => (
           <option key={el} value={el}>
-            {/* {values[el].toUpperCase() + el.substring(1)} */}
             {value.elements[el][0].toUpperCase() + value.elements[el].substring(1)}
           </option>
         ))}

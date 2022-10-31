@@ -6,10 +6,10 @@ import { FormInput, Button, FormSelect } from '..'
 
 const initialState = {
   matricula_id: '',
-  curso_id: '',
-  orientador_id: '',
+  curso_id: 'Mestrado',
+  orientador_id: 1,
   curriculo_id: '',
-  agencia_id: '',
+  agencia_id: 1,
   inicio_id: '',
   fim_id: '',
   defesa_id: ''
@@ -180,7 +180,7 @@ export default function CompleteCadastroForm() {
           placeholder="Digite o valor da bolsa"
           autoComplete="off"
           handleChange={handleChange}
-          // pattern="(?:^[1-9]([0-9]+)?(?:\.[0-9]{1,2})?$)|(?:^(?:0)$)|(?:^[0-9]\.[0-9](?:[0-9])?$)"
+          pattern="[0-9]{4}"
           patternErro="Bolsa inválida, formato esperado: 1000"
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"

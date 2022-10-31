@@ -7,6 +7,7 @@ import DocenteLista from './Docente/Lista'
 import DocenteBolsasExpiradas from './Docente/BolsasExpiradas'
 import Login from './Login'
 import Page404 from './Page404'
+import ForgetPassword from './ForgetPassword'
 
 export {
   AdminDashboard,
@@ -17,5 +18,6 @@ export {
   DocenteDashboard,
   DocenteBolsasExpiradas,
   Login,
-  Page404
+  Page404,
+  ForgetPassword
 }

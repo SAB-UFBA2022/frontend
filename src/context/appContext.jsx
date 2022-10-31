@@ -68,7 +68,12 @@ function AppProvider({ children }) {
   }
 
   const displayAlert = () => {
-    dispatch({ type: DISPLAY_ALERT })
+    dispatch({ type: DISPLAY_ALERT, payload: 'Por favor, preencha todos os campos' })
+    clearAlert()
+  }
+
+  const displayFormAlert = (text) => {
+    dispatch({ type: DISPLAY_ALERT, payload: text })
     clearAlert()
   }
 
@@ -87,26 +92,28 @@ function AppProvider({ children }) {
   }
 
   const forgetPassword = async (forgestPasswordData) => {
+    const { email } = forgestPasswordData
     dispatch({ type: FORGET_PASSWORD_BEGIN })
     try {
-      await axios.post(
-        'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
-        forgestPasswordData
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byemail?email=${email}`
       )
-      dispatch({
-        type: FORGET_PASSWORD_SUCCESS
-      })
+      if (data) {
+        await axios.post(
+          'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
+          forgestPasswordData
+        )
+        dispatch({
+          type: FORGET_PASSWORD_SUCCESS
+        })
+      }
     } catch (error) {
       if (!error?.response) {
         dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Sem resposta do servidor' })
-      } else if (error?.response?.status === 400) {
-        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Credenciais inválidas!' })
-      } else if (error?.response?.status === 401) {
-        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Request não autorizado' })
       } else if (error?.response?.status === 404) {
-        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Usuário não encontrado' })
+        displayFormAlert('Usuário não encontrado.')
       } else {
-        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Erro inesperado.Tente novamente' })
+        dispatch({ type: FORGET_PASSWORD_ERROR, payload: 'Erro inesperado. Tente novamente' })
       }
     }
   }
@@ -221,7 +228,8 @@ function AppProvider({ children }) {
         handleChange,
         getExpiredStudents,
         getStudentsEndDate,
-        forgetPassword
+        forgetPassword,
+        displayFormAlert
       }}
     >
       {children}

@@ -2,7 +2,7 @@
 import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
-import { FormInput, Button, FormSelect } from '..'
+import { FormInput, Button, FormSelect, Alert } from '..'
 
 const initialState = {
   matricula_id: '',
@@ -20,7 +20,7 @@ export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword } =
+  const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword, showAlert } = 
     useAppContext()
   let flag = true
   const handleChange = (e) => {
@@ -76,6 +76,7 @@ export default function CompleteCadastroForm() {
       onSubmit={handleSubmit}
       className="tablet:grid-cols-2 flex w-full flex-wrap items-center justify-center gap-y-2 font-inter"
     >
+      {showAlert && <Alert />}
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
           label="Número matrícula"

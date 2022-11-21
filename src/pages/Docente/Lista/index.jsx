@@ -1,7 +1,7 @@
 import Sidebar from '../../../components/Sidebar'
 import List from '../../../components/Lists'
 
-export default function DiscenteLista() {
+export default function DocenteLista() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="teacher" />

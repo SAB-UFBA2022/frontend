@@ -1,7 +1,7 @@
 import Sidebar from '../../../components/Sidebar'
 import List from '../../../components/Lists'
 
-export default function BolsasExpiradas() {
+export default function DocenteBolsasExpiradas() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="teacher" />

@@ -9,7 +9,7 @@ export default function AdminDashboard() {
       <div className="flex w-full flex-col items-center gap-y-8 overflow-y-auto p-4 md:justify-center">
         <div className="space-y-1.5 text-center">
           <h1 className="font-poppins text-2xl font-semibold">
-            Bolsas de Acompanhamento de Bolsistas PGCOMP
+            Sistema de acompanhamento de bolsistas do PGCOMP
           </h1>
         </div>
         <div className="flex flex-col gap-5 lg:flex-row">

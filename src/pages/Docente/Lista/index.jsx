@@ -11,7 +11,7 @@ export default function DiscenteLista() {
             <div className="rounded-md bg-yellow-400 p-3">
               <img src="/assets/icons/list.svg" alt="Lista" />
             </div>
-            <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+            <h2 className="poppins text-xl font-semibold text-gray-900">Lista de bolsistas</h2>
           </div>
           <List listType="todos" />
         </div>

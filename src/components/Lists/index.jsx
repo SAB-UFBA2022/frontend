@@ -132,6 +132,7 @@ export default function StudentsList({ listType }) {
             isRowSelectable={() => false}
             rowHeight={45}
             autoHeight
+            disableDensitySelector
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           />
         </div>

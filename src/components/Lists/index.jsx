@@ -102,18 +102,6 @@ export default function StudentsList({ listType }) {
           Link
         </a>
       )
-    },
-    {
-      field: 'active',
-      headerName: 'Bolsa ativa',
-      width: 100,
-      align: 'center',
-      renderCell: (params) =>
-        params.row.scholarship.active ? (
-          <p className="text-green-500">Sim</p>
-        ) : (
-          <p className="text-red-500">Não</p>
-        )
     }
   ]
 

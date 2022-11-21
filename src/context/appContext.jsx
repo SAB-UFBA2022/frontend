@@ -199,11 +199,14 @@ function AppProvider({ children }) {
       const { data } = await axios.get(
         `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
       )
-      const studentList = data.sort((a, b) => {
-        return (
-          new Date(a.scholarship.scholarship_ends_at) - new Date(b.scholarship.scholarship_ends_at)
-        )
-      })
+      const studentList = data
+        .sort((a, b) => {
+          return (
+            new Date(a.scholarship.scholarship_ends_at) -
+            new Date(b.scholarship.scholarship_ends_at)
+          )
+        })
+        .filter((student) => student.scholarship.active === true)
       dispatch({
         type: GET_STUDENTS_SUCCESS,
         payload: studentList

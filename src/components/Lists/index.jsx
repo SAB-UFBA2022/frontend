@@ -86,7 +86,16 @@ export default function StudentsList({ listType }) {
       field: 'phone_number',
       headerName: 'Telefone',
       width: 150,
-      renderCell: (params) => formatPhone(params.row.phone_number)
+      renderCell: (params) => (
+        <a
+          href={`https://wa.me/${params.row.phone_number}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-500 underline"
+        >
+          {formatPhone(params.row.phone_number)}
+        </a>
+      )
     },
     {
       field: 'link_lattes',

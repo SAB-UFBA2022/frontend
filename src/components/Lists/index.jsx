@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react'
-import { DataGrid, GridCellParams } from '@mui/x-data-grid'
+import { DataGrid, GridCellParams, ptBR } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../utils/formatters'
 import Loading from '../Loading'
@@ -29,8 +29,14 @@ export default function StudentsList({ listType }) {
 
   const columns = [
     {
+      field: 'edit',
+      headerName: 'Editar',
+      width: 80,
+      renderCell: () => <img src="/assets/icons/edit.svg" alt="Editar estudante" />
+    },
+    {
       field: 'name',
-      headerName: 'Nome Completo',
+      headerName: 'Nome completo',
       width: 260,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
@@ -47,19 +53,19 @@ export default function StudentsList({ listType }) {
     },
     {
       field: 'enrollment_date_pgcomp',
-      headerName: 'Data de Matrícula',
+      headerName: 'Data de matrícula',
       width: 150,
       renderCell: (params) => formatDate(params.row.enrollment_date_pgcomp)
     },
     {
       field: 'scholarship_starts_at',
-      headerName: 'Início da Bolsa',
+      headerName: 'Início da bolsa',
       width: 120,
       renderCell: (params) => formatDate(params.row.scholarship.scholarship_starts_at)
     },
     {
       field: 'scholarship_ends_at',
-      headerName: 'Fim da Bolsa',
+      headerName: 'Fim da bolsa',
       width: 120,
       renderCell: (params) => formatDate(params.row.scholarship.scholarship_ends_at)
     },
@@ -127,6 +133,7 @@ export default function StudentsList({ listType }) {
             isRowSelectable={() => false}
             rowHeight={45}
             autoHeight
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           />
         </div>
       )}

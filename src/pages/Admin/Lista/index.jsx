@@ -13,7 +13,6 @@ export default function DiscenteLista() {
             </div>
             <div>
               <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
-              <p className="poppins font-medium text-gray-500">Ordem de finalização</p>
             </div>
           </div>
           <List listType="finalizacao" />

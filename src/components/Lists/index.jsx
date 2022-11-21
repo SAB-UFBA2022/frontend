@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react'
-import { DataGrid, GridCellParams, ptBR } from '@mui/x-data-grid'
+import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../utils/formatters'
 import Loading from '../Loading'
@@ -32,6 +32,7 @@ export default function StudentsList({ listType }) {
       field: 'edit',
       headerName: 'Editar',
       width: 80,
+      filterable: true,
       renderCell: () => <img src="/assets/icons/edit.svg" alt="Editar estudante" />
     },
     {
@@ -117,6 +118,7 @@ export default function StudentsList({ listType }) {
             pageSize={7}
             rowsPerPageOptions={[7]}
             disableColumnMenu
+            components={{ Toolbar: GridToolbar }}
             GridCellParams={students.scholarship}
             isRowSelectable={() => false}
             rowHeight={45}

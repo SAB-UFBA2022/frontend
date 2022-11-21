@@ -28,13 +28,13 @@ export default function StudentsList({ listType }) {
   }, [listType])
 
   const columns = [
-    {
+    /* {
       field: 'edit',
       headerName: 'Editar',
       width: 80,
       filterable: true,
       renderCell: () => <img src="/assets/icons/edit.svg" alt="Editar estudante" />
-    },
+    }, */
     {
       field: 'name',
       headerName: 'Nome completo',

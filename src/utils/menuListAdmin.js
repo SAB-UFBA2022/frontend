@@ -1,6 +1,12 @@
 export const menuListAdmin = [
   {
-    title: 'Lista de estudantes',
+    title: 'Relatórios',
+    icon: 'paper',
+    link: '/admin/relatorios',
+    color: 'red'
+  },
+  {
+    title: 'Lista de bolsistas',
     icon: 'list',
     link: '/admin/lista',
     color: 'blue'

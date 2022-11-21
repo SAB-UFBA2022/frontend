@@ -12,7 +12,7 @@ export default function DiscenteLista() {
               <img src="/assets/icons/list.svg" alt="Lista" />
             </div>
             <div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Bolsistas</h2>
               <p className="poppins font-medium text-gray-500">Ordem de finalização</p>
             </div>
           </div>

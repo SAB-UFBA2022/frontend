@@ -21,7 +21,10 @@ import {
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
   GET_EXPIRED_STUDENTS_ERROR,
-  GET_EXPIRED_STUDENTS_BEGIN
+  GET_EXPIRED_STUDENTS_BEGIN,
+  EXTEND_END_DATE_BEGIN,
+  EXTEND_END_DATE_SUCCESS,
+  EXTEND_END_DATE_ERROR
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -234,6 +237,32 @@ function AppProvider({ children }) {
     }
   }
 
+  const extendEndDate = async (scholarshipId, endDate) => {
+    dispatch({ type: EXTEND_END_DATE_BEGIN })
+    const formatDate = endDate.split('-').join('/')
+    try {
+      await axios.post(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/scholarship/${scholarshipId}/update/end/`,
+        { newFinalDate: formatDate }
+      )
+      dispatch({
+        type: EXTEND_END_DATE_SUCCESS,
+        payload: 'Data de término estendida com sucesso.'
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 5000)
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        displayFormAlert('A nova data deve ser posterior à data de término atual')
+        dispatch({ type: EXTEND_END_DATE_ERROR })
+      } else {
+        displayFormAlert('Erro ao estender data de término')
+        dispatch({ type: EXTEND_END_DATE_ERROR })
+      }
+    }
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -249,7 +278,8 @@ function AppProvider({ children }) {
         getStudentsEndDate,
         forgetPassword,
         displayFormAlert,
-        getStudentData
+        getStudentData,
+        extendEndDate
       }}
     >
       {children}

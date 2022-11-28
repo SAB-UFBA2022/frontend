@@ -28,6 +28,7 @@ const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const roles = localStorage.getItem('role')
 const username = localStorage.getItem('name')
+const userId = localStorage.getItem('id')
 
 const initialState = {
   isLoading: false,
@@ -36,6 +37,7 @@ const initialState = {
   alertType: '',
   alertText: '',
   expandSidebar: false,
+  id: userId || 0,
   user: user || null,
   token: token || '',
   userRole: roles || '',
@@ -77,11 +79,12 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
-  const addUserToLocalStorage = (taxId, accessToken, userRole, userName) => {
+  const addUserToLocalStorage = (taxId, accessToken, userRole, userName, id) => {
     localStorage.setItem('user', JSON.stringify(taxId))
     localStorage.setItem('token', accessToken)
     localStorage.setItem('role', userRole)
     localStorage.setItem('name', userName)
+    localStorage.setItem('id', id)
   }
 
   const removeUserFromLocalStorage = () => {
@@ -89,6 +92,7 @@ function AppProvider({ children }) {
     localStorage.removeItem('user')
     localStorage.removeItem('role')
     localStorage.removeItem('name')
+    localStorage.removeItem('id')
   }
 
   const forgetPassword = async (forgestPasswordData) => {
@@ -125,12 +129,12 @@ function AppProvider({ children }) {
         'https://aux-bolsistas-dev.herokuapp.com/login',
         currentUser
       )
-      const { tax_id, access_token, role, name } = data
+      const { tax_id, access_token, role, name, id } = data
       dispatch({
         type: LOGIN_USER_SUCCESS,
-        payload: { tax_id, access_token, role, name }
+        payload: { tax_id, access_token, role, name, id }
       })
-      addUserToLocalStorage(tax_id, access_token, role, name)
+      addUserToLocalStorage(tax_id, access_token, role, name, id)
     } catch (error) {
       if (!error?.response) {
         dispatch({ type: LOGIN_USER_ERROR, payload: 'Sem resposta do servidor' })
@@ -218,6 +222,18 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
+  const getStudentData = async () => {
+    dispatch({ type: GET_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byid/${userId}`
+      )
+      dispatch({ type: GET_STUDENTS_SUCCESS, payload: data })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar dados' })
+    }
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -232,7 +248,8 @@ function AppProvider({ children }) {
         getExpiredStudents,
         getStudentsEndDate,
         forgetPassword,
-        displayFormAlert
+        displayFormAlert,
+        getStudentData
       }}
     >
       {children}

@@ -1,6 +1,12 @@
 export const menuListDocente = [
   {
-    title: 'Lista de estudantes',
+    title: 'Relatórios',
+    icon: 'paper',
+    link: '/docente/relatorios',
+    color: 'red'
+  },
+  {
+    title: 'Lista de bolsistas',
     icon: 'list',
     link: '/docente/lista',
     color: 'yellow'

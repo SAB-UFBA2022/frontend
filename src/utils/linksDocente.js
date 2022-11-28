@@ -5,7 +5,12 @@ export const linksDocente = [
     path: '/docente/dashboard'
   },
   {
-    name: 'Estudantes',
+    name: 'Relatórios',
+    icon: 'paper',
+    path: '/docente/relatorios'
+  },
+  {
+    name: 'Bolsistas',
     icon: 'list',
     path: '/docente/lista'
   },
@@ -13,11 +18,6 @@ export const linksDocente = [
     name: 'Bolsas Expiradas',
     icon: 'cancel',
     path: '/docente/bolsas/expiradas'
-  },
-  {
-    name: 'Relatórios',
-    icon: 'paper',
-    path: '/docente/relatorios'
   },
   {
     name: 'Perfil',

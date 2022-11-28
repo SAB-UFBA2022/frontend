@@ -5,12 +5,14 @@ import {
   AdminDashboard,
   AdminLista,
   AdminBolsasExpiradas,
+  AdminRelatorios,
   DiscenteDashboard,
   DiscenteEstenderBolsa,
   DocenteDashboard,
   ForgetPassword,
   DocenteLista,
   DocenteBolsasExpiradas,
+  DocenteRelatorios,
   Login,
   Page404
 } from './pages'
@@ -34,6 +36,7 @@ export default function App() {
           <Route path="docente/dashboard" element={<DocenteDashboard />} />
           <Route path="docente/lista" element={<DocenteLista />} />
           <Route path="docente/bolsas/expiradas" element={<DocenteBolsasExpiradas />} />
+          <Route path="docente/relatorios" element={<DocenteRelatorios />} />
         </Route>
 
         {/* Rotas de usuário administrador */}
@@ -41,6 +44,7 @@ export default function App() {
           <Route path="admin/dashboard" element={<AdminDashboard />} />
           <Route path="admin/lista" element={<AdminLista />} />
           <Route path="admin/bolsas/expiradas" element={<AdminBolsasExpiradas />} />
+          <Route path="admin/relatorios" element={<AdminRelatorios />} />
         </Route>
 
         {/* Qualquer rota */}

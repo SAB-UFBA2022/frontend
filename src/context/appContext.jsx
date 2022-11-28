@@ -17,6 +17,9 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
+  GET_ADVISORS_BEGIN,
+  GET_ADVISORS_SUCCESS,
+  GET_ADVISORS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
@@ -51,6 +54,7 @@ const initialState = {
   userRole: roles || '',
   name: username || '',
   students: [],
+  advisors: [],
   totalItems: 0,
   totalPages: 1,
   currentPage: 1,
@@ -231,6 +235,22 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
+  const getAdvisors = async () => {
+    dispatch({ type: GET_ADVISORS_BEGIN })
+
+    try{
+      const { data } = await axios.get(
+        'https://aux-bolsistas-dev.herokuapp.com/v1/advisor/list/all'
+      )
+      dispatch({
+        type: GET_ADVISORS_SUCCESS,
+        payload: data
+      })
+    } catch (error) {
+      dispatch({ type: GET_ADVISORS_ERROR, payload: 'Erro ao carregar lista de professores' })
+    }
+  }
+
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
@@ -284,6 +304,7 @@ function AppProvider({ children }) {
         logoutUser,
         toggleSidebar,
         getStudents,
+        getAdvisors,
         changePage,
         handleChange,
         getExpiredStudents,

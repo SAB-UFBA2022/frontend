@@ -13,6 +13,9 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
+  GET_ADVISORS_BEGIN,
+  GET_ADVISORS_SUCCESS,
+  GET_ADVISORS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
   SAVE_USER_BEGIN,
@@ -98,7 +101,23 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-
+  if (action.type === GET_ADVISORS_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false }
+  }
+  if (action.type === GET_ADVISORS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      advisors: action.payload
+    }
+  }
+  if (action.type === GET_ADVISORS_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
   if (action.type === FORGET_PASSWORD_BEGIN) {
     return {
       ...state,

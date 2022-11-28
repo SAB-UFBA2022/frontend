@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, FormSelect, Alert } from '..'
@@ -20,14 +20,21 @@ export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword, showAlert } = 
+  const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword, showAlert, advisors, getAdvisors } = 
     useAppContext()
+
+  useEffect(() => {
+    getAdvisors()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
+
   let flag = true
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
-
+  
   const handleSubmit = (e) => {
+    console.log(advisors)
     e.preventDefault()
     const {
       matricula_id,
@@ -127,7 +134,7 @@ export default function CompleteCadastroForm() {
           id="orientador_id"
           name="orientador_id"
           value={{
-            elements: {
+            elements:{
               1: 'Fred Durão',
               10: 'Leobino'
             }

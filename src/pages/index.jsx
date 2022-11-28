@@ -2,6 +2,7 @@ import AdminDashboard from './Admin/Dashboard'
 import AdminBolsasExpiradas from './Admin/BolsasExpiradas'
 import AdminLista from './Admin/Lista'
 import DiscenteDashboard from './Discente/Dashboard'
+import DiscenteEstenderBolsa from './Discente/Estender'
 import DocenteDashboard from './Docente/Dashboard'
 import DocenteLista from './Docente/Lista'
 import DocenteBolsasExpiradas from './Docente/BolsasExpiradas'
@@ -14,6 +15,7 @@ export {
   AdminBolsasExpiradas,
   AdminLista,
   DiscenteDashboard,
+  DiscenteEstenderBolsa,
   DocenteLista,
   DocenteDashboard,
   DocenteBolsasExpiradas,

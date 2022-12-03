@@ -17,7 +17,7 @@ export default function DocenteRelatorios() {
           </div>
           <Button>
             <a
-              href="https://aux-bolsistas-dev.herokuapp.com/v1/article/generate-pdf"
+              href={`${process.env.REACT_APP_BASE_URL}/v1/article/generate-pdf`}
               className="flex h-full w-full items-center justify-center"
             >
               Download PDF

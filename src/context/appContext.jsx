@@ -103,11 +103,11 @@ function AppProvider({ children }) {
     dispatch({ type: FORGET_PASSWORD_BEGIN })
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byemail?email=${email}`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/find/byemail?email=${email}`
       )
       if (data) {
         await axios.post(
-          'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
+          `${process.env.REACT_APP_BASE_URL}/v1/password-recovery/request`,
           forgestPasswordData
         )
         dispatch({
@@ -128,10 +128,7 @@ function AppProvider({ children }) {
   const loginUser = async (currentUser) => {
     dispatch({ type: LOGIN_USER_BEGIN })
     try {
-      const { data } = await axios.post(
-        'https://aux-bolsistas-dev.herokuapp.com/login',
-        currentUser
-      )
+      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/login`, currentUser)
       const { tax_id, access_token, role, name, id } = data
       dispatch({
         type: LOGIN_USER_SUCCESS,
@@ -165,7 +162,7 @@ function AppProvider({ children }) {
 
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
       dispatch({
         type: GET_STUDENTS_SUCCESS,
@@ -190,7 +187,7 @@ function AppProvider({ children }) {
     dispatch({ type: GET_EXPIRED_STUDENTS_BEGIN })
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
       const expiredStudents = data.filter((student) => student.scholarship.active === false)
       dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: expiredStudents })
@@ -204,7 +201,7 @@ function AppProvider({ children }) {
 
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
       const studentList = data
         .sort((a, b) => {
@@ -229,7 +226,7 @@ function AppProvider({ children }) {
     dispatch({ type: GET_STUDENTS_BEGIN })
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byid/${userId}`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/find/byid/${userId}`
       )
       dispatch({ type: GET_STUDENTS_SUCCESS, payload: data })
     } catch (error) {
@@ -242,7 +239,7 @@ function AppProvider({ children }) {
     const formatDate = endDate.split('-').join('/')
     try {
       await axios.post(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/scholarship/${scholarshipId}/update/end/`,
+        `${process.env.REACT_APP_BASE_URL}/v1/scholarship/${scholarshipId}/update/end/`,
         { newFinalDate: formatDate }
       )
       dispatch({

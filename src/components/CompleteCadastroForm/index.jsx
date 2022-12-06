@@ -20,7 +20,7 @@ export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, usertax_id, username, useremail, userphone, userpassword, showAlert, advisors, getAdvisors } = 
+  const { displayAlert, saveUser, showAlert, advisors, getAdvisors } = 
     useAppContext()
 
   useEffect(() => {
@@ -52,16 +52,16 @@ export default function CompleteCadastroForm() {
       flag = false
     }
     const dataUser = {
-      tax_id: usertax_id,
+      tax_id: localStorage.getItem('taxId'),
       enrollment_number: matricula_id,
-      name: username,
-      email: useremail,
+      name: localStorage.getItem('name'),
+      email: localStorage.getItem('email'),
       course: curso_id,
       link_lattes: curriculo_id,
       advisor_id: Number(orientador_id),
       enrollment_date_pgcomp: defesa_id,
-      phone_number: userphone,
-      password: userpassword,
+      phone_number: localStorage.getItem('phone'),
+      password: localStorage.getItem('password'),
       role: 'STUDENT',
       scholarship: {
         scholarship_starts_at: inicio_id,

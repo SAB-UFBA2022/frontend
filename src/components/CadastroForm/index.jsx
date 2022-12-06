@@ -5,10 +5,10 @@ import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, PasswordInput, Alert } from '..'
 
 const initialState = {
-  name_id: '',
-  tax_id: '',
-  email_id: '',
-  phone_id: '',
+  name_id: localStorage.getItem('name') ? localStorage.getItem('name') : '',
+  tax_id: localStorage.getItem('taxId') ? localStorage.getItem('taxId') : '',
+  email_id: localStorage.getItem('email') ? localStorage.getItem('email') : '',
+  phone_id: localStorage.getItem('phone') ? localStorage.getItem('phone') : '',
   password: '',
   confirm_password: ''
 }

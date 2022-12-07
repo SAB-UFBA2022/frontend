@@ -213,6 +213,30 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
+  if (action.type === DELETE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === DELETE_USER_SUCCESS) {
+    const  id = action.payload
+    toast.success('Exclusão realizada com sucesso.')
+    return {
+      ...state,
+      isLoading: false,
+      user: id,
+      
+    }
+  }
+  if (action.type === DELETE_USER_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+
 
   throw new Error(`Não existe ação : ${action.type}`)
 }

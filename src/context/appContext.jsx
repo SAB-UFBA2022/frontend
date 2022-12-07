@@ -272,6 +272,22 @@ function AppProvider({ children }) {
     }
   }
 
+  const delStudentById = async (id) => {
+    dispatch({ type: DELETE_USER_BEGIN })
+    try {
+      await axios.delete(`https://aux-bolsistas-dev.herokuapp.com/v1/students/${id}`)
+      dispatch({ type: DELETE_USER_SUCCESS})
+    } catch (error) {
+        if (!error?.response) {
+          dispatch({ type: DELETE_USER_ERROR, payload: 'Sem resposta do servidor' })
+        } else if (error?.response?.status === 400) {
+          dispatch({ type: DELETE_USER_ERROR, payload: error?.response?.data?.message })
+        } else {
+          dispatch({ type: DELETE_USER_ERROR, payload: 'Erro inesperado.Tente novamente' })
+        }
+    }
+  }
+
   const getStudentsEndDate = async () => {
     dispatch({ type: GET_STUDENTS_BEGIN })
 

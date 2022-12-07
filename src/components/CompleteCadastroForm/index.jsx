@@ -20,14 +20,32 @@ export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, showAlert, advisors, getAdvisors } = 
+  const { displayAlert, saveUser, showAlert/*, advisors, getAdvisors*/ } = 
     useAppContext()
 
+
+  /*
   useEffect(() => {
     getAdvisors()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+  */
 
+  //Esse array está sendo utilizado para testes. Versão atual utiliza o bloco de useEffect() que está acima.
+  //Para funcionamento real com o banco, tirar os comentários da linha 23 e do bloco do useEffect() (Linhas 28-32).
+  //Também deletar esse array.
+  const advisors = [
+    { 'id': 1, 'name': 'Fred Durão' },
+    { 'id': 2, 'name': 'Leôncio' },
+    { 'id': 3, 'name': 'Gustavo' }
+  ]
+
+  const agencies = [
+    { 'id': 1, 'name': 'CNPQ' },
+    { 'id': 2, 'name': 'Fapesb' },
+    { 'id': 3, 'name': 'Capes' }
+  ]
+  
   let flag = true
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -128,22 +146,26 @@ export default function CompleteCadastroForm() {
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
-        <FormSelect
-          label="Nome do orientador"
-          id="orientador_id"
-          name="orientador_id"
-          value={{
-            elements:{
-              1: 'Fred Durão',
-              10: 'Leobino'
-            }
-          }}
-          defaultValue="Fred Durão"
-          handleChange={handleChange}
-          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-        focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
+      <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
+      <label htmlFor="Orientador" className="text-base font-medium leading-7 text-gray-800">
+        Orientador
+      </label>
+      <select
+        id="orientador_id"
+        name="orientador_id"
+        value={values.orientador_id}
+        onChange={handleChange}
+        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 bg-white px-4 py-3 text-base font-normal leading-6
+          text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
+      >
+        {advisors.map((advisor) => {
+          return (
+            <option key={advisor.id} value={advisor.id}>
+              {advisor.name}
+            </option>
+          )
+        })}
+      </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
@@ -161,23 +183,26 @@ export default function CompleteCadastroForm() {
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
-        <FormSelect
-          label="Agência"
-          id="agencia_id"
-          name="agencia_id"
-          value={{
-            elements: {
-              1: 'CNPQ',
-              2: 'Fapesb',
-              3: 'Capes'
-            }
-          }}
-          defaultValue="CNPQ"
-          handleChange={handleChange}
-          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-        focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
+      <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
+      <label htmlFor="Agencias" className="text-base font-medium leading-7 text-gray-800">
+        Agências
+      </label>
+      <select
+        id="agencia_id"
+        name="agencia_id"
+        value={values.agencia_id}
+        onChange={handleChange}
+        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 bg-white px-4 py-3 text-base font-normal leading-6
+          text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
+      >
+        {agencies.map((agency) => {
+          return (
+            <option key={agency.id} value={agency.id}>
+              {agency.name}
+            </option>
+          )
+        })}
+      </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput

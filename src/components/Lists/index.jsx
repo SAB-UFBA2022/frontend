@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react'
-import { DataGrid, GridCellParams } from '@mui/x-data-grid'
+import { DataGrid, ptBR, GridToolbar } from '@mui/x-data-grid'
 
 import { formatDate, formatPhone } from '../../utils/formatters'
 import Loading from '../Loading'
@@ -28,9 +28,16 @@ export default function StudentsList({ listType }) {
   }, [listType])
 
   const columns = [
+    /* {
+      field: 'edit',
+      headerName: 'Editar',
+      width: 80,
+      filterable: true,
+      renderCell: () => <img src="/assets/icons/edit.svg" alt="Editar estudante" />
+    }, */
     {
       field: 'name',
-      headerName: 'Nome Completo',
+      headerName: 'Nome completo',
       width: 260,
       renderCell: (params) => (
         <div className="flex items-center gap-x-2 overflow-auto">
@@ -47,19 +54,19 @@ export default function StudentsList({ listType }) {
     },
     {
       field: 'enrollment_date_pgcomp',
-      headerName: 'Data de Matrícula',
+      headerName: 'Data de matrícula',
       width: 150,
       renderCell: (params) => formatDate(params.row.enrollment_date_pgcomp)
     },
     {
       field: 'scholarship_starts_at',
-      headerName: 'Início da Bolsa',
+      headerName: 'Início da bolsa',
       width: 120,
       renderCell: (params) => formatDate(params.row.scholarship.scholarship_starts_at)
     },
     {
       field: 'scholarship_ends_at',
-      headerName: 'Fim da Bolsa',
+      headerName: 'Fim da bolsa',
       width: 120,
       renderCell: (params) => formatDate(params.row.scholarship.scholarship_ends_at)
     },
@@ -79,7 +86,16 @@ export default function StudentsList({ listType }) {
       field: 'phone_number',
       headerName: 'Telefone',
       width: 150,
-      renderCell: (params) => formatPhone(params.row.phone_number)
+      renderCell: (params) => (
+        <a
+          href={`https://wa.me/${params.row.phone_number}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-500 underline"
+        >
+          {formatPhone(params.row.phone_number)}
+        </a>
+      )
     },
     {
       field: 'link_lattes',
@@ -96,18 +112,6 @@ export default function StudentsList({ listType }) {
           Link
         </a>
       )
-    },
-    {
-      field: 'active',
-      headerName: 'Bolsa ativa',
-      width: 100,
-      align: 'center',
-      renderCell: (params) =>
-        params.row.scholarship.active ? (
-          <p className="text-green-500">Sim</p>
-        ) : (
-          <p className="text-red-500">Não</p>
-        )
     }
   ]
 
@@ -123,10 +127,13 @@ export default function StudentsList({ listType }) {
             pageSize={7}
             rowsPerPageOptions={[7]}
             disableColumnMenu
+            components={{ Toolbar: GridToolbar }}
             GridCellParams={students.scholarship}
             isRowSelectable={() => false}
             rowHeight={45}
             autoHeight
+            disableDensitySelector
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
           />
         </div>
       )}

@@ -26,7 +26,10 @@ import {
   PRE_SAVE_USER_ERROR,
   DELETE_USER_BEGIN,
   DELETE_USER_SUCCESS,
-  DELETE_USER_ERROR
+  DELETE_USER_ERROR,
+  EXTEND_END_DATE_BEGIN,
+  EXTEND_END_DATE_SUCCESS,
+  EXTEND_END_DATE_ERROR
 } from './actions'
 
 import { initialState } from './appContext' // eslint-disable-line
@@ -56,14 +59,15 @@ const reducer = (state, action) => {
     }
   }
   if (action.type === LOGIN_USER_SUCCESS) {
-    const { tax_id, access_token, role } = action.payload
+    const { tax_id, access_token, role, id } = action.payload
     toast.success('Login realizado com sucesso.')
     return {
       ...state,
       isLoading: false,
       user: tax_id,
       userRole: role,
-      token: access_token
+      token: access_token,
+      id
     }
   }
   if (action.type === LOGIN_USER_ERROR) {
@@ -171,7 +175,7 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-
+  
   if (action.type === PRE_SAVE_USER_BEGIN) {
     return {
       ...state,
@@ -195,7 +199,6 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-
   if (action.type === SAVE_USER_BEGIN) {
     return {
       ...state,
@@ -233,6 +236,25 @@ const reducer = (state, action) => {
   }
   if (action.type === DELETE_USER_ERROR) {
     toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  if (action.type === EXTEND_END_DATE_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === EXTEND_END_DATE_SUCCESS) {
+    toast.success(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  if (action.type === EXTEND_END_DATE_ERROR) {
     return {
       ...state,
       isLoading: false

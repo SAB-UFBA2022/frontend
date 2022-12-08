@@ -33,7 +33,10 @@ import {
   PRE_SAVE_USER_ERROR,
   DELETE_USER_SUCCESS,
   DELETE_USER_BEGIN,
-  DELETE_USER_ERROR
+  DELETE_USER_ERROR,
+  EXTEND_END_DATE_BEGIN,
+  EXTEND_END_DATE_SUCCESS,
+  EXTEND_END_DATE_ERROR
 } from './actions'
 
 const token = localStorage.getItem('token')
@@ -44,6 +47,7 @@ const useremail = localStorage.getItem('email')
 const userphone = localStorage.getItem('phone')
 const userpassword = localStorage.getItem('password')
 const usertax_id = localStorage.getItem('taxId')
+const userId = localStorage.getItem('id')
 
 const initialState = {
   isLoading: false,
@@ -52,6 +56,7 @@ const initialState = {
   alertType: '',
   alertText: '',
   expandSidebar: false,
+  id: userId || 0,
   user: user || null,
   token: token || '',
   userRole: roles || '',
@@ -102,11 +107,12 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
-  const addUserToLocalStorage = (taxId, accessToken, userRole, userName) => {
+  const addUserToLocalStorage = (taxId, accessToken, userRole, userName, id) => {
     localStorage.setItem('user', JSON.stringify(taxId))
     localStorage.setItem('token', accessToken)
     localStorage.setItem('role', userRole)
     localStorage.setItem('name', userName)
+    localStorage.setItem('id', id)
   }
 
   const removeUserFromLocalStorage = () => {
@@ -114,6 +120,7 @@ function AppProvider({ children }) {
     localStorage.removeItem('user')
     localStorage.removeItem('role')
     localStorage.removeItem('name')
+    localStorage.removeItem('id')
   }
 
   const saveUserToLocalStorage = (nameId, taxId, emailId, phoneId, password) => {
@@ -155,12 +162,12 @@ function AppProvider({ children }) {
     dispatch({ type: LOGIN_USER_BEGIN })
     try {
       const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/login`, currentUser)
-      const { tax_id, access_token, role, name } = data
+      const { tax_id, access_token, role, name, id } = data
       dispatch({
         type: LOGIN_USER_SUCCESS,
-        payload: { tax_id, access_token, role, name }
+        payload: { tax_id, access_token, role, name, id }
       })
-      addUserToLocalStorage(tax_id, access_token, role, name)
+      addUserToLocalStorage(tax_id, access_token, role, name, id)
     } catch (error) {
       if (!error?.response) {
         dispatch({ type: LOGIN_USER_ERROR, payload: 'Sem resposta do servidor' })
@@ -293,11 +300,14 @@ function AppProvider({ children }) {
       const { data } = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
-      const studentList = data.sort((a, b) => {
-        return (
-          new Date(a.scholarship.scholarship_ends_at) - new Date(b.scholarship.scholarship_ends_at)
-        )
-      })
+      const studentList = data
+        .sort((a, b) => {
+          return (
+            new Date(a.scholarship.scholarship_ends_at) -
+            new Date(b.scholarship.scholarship_ends_at)
+          )
+        })
+        .filter((student) => student.scholarship.active === true)
       dispatch({
         type: GET_STUDENTS_SUCCESS,
         payload: studentList
@@ -307,6 +317,44 @@ function AppProvider({ children }) {
     }
 
     clearAlert()
+  }
+
+  const getStudentData = async () => {
+    dispatch({ type: GET_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/v1/students/find/byid/${userId}`
+      )
+      dispatch({ type: GET_STUDENTS_SUCCESS, payload: data })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar dados' })
+    }
+  }
+
+  const extendEndDate = async (scholarshipId, endDate) => {
+    dispatch({ type: EXTEND_END_DATE_BEGIN })
+    const formatDate = endDate.split('-').join('/')
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/v1/scholarship/${scholarshipId}/update/end/`,
+        { newFinalDate: formatDate }
+      )
+      dispatch({
+        type: EXTEND_END_DATE_SUCCESS,
+        payload: 'Data de término estendida com sucesso.'
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 5000)
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        displayFormAlert('A nova data deve ser posterior à data de término atual')
+        dispatch({ type: EXTEND_END_DATE_ERROR })
+      } else {
+        displayFormAlert('Erro ao estender data de término')
+        dispatch({ type: EXTEND_END_DATE_ERROR })
+      }
+    }
   }
 
   return (
@@ -327,7 +375,9 @@ function AppProvider({ children }) {
         displayFormAlert,
         preSaveUser,
         saveUser,
-        delStudentById
+        delStudentById,
+        getStudentData,
+        extendEndDate
       }}
     >
       {children}

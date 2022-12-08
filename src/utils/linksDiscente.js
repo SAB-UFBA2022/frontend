@@ -5,9 +5,9 @@ export const linksDiscente = [
     path: '/discente/dashboard'
   },
   {
-    name: 'Relatórios',
-    icon: 'paper',
-    path: '/discente/relatorios'
+    name: 'Estender bolsa',
+    icon: 'plus',
+    path: '/discente/estender'
   },
   {
     name: 'Perfil',

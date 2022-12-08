@@ -8,7 +8,9 @@ export default function DiscenteDashboard() {
       <Sidebar userType="student" />
       <div className="flex w-full flex-col items-center justify-center gap-5">
         <h1 className="font-poppins text-4xl font-semibold">Discente Dashboard</h1>
-        <p className="text-4xl font-medium">Olá, {name}</p>
+        <p className="text-4xl font-medium">
+          Olá, {localStorage.getItem('name') ? localStorage.getItem('name') : name}
+        </p>
       </div>
     </div>
   )

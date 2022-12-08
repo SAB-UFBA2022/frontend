@@ -1,31 +1,51 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
-import { FormInput, Button, FormSelect, Alert } from '..'
+import { FormInput, Button, Alert } from '..'
 
 const initialState = {
-  matricula_id: '',
+  matricula_id: localStorage.getItem('') ? localStorage.getItem('') : '',
   curso_id: 'Mestrado',
   orientador_id: 1,
-  curriculo_id: '',
+  curriculo_id: localStorage.getItem('') ? localStorage.getItem('') : '',
   agencia_id: 1,
   inicio_id: '',
   fim_id: '',
   defesa_id: '',
-  bolsa_id: ''
+  bolsa_id: localStorage.getItem('') ? localStorage.getItem('') : ''
 }
 
 export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, showAlert, advisors, getAdvisors } = useAppContext()
+  const { displayAlert, saveUser, showAlert } = useAppContext()
 
+  /*
   useEffect(() => {
     getAdvisors()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  },[])
+  */
+
+  /*
+  Esse array está sendo utilizado para testes. Versão atual utiliza o bloco de useEffect() que está acima.
+  Para funcionamento real com o banco, tirar os comentários da linha 23 e do bloco do useEffect() (Linhas 28-32).
+  Também deletar esse array.
+  */
+  const advisors = [
+    { id: 1, name: 'Fred Durão' },
+    { id: 2, name: 'Leôncio' },
+    { id: 3, name: 'Gustavo' }
+  ]
+
+  const agencies = [
+    { id: 1, name: 'CNPQ' },
+    { id: 2, name: 'Fapesb' },
+    { id: 3, name: 'Capes' }
+  ]
 
   let flag = true
   const handleChange = (e) => {
@@ -33,7 +53,6 @@ export default function CompleteCadastroForm() {
   }
 
   const handleSubmit = (e) => {
-    console.log(advisors)
     e.preventDefault()
     console.log(values, 2000)
     const {
@@ -125,25 +144,29 @@ export default function CompleteCadastroForm() {
           autoComplete="off"
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-        focus:outline-none focus:ring-1 focus:ring-sky-500"
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
-        <FormSelect
-          label="Nome do orientador"
+        <label htmlFor="Orientador" className="text-base font-medium leading-7 text-gray-800">
+          Orientador
+        </label>
+        <select
           id="orientador_id"
           name="orientador_id"
-          value={{
-            elements: {
-              1: 'Fred Durão',
-              10: 'Leobino'
-            }
-          }}
-          defaultValue={1}
-          handleChange={handleChange}
+          value={values.orientador_id}
+          onChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-        focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
+        >
+          {advisors.map((advisor) => {
+            return (
+              <option key={advisor.id} value={advisor.id}>
+                {advisor.name}
+              </option>
+            )
+          })}
+        </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
@@ -162,22 +185,25 @@ export default function CompleteCadastroForm() {
         />
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
-        <FormSelect
-          label="Agência"
+        <label htmlFor="Agencias" className="text-base font-medium leading-7 text-gray-800">
+          Agências
+        </label>
+        <select
           id="agencia_id"
           name="agencia_id"
-          value={{
-            elements: {
-              1: 'CNPQ',
-              2: 'Fapesb',
-              3: 'Capes'
-            }
-          }}
-          defaultValue={1}
-          handleChange={handleChange}
-          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-        focus:outline-none focus:ring-1 focus:ring-sky-500"
-        />
+          value={values.agencia_id}
+          onChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 bg-white px-4 py-3 text-base font-normal leading-6
+          text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
+        >
+          {agencies.map((agency) => {
+            return (
+              <option key={agency.id} value={agency.id}>
+                {agency.name}
+              </option>
+            )
+          })}
+        </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
@@ -223,7 +249,14 @@ export default function CompleteCadastroForm() {
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <div className=" flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+      <div className=" flex h-[109px] w-1/3 flex-col gap-y-2 px-2 py-6 text-base font-medium leading-7 text-gray-800">
+        <Button color="green" loading={loading}>
+          <Link to="/cadastro" className="flex h-full w-full items-center justify-center">
+            Voltar
+          </Link>
+        </Button>
+      </div>
+      <div className=" flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 py-6 text-base font-medium leading-7 text-gray-800">
         <Button type="submit" color="blue" loading={loading}>
           Salvar
         </Button>

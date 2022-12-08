@@ -23,7 +23,10 @@ import {
   SAVE_USER_ERROR,
   PRE_SAVE_USER_BEGIN,
   PRE_SAVE_USER_SUCCESS,
-  PRE_SAVE_USER_ERROR
+  PRE_SAVE_USER_ERROR,
+  DELETE_USER_BEGIN,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_ERROR
 } from './actions'
 
 import { initialState } from './appContext' // eslint-disable-line
@@ -220,13 +223,12 @@ const reducer = (state, action) => {
     }
   }
   if (action.type === DELETE_USER_SUCCESS) {
-    const  id = action.payload
+    const id = action.payload
     toast.success('Exclusão realizada com sucesso.')
     return {
       ...state,
       isLoading: false,
-      user: id,
-      
+      user: id
     }
   }
   if (action.type === DELETE_USER_ERROR) {
@@ -236,8 +238,6 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-
-
   throw new Error(`Não existe ação : ${action.type}`)
 }
 

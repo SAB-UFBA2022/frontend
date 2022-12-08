@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
-import { FormInput, Button, FormSelect, Alert } from '..'
+import { FormInput, Button, Alert } from '..'
 
 const initialState = {
   matricula_id: '',
@@ -20,9 +20,7 @@ export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, showAlert/*, advisors, getAdvisors*/ } = 
-    useAppContext()
-
+  const { displayAlert, saveUser, showAlert } = useAppContext()
 
   /*
   useEffect(() => {
@@ -31,28 +29,29 @@ export default function CompleteCadastroForm() {
   },[])
   */
 
-  //Esse array está sendo utilizado para testes. Versão atual utiliza o bloco de useEffect() que está acima.
-  //Para funcionamento real com o banco, tirar os comentários da linha 23 e do bloco do useEffect() (Linhas 28-32).
-  //Também deletar esse array.
+  /*
+  Esse array está sendo utilizado para testes. Versão atual utiliza o bloco de useEffect() que está acima.
+  Para funcionamento real com o banco, tirar os comentários da linha 23 e do bloco do useEffect() (Linhas 28-32).
+  Também deletar esse array.
+  */
   const advisors = [
-    { 'id': 1, 'name': 'Fred Durão' },
-    { 'id': 2, 'name': 'Leôncio' },
-    { 'id': 3, 'name': 'Gustavo' }
+    { id: 1, name: 'Fred Durão' },
+    { id: 2, name: 'Leôncio' },
+    { id: 3, name: 'Gustavo' }
   ]
 
   const agencies = [
-    { 'id': 1, 'name': 'CNPQ' },
-    { 'id': 2, 'name': 'Fapesb' },
-    { 'id': 3, 'name': 'Capes' }
+    { id: 1, name: 'CNPQ' },
+    { id: 2, name: 'Fapesb' },
+    { id: 3, name: 'Capes' }
   ]
-  
+
   let flag = true
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
-  
+
   const handleSubmit = (e) => {
-    console.log(advisors)
     e.preventDefault()
     const {
       matricula_id,
@@ -143,29 +142,29 @@ export default function CompleteCadastroForm() {
           autoComplete="off"
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
-        focus:outline-none focus:ring-1 focus:ring-sky-500"
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
-      <label htmlFor="Orientador" className="text-base font-medium leading-7 text-gray-800">
-        Orientador
-      </label>
-      <select
-        id="orientador_id"
-        name="orientador_id"
-        value={values.orientador_id}
-        onChange={handleChange}
-        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 bg-white px-4 py-3 text-base font-normal leading-6
-          text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
-      >
-        {advisors.map((advisor) => {
-          return (
-            <option key={advisor.id} value={advisor.id}>
-              {advisor.name}
-            </option>
-          )
-        })}
-      </select>
+      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+        <label htmlFor="Orientador" className="text-base font-medium leading-7 text-gray-800">
+          Orientador
+        </label>
+        <select
+          id="orientador_id"
+          name="orientador_id"
+          value={values.orientador_id}
+          onChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
+          focus:outline-none focus:ring-1 focus:ring-sky-500"
+        >
+          {advisors.map((advisor) => {
+            return (
+              <option key={advisor.id} value={advisor.id}>
+                {advisor.name}
+              </option>
+            )
+          })}
+        </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput
@@ -183,26 +182,26 @@ export default function CompleteCadastroForm() {
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <div className="flex w-full max-w-[395px] flex-col gap-y-1.5 text-base font-medium leading-7 text-gray-800">
-      <label htmlFor="Agencias" className="text-base font-medium leading-7 text-gray-800">
-        Agências
-      </label>
-      <select
-        id="agencia_id"
-        name="agencia_id"
-        value={values.agencia_id}
-        onChange={handleChange}
-        className="placeholder-gray-400::placeholder w-full rounded-lg border border-gray-400 bg-white px-4 py-3 text-base font-normal leading-6
+      <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+        <label htmlFor="Agencias" className="text-base font-medium leading-7 text-gray-800">
+          Agências
+        </label>
+        <select
+          id="agencia_id"
+          name="agencia_id"
+          value={values.agencia_id}
+          onChange={handleChange}
+          className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 bg-white px-4 py-3 text-base font-normal leading-6
           text-gray-800 focus:outline-none focus:ring-1 focus:ring-sky-500"
-      >
-        {agencies.map((agency) => {
-          return (
-            <option key={agency.id} value={agency.id}>
-              {agency.name}
-            </option>
-          )
-        })}
-      </select>
+        >
+          {agencies.map((agency) => {
+            return (
+              <option key={agency.id} value={agency.id}>
+                {agency.name}
+              </option>
+            )
+          })}
+        </select>
       </div>
       <div className="flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
         <FormInput

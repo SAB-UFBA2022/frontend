@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom'
 import Sidebar from '../../../components/Sidebar'
 import { menuListDocente } from '../../../utils/menuListDocente'
 
-export default function DiscenteDashboard() {
+export default function DocenteDashboard() {
   return (
-    <div className="flex h-screen flex-col overflow-y-auto bg-gray-100 md:flex-row">
+    <div className="flex h-screen flex-col overflow-y-auto bg-gray-100 pb-4 md:flex-row">
       <Sidebar userType="teacher" />
-      <div className="flex w-full flex-col items-center justify-center gap-y-8 overflow-y-auto">
+      <div className="flex w-full flex-col items-center gap-y-8 overflow-y-auto p-4 md:justify-center">
         <div className="space-y-1.5 text-center">
-          <h1 className="font-poppins text-4xl font-semibold">Dashboard</h1>
-          <p className="font-inter text-base font-medium">
-            Escolha uma das opções para seguir na plataforma
-          </p>
+          <h1 className="font-poppins text-2xl font-semibold">
+            Sistema de acompanhamento de bolsistas do PGCOMP
+          </h1>
         </div>
         <div className="flex flex-col gap-5 lg:flex-row">
           {menuListDocente.map((card) => {
@@ -19,10 +18,14 @@ export default function DiscenteDashboard() {
               <Link
                 key={card.title}
                 to={card.link}
-                className={`flex h-60 w-64 flex-col items-center justify-center gap-y-4 rounded-md bg-${card.color}-400 transition-colors duration-300 hover:bg-${card.color}-500`}
+                className={`flex h-48 w-48 flex-col items-center justify-center gap-y-4 rounded-md md:h-52 md:w-52 bg-${card.color}-400 transition-colors duration-300`}
               >
-                <img src={`/assets/icons/${card.icon}.svg`} alt={card.title} className="w-16" />
-                <p className="font-poppins text-xl font-medium">{card.title}</p>
+                <img
+                  src={`/assets/icons/${card.icon}.svg`}
+                  alt={card.title}
+                  className="w-10 md:w-12"
+                />
+                <p className="font-poppins text-base font-medium md:text-lg">{card.title}</p>
               </Link>
             )
           })}

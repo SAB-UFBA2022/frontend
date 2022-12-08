@@ -5,7 +5,12 @@ export const linksAdmin = [
     path: '/admin/dashboard'
   },
   {
-    name: 'Estudantes',
+    name: 'Relatórios',
+    icon: 'paper',
+    path: '/admin/relatorios'
+  },
+  {
+    name: 'Bolsistas',
     icon: 'list',
     path: '/admin/lista'
   },

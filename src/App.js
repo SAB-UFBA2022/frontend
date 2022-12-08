@@ -5,11 +5,14 @@ import {
   AdminDashboard,
   AdminLista,
   AdminBolsasExpiradas,
+  AdminRelatorios,
   DiscenteDashboard,
+  DiscenteEstenderBolsa,
   DocenteDashboard,
   ForgetPassword,
   DocenteLista,
   DocenteBolsasExpiradas,
+  DocenteRelatorios,
   Login,
   Page404,
   Cadastro,
@@ -25,9 +28,11 @@ export default function App() {
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/complete-cadastro" element={<CompleteCadastro />} />
         <Route path="/esqueci-a-senha" element={<ForgetPassword />} />
+
         {/* Rotas de usuário discente */}
         <Route element={<RequireAuth allowedRoles="STUDENT" />}>
           <Route path="discente/dashboard" element={<DiscenteDashboard />} />
+          <Route path="discente/estender" element={<DiscenteEstenderBolsa />} />
         </Route>
 
         {/* Rotas de usuário docente */}
@@ -35,6 +40,7 @@ export default function App() {
           <Route path="docente/dashboard" element={<DocenteDashboard />} />
           <Route path="docente/lista" element={<DocenteLista />} />
           <Route path="docente/bolsas/expiradas" element={<DocenteBolsasExpiradas />} />
+          <Route path="docente/relatorios" element={<DocenteRelatorios />} />
         </Route>
 
         {/* Rotas de usuário administrador */}
@@ -42,6 +48,7 @@ export default function App() {
           <Route path="admin/dashboard" element={<AdminDashboard />} />
           <Route path="admin/lista" element={<AdminLista />} />
           <Route path="admin/bolsas/expiradas" element={<AdminBolsasExpiradas />} />
+          <Route path="admin/relatorios" element={<AdminRelatorios />} />
         </Route>
 
         {/* Qualquer rota */}

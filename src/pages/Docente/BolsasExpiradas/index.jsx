@@ -1,7 +1,7 @@
 import Sidebar from '../../../components/Sidebar'
 import List from '../../../components/Lists'
 
-export default function BolsasExpiradas() {
+export default function DocenteBolsasExpiradas() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="teacher" />
@@ -12,7 +12,7 @@ export default function BolsasExpiradas() {
               <img src="/assets/icons/cancel.svg" alt="Expirado" className="w-7" />
             </div>
             <div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
+              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de bolsistas</h2>
               <p className="poppins font-medium text-gray-500">Bolsas expiradas</p>
             </div>
           </div>

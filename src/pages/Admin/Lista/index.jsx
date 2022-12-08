@@ -1,7 +1,7 @@
 import List from '../../../components/Lists'
 import Sidebar from '../../../components/Sidebar'
 
-export default function DiscenteLista() {
+export default function AdminLista() {
   return (
     <div className="flex h-screen flex-col overflow-auto bg-gray-100 md:flex-row">
       <Sidebar userType="admin" />
@@ -12,8 +12,7 @@ export default function DiscenteLista() {
               <img src="/assets/icons/list.svg" alt="Lista" />
             </div>
             <div>
-              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Estudantes</h2>
-              <p className="poppins font-medium text-gray-500">Ordem de finalização</p>
+              <h2 className="poppins text-xl font-semibold text-gray-900">Lista de Bolsistas</h2>
             </div>
           </div>
           <List listType="finalizacao" />

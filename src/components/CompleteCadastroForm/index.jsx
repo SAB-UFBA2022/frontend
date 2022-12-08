@@ -20,22 +20,22 @@ export default function CompleteCadastroForm() {
   // const navigate = useNavigate()
   const [values, setValues] = useState(initialState)
   const [loading] = useState(false)
-  const { displayAlert, saveUser, showAlert, advisors, getAdvisors } = 
-    useAppContext()
+  const { displayAlert, saveUser, showAlert, advisors, getAdvisors } = useAppContext()
 
   useEffect(() => {
     getAdvisors()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  }, [])
 
   let flag = true
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
   }
-  
+
   const handleSubmit = (e) => {
     console.log(advisors)
     e.preventDefault()
+    console.log(values, 2000)
     const {
       matricula_id,
       curso_id,
@@ -134,12 +134,12 @@ export default function CompleteCadastroForm() {
           id="orientador_id"
           name="orientador_id"
           value={{
-            elements:{
+            elements: {
               1: 'Fred Durão',
               10: 'Leobino'
             }
           }}
-          defaultValue="Fred Durão"
+          defaultValue={1}
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"
@@ -173,7 +173,7 @@ export default function CompleteCadastroForm() {
               3: 'Capes'
             }
           }}
-          defaultValue="CNPQ"
+          defaultValue={1}
           handleChange={handleChange}
           className="placeholder-gray-400::placeholder w-full max-w-[395px] rounded-lg border border-gray-400 px-4 py-3 text-base font-normal leading-6 text-gray-800
         focus:outline-none focus:ring-1 focus:ring-sky-500"

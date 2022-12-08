@@ -25,6 +25,7 @@ export default function CadastroForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log(values, 1000)
     const { name_id, tax_id, email_id, phone_id, password, confirm_password } = values
     if (!name_id || !tax_id || !email_id || !phone_id || !password || !confirm_password) {
       displayAlert()

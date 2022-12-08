@@ -1,8 +1,8 @@
-//import { useAppContext } from '../../context/appContext'
+// import { useAppContext } from '../../context/appContext'
 import CompleteCadastroForm from '../../components/CompleteCadastroForm'
 
 export default function CompleteCadastro() {
-  //const { username } = useAppContext()
+  // const { username } = useAppContext()
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-100 p-6 md:p-0">
       <section className="flex w-full flex-col items-center justify-center gap-y-7 md:w-11/12 lg:w-9/12">

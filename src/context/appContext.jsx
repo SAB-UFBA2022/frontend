@@ -21,13 +21,17 @@ import {
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
   GET_EXPIRED_STUDENTS_ERROR,
-  GET_EXPIRED_STUDENTS_BEGIN
+  GET_EXPIRED_STUDENTS_BEGIN,
+  EXTEND_END_DATE_BEGIN,
+  EXTEND_END_DATE_SUCCESS,
+  EXTEND_END_DATE_ERROR
 } from './actions'
 
 const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const roles = localStorage.getItem('role')
 const username = localStorage.getItem('name')
+const userId = localStorage.getItem('id')
 
 const initialState = {
   isLoading: false,
@@ -36,6 +40,7 @@ const initialState = {
   alertType: '',
   alertText: '',
   expandSidebar: false,
+  id: userId || 0,
   user: user || null,
   token: token || '',
   userRole: roles || '',
@@ -77,11 +82,12 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
-  const addUserToLocalStorage = (taxId, accessToken, userRole, userName) => {
+  const addUserToLocalStorage = (taxId, accessToken, userRole, userName, id) => {
     localStorage.setItem('user', JSON.stringify(taxId))
     localStorage.setItem('token', accessToken)
     localStorage.setItem('role', userRole)
     localStorage.setItem('name', userName)
+    localStorage.setItem('id', id)
   }
 
   const removeUserFromLocalStorage = () => {
@@ -89,6 +95,7 @@ function AppProvider({ children }) {
     localStorage.removeItem('user')
     localStorage.removeItem('role')
     localStorage.removeItem('name')
+    localStorage.removeItem('id')
   }
 
   const forgetPassword = async (forgestPasswordData) => {
@@ -96,11 +103,11 @@ function AppProvider({ children }) {
     dispatch({ type: FORGET_PASSWORD_BEGIN })
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/find/byemail?email=${email}`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/find/byemail?email=${email}`
       )
       if (data) {
         await axios.post(
-          'https://aux-bolsistas-dev.herokuapp.com/v1/password-recovery/request',
+          `${process.env.REACT_APP_BASE_URL}/v1/password-recovery/request`,
           forgestPasswordData
         )
         dispatch({
@@ -121,16 +128,13 @@ function AppProvider({ children }) {
   const loginUser = async (currentUser) => {
     dispatch({ type: LOGIN_USER_BEGIN })
     try {
-      const { data } = await axios.post(
-        'https://aux-bolsistas-dev.herokuapp.com/login',
-        currentUser
-      )
-      const { tax_id, access_token, role, name } = data
+      const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/login`, currentUser)
+      const { tax_id, access_token, role, name, id } = data
       dispatch({
         type: LOGIN_USER_SUCCESS,
-        payload: { tax_id, access_token, role, name }
+        payload: { tax_id, access_token, role, name, id }
       })
-      addUserToLocalStorage(tax_id, access_token, role, name)
+      addUserToLocalStorage(tax_id, access_token, role, name, id)
     } catch (error) {
       if (!error?.response) {
         dispatch({ type: LOGIN_USER_ERROR, payload: 'Sem resposta do servidor' })
@@ -158,7 +162,7 @@ function AppProvider({ children }) {
 
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
       dispatch({
         type: GET_STUDENTS_SUCCESS,
@@ -183,7 +187,7 @@ function AppProvider({ children }) {
     dispatch({ type: GET_EXPIRED_STUDENTS_BEGIN })
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
       const expiredStudents = data.filter((student) => student.scholarship.active === false)
       dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: expiredStudents })
@@ -197,7 +201,7 @@ function AppProvider({ children }) {
 
     try {
       const { data } = await axios.get(
-        `https://aux-bolsistas-dev.herokuapp.com/v1/students/not-paginate/list/all`
+        `${process.env.REACT_APP_BASE_URL}/v1/students/not-paginate/list/all`
       )
       const studentList = data
         .sort((a, b) => {
@@ -218,6 +222,44 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
+  const getStudentData = async () => {
+    dispatch({ type: GET_STUDENTS_BEGIN })
+    try {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/v1/students/find/byid/${userId}`
+      )
+      dispatch({ type: GET_STUDENTS_SUCCESS, payload: data })
+    } catch (error) {
+      dispatch({ type: GET_STUDENTS_ERROR, payload: 'Erro ao carregar dados' })
+    }
+  }
+
+  const extendEndDate = async (scholarshipId, endDate) => {
+    dispatch({ type: EXTEND_END_DATE_BEGIN })
+    const formatDate = endDate.split('-').join('/')
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/v1/scholarship/${scholarshipId}/update/end/`,
+        { newFinalDate: formatDate }
+      )
+      dispatch({
+        type: EXTEND_END_DATE_SUCCESS,
+        payload: 'Data de término estendida com sucesso.'
+      })
+      setTimeout(() => {
+        window.location.reload()
+      }, 5000)
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        displayFormAlert('A nova data deve ser posterior à data de término atual')
+        dispatch({ type: EXTEND_END_DATE_ERROR })
+      } else {
+        displayFormAlert('Erro ao estender data de término')
+        dispatch({ type: EXTEND_END_DATE_ERROR })
+      }
+    }
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -232,7 +274,9 @@ function AppProvider({ children }) {
         getExpiredStudents,
         getStudentsEndDate,
         forgetPassword,
-        displayFormAlert
+        displayFormAlert,
+        getStudentData,
+        extendEndDate
       }}
     >
       {children}

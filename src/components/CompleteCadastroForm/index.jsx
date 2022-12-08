@@ -1,19 +1,20 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react'
 // import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
 import { FormInput, Button, Alert } from '..'
 
 const initialState = {
-  matricula_id: '',
+  matricula_id: localStorage.getItem('') ? localStorage.getItem('') : '',
   curso_id: 'Mestrado',
   orientador_id: 1,
-  curriculo_id: '',
+  curriculo_id: localStorage.getItem('') ? localStorage.getItem('') : '',
   agencia_id: 1,
   inicio_id: '',
   fim_id: '',
   defesa_id: '',
-  bolsa_id: ''
+  bolsa_id: localStorage.getItem('') ? localStorage.getItem('') : ''
 }
 
 export default function CompleteCadastroForm() {
@@ -247,7 +248,14 @@ export default function CompleteCadastroForm() {
         focus:outline-none focus:ring-1 focus:ring-sky-500"
         />
       </div>
-      <div className=" flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 text-base font-medium leading-7 text-gray-800">
+      <div className=" flex h-[109px] w-1/3 flex-col gap-y-2 px-2 py-6 text-base font-medium leading-7 text-gray-800">
+        <Button color="green" loading={loading}>
+          <Link to="/cadastro" className="flex h-full w-full items-center justify-center">
+            Voltar
+          </Link>
+        </Button>
+      </div>
+      <div className=" flex h-[109px] w-1/3 flex-col gap-y-1.5 px-2 py-6 text-base font-medium leading-7 text-gray-800">
         <Button type="submit" color="blue" loading={loading}>
           Salvar
         </Button>

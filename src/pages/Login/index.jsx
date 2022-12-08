@@ -96,7 +96,7 @@ export default function Login() {
         </form>
         <p className="text-center text-base font-normal leading-6">
           Ainda não tem uma conta?{' '}
-          <a href="/#" className="text-blue-600 transition-colors hover:text-blue-800">
+          <a href="/cadastro" className="text-blue-600 transition-colors hover:text-blue-800">
             Cadastre-se
           </a>
         </p>

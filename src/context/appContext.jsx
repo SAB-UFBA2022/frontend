@@ -17,11 +17,23 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
+  GET_ADVISORS_BEGIN,
+  GET_ADVISORS_SUCCESS,
+  GET_ADVISORS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
   GET_EXPIRED_STUDENTS_SUCCESS,
   GET_EXPIRED_STUDENTS_ERROR,
   GET_EXPIRED_STUDENTS_BEGIN,
+  SAVE_USER_BEGIN,
+  SAVE_USER_SUCCESS,
+  SAVE_USER_ERROR,
+  PRE_SAVE_USER_BEGIN,
+  PRE_SAVE_USER_SUCCESS,
+  PRE_SAVE_USER_ERROR,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_BEGIN,
+  DELETE_USER_ERROR,
   EXTEND_END_DATE_BEGIN,
   EXTEND_END_DATE_SUCCESS,
   EXTEND_END_DATE_ERROR
@@ -31,6 +43,10 @@ const token = localStorage.getItem('token')
 const user = localStorage.getItem('user')
 const roles = localStorage.getItem('role')
 const username = localStorage.getItem('name')
+const useremail = localStorage.getItem('email')
+const userphone = localStorage.getItem('phone')
+const userpassword = localStorage.getItem('password')
+const usertax_id = localStorage.getItem('taxId')
 const userId = localStorage.getItem('id')
 
 const initialState = {
@@ -46,6 +62,7 @@ const initialState = {
   userRole: roles || '',
   name: username || '',
   students: [],
+  advisors: [],
   totalItems: 0,
   totalPages: 1,
   currentPage: 1,
@@ -58,7 +75,15 @@ const initialState = {
   scholarshipOptions: ['Bolsas recentes', 'Bolsas próximas de encerrar'],
   sort: '',
   sortOptions: ['A-Z', 'Z-A'],
-  selectedItem: ''
+  selectedItem: '',
+  search: '',
+  searchStatus: 'Todos',
+  searchType: 'Todos',
+  username: username || '',
+  useremail: useremail || '',
+  userphone: userphone || '',
+  userpassword: userpassword || '',
+  usertax_id: usertax_id || ''
 }
 
 const AppContext = React.createContext()
@@ -96,6 +121,14 @@ function AppProvider({ children }) {
     localStorage.removeItem('role')
     localStorage.removeItem('name')
     localStorage.removeItem('id')
+  }
+
+  const saveUserToLocalStorage = (nameId, taxId, emailId, phoneId, password) => {
+    localStorage.setItem('name', nameId)
+    localStorage.setItem('taxId', taxId)
+    localStorage.setItem('email', emailId)
+    localStorage.setItem('phone', phoneId)
+    localStorage.setItem('password', password)
   }
 
   const forgetPassword = async (forgestPasswordData) => {
@@ -148,6 +181,40 @@ function AppProvider({ children }) {
     }
   }
 
+  const preSaveUser = async (dataUser) => {
+    dispatch({ type: PRE_SAVE_USER_BEGIN })
+    const { name_id, tax_id, email_id, phone_id, password } = dataUser
+    if (name_id && tax_id && email_id && phone_id && password) {
+      saveUserToLocalStorage(name_id, tax_id, email_id, phone_id, password)
+      dispatch({
+        type: PRE_SAVE_USER_SUCCESS,
+        payload: { name_id, tax_id, email_id, phone_id, password }
+      })
+    } else {
+      dispatch({ type: PRE_SAVE_USER_ERROR, payload: 'Preencha todos os campos' })
+    }
+  }
+
+  const saveUser = async (dataUser) => {
+    dispatch({ type: SAVE_USER_BEGIN })
+    try {
+      await axios.post(`${process.env.REACT_APP_BASE_URL}/v1/students`, dataUser)
+      dispatch({
+        type: SAVE_USER_SUCCESS
+      })
+    } catch (error) {
+      if (!error?.response) {
+        dispatch({ type: SAVE_USER_ERROR, payload: 'Sem resposta do servidor' })
+      } else if (error?.response?.status === 400) {
+        dispatch({ type: SAVE_USER_ERROR, payload: error?.response?.data?.message })
+      } else if (error?.response?.status === 401) {
+        dispatch({ type: SAVE_USER_ERROR, payload: 'Cadastro não autorizado' })
+      } else {
+        dispatch({ type: SAVE_USER_ERROR, payload: 'Erro inesperado.Tente novamente' })
+      }
+    }
+  }
+
   const logoutUser = () => {
     dispatch({ type: LOGOUT_USER })
     removeUserFromLocalStorage()
@@ -175,6 +242,20 @@ function AppProvider({ children }) {
     clearAlert()
   }
 
+  const getAdvisors = async () => {
+    dispatch({ type: GET_ADVISORS_BEGIN })
+
+    try {
+      const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/v1/advisor/list/all`)
+      dispatch({
+        type: GET_ADVISORS_SUCCESS,
+        payload: data
+      })
+    } catch (error) {
+      dispatch({ type: GET_ADVISORS_ERROR, payload: 'Erro ao carregar lista de professores' })
+    }
+  }
+
   const changePage = (page) => {
     dispatch({ type: CHANGE_PAGE, payload: { page } })
   }
@@ -193,6 +274,22 @@ function AppProvider({ children }) {
       dispatch({ type: GET_EXPIRED_STUDENTS_SUCCESS, payload: expiredStudents })
     } catch (error) {
       dispatch({ type: GET_EXPIRED_STUDENTS_ERROR, payload: 'Erro ao carregar lista de usuários' })
+    }
+  }
+
+  const delStudentById = async (id) => {
+    dispatch({ type: DELETE_USER_BEGIN })
+    try {
+      await axios.delete(`https://aux-bolsistas-dev.herokuapp.com/v1/students/${id}`)
+      dispatch({ type: DELETE_USER_SUCCESS })
+    } catch (error) {
+      if (!error?.response) {
+        dispatch({ type: DELETE_USER_ERROR, payload: 'Sem resposta do servidor' })
+      } else if (error?.response?.status === 400) {
+        dispatch({ type: DELETE_USER_ERROR, payload: error?.response?.data?.message })
+      } else {
+        dispatch({ type: DELETE_USER_ERROR, payload: 'Erro inesperado.Tente novamente' })
+      }
     }
   }
 
@@ -269,12 +366,16 @@ function AppProvider({ children }) {
         logoutUser,
         toggleSidebar,
         getStudents,
+        getAdvisors,
         changePage,
         handleChange,
         getExpiredStudents,
         getStudentsEndDate,
         forgetPassword,
         displayFormAlert,
+        preSaveUser,
+        saveUser,
+        delStudentById,
         getStudentData,
         extendEndDate
       }}

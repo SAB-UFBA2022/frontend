@@ -14,7 +14,9 @@ import {
   DocenteBolsasExpiradas,
   DocenteRelatorios,
   Login,
-  Page404
+  Page404,
+  Cadastro,
+  CompleteCadastro
 } from './pages'
 
 export default function App() {
@@ -23,6 +25,8 @@ export default function App() {
       <Routes>
         {/* Rotas públicas */}
         <Route path="/" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/complete-cadastro" element={<CompleteCadastro />} />
         <Route path="/esqueci-a-senha" element={<ForgetPassword />} />
 
         {/* Rotas de usuário discente */}

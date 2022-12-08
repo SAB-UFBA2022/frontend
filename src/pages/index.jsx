@@ -11,6 +11,8 @@ import DocenteRelatorios from './Docente/Relatorios'
 import Login from './Login'
 import Page404 from './Page404'
 import ForgetPassword from './ForgetPassword'
+import Cadastro from './Cadastro'
+import CompleteCadastro from './CompleteCadastro'
 
 export {
   AdminDashboard,
@@ -25,5 +27,7 @@ export {
   DocenteRelatorios,
   Login,
   Page404,
-  ForgetPassword
+  ForgetPassword,
+  Cadastro,
+  CompleteCadastro
 }

@@ -13,8 +13,20 @@ import {
   GET_STUDENTS_BEGIN,
   GET_STUDENTS_SUCCESS,
   GET_STUDENTS_ERROR,
+  GET_ADVISORS_BEGIN,
+  GET_ADVISORS_SUCCESS,
+  GET_ADVISORS_ERROR,
   CHANGE_PAGE,
   HANDLE_CHANGE,
+  SAVE_USER_BEGIN,
+  SAVE_USER_SUCCESS,
+  SAVE_USER_ERROR,
+  PRE_SAVE_USER_BEGIN,
+  PRE_SAVE_USER_SUCCESS,
+  PRE_SAVE_USER_ERROR,
+  DELETE_USER_BEGIN,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_ERROR,
   EXTEND_END_DATE_BEGIN,
   EXTEND_END_DATE_SUCCESS,
   EXTEND_END_DATE_ERROR
@@ -96,7 +108,23 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-
+  if (action.type === GET_ADVISORS_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false }
+  }
+  if (action.type === GET_ADVISORS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      advisors: action.payload
+    }
+  }
+  if (action.type === GET_ADVISORS_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
   if (action.type === FORGET_PASSWORD_BEGIN) {
     return {
       ...state,
@@ -118,7 +146,6 @@ const reducer = (state, action) => {
       isLoading: false
     }
   }
-
   if (action.type === CHANGE_PAGE) {
     return { ...state, currentPage: action.payload.page }
   }
@@ -142,6 +169,72 @@ const reducer = (state, action) => {
     }
   }
   if (action.type === 'GET_EXPIRED_STUDENTS_ERROR') {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  
+  if (action.type === PRE_SAVE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === PRE_SAVE_USER_SUCCESS) {
+    const { tax_id, role } = action.payload
+    toast.success('Pré Cadastro realizado com sucesso.')
+    return {
+      ...state,
+      isLoading: false,
+      user: tax_id,
+      userRole: role
+    }
+  }
+  if (action.type === PRE_SAVE_USER_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  if (action.type === SAVE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === SAVE_USER_SUCCESS) {
+    toast.success('Cadastro realizado com sucesso.')
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  if (action.type === SAVE_USER_ERROR) {
+    toast.error(action.payload)
+    return {
+      ...state,
+      isLoading: false
+    }
+  }
+  if (action.type === DELETE_USER_BEGIN) {
+    return {
+      ...state,
+      isLoading: true
+    }
+  }
+  if (action.type === DELETE_USER_SUCCESS) {
+    const id = action.payload
+    toast.success('Exclusão realizada com sucesso.')
+    return {
+      ...state,
+      isLoading: false,
+      user: id
+    }
+  }
+  if (action.type === DELETE_USER_ERROR) {
     toast.error(action.payload)
     return {
       ...state,
